@@ -8,12 +8,12 @@ import (
 
 func sampleSpec() Spec {
 	return Spec{
-		Name:       "pwikit",
-		Executable: "/opt/my wiki/pwikit",
+		Name:       "magnetar",
+		Executable: "/opt/my wiki/magnetar",
 		Root:       "/opt/my wiki",
 		User:       "alice",
-		LogFile:    "/opt/my wiki/logs/pwikit.log",
-		CrashFile:  "/opt/my wiki/logs/pwikit-stderr.log",
+		LogFile:    "/opt/my wiki/logs/magnetar.log",
+		CrashFile:  "/opt/my wiki/logs/magnetar-stderr.log",
 		Args:       []string{"serve", "-data-dir", "/opt/my wiki", "-acme-email", "a&b<c>@example.com"},
 	}
 }
@@ -28,7 +28,7 @@ func lineWith(text, prefix string) string {
 }
 
 func TestValidName(t *testing.T) {
-	for _, name := range []string{"pwikit", "wiki-2", "a.b_c"} {
+	for _, name := range []string{"magnetar", "wiki-2", "a.b_c"} {
 		if err := ValidName(name); err != nil {
 			t.Errorf("ValidName(%q) = %v, want nil", name, err)
 		}
@@ -51,7 +51,7 @@ func TestDisplayName(t *testing.T) {
 
 func TestSystemdQuotesEveryArgument(t *testing.T) {
 	got := lineWith(sampleSpec().Systemd(), "ExecStart=")
-	want := `ExecStart="/opt/my wiki/pwikit" "serve" "-data-dir" "/opt/my wiki" "-acme-email" "a&b<c>@example.com"`
+	want := `ExecStart="/opt/my wiki/magnetar" "serve" "-data-dir" "/opt/my wiki" "-acme-email" "a&b<c>@example.com"`
 	if got != want {
 		t.Errorf("ExecStart line = %q, want %q", got, want)
 	}
@@ -61,7 +61,7 @@ func TestSystemdEscapesSpecifiersVariablesAndQuotes(t *testing.T) {
 	s := sampleSpec()
 	s.Args = []string{"serve", `-secret-key`, `50%$HOME"\`}
 	got := lineWith(s.Systemd(), "ExecStart=")
-	want := `ExecStart="/opt/my wiki/pwikit" "serve" "-secret-key" "50%%$$HOME\"\\"`
+	want := `ExecStart="/opt/my wiki/magnetar" "serve" "-secret-key" "50%%$$HOME\"\\"`
 	if got != want {
 		t.Errorf("ExecStart line = %q, want %q", got, want)
 	}
@@ -104,7 +104,7 @@ func TestSystemdWithoutOpenedPortsRecordsNothing(t *testing.T) {
 }
 
 func TestParseFirewallIgnoresGarbage(t *testing.T) {
-	for _, unit := range []string{"", "# pwikit-firewall\n", "# pwikit-firewall ufw\n", "[Unit]\nDescription=x\n"} {
+	for _, unit := range []string{"", "# magnetar-firewall\n", "# magnetar-firewall ufw\n", "[Unit]\nDescription=x\n"} {
 		if got := ParseFirewall(unit); got.Tool != "" || got.Ports != nil {
 			t.Errorf("ParseFirewall(%q) = %+v, want nothing", unit, got)
 		}
@@ -182,11 +182,11 @@ func contains(list []string, item string) bool {
 
 func updateSpec() Spec {
 	return Spec{
-		Name:       "pwikit",
-		Executable: "/opt/pwikit/pwikit",
-		Root:       "/opt/pwikit",
+		Name:       "magnetar",
+		Executable: "/opt/magnetar/magnetar",
+		Root:       "/opt/magnetar",
 		User:       "wiki",
-		UpdateArgs: []string{"update", "-auto", "-service", "pwikit", "-data-dir", "/opt/pwikit", "--", "-listen", "127.0.0.1:8080"},
+		UpdateArgs: []string{"update", "-auto", "-service", "magnetar", "-data-dir", "/opt/magnetar", "--", "-listen", "127.0.0.1:8080"},
 	}
 }
 
@@ -195,14 +195,14 @@ func TestSystemdUpdateRunsTheTaskAsRootOnATimer(t *testing.T) {
 	if strings.Contains(unit, "User=") {
 		t.Errorf("SystemdUpdate() unit = %q, want no User= so it runs as root", unit)
 	}
-	if !strings.Contains(unit, `ExecStart="/opt/pwikit/pwikit" "update" "-auto" "-service" "pwikit"`) {
+	if !strings.Contains(unit, `ExecStart="/opt/magnetar/magnetar" "update" "-auto" "-service" "magnetar"`) {
 		t.Errorf("SystemdUpdate() unit = %q, want the update command", unit)
 	}
 	if !strings.Contains(unit, "Type=oneshot") {
 		t.Errorf("SystemdUpdate() unit = %q, want Type=oneshot", unit)
 	}
-	if !strings.Contains(timer, "OnUnitInactiveSec=600s") || !strings.Contains(timer, "Unit=pwikit-update.service") {
-		t.Errorf("SystemdUpdate() timer = %q, want a ten minute timer on pwikit-update.service", timer)
+	if !strings.Contains(timer, "OnUnitInactiveSec=600s") || !strings.Contains(timer, "Unit=magnetar-update.service") {
+		t.Errorf("SystemdUpdate() timer = %q, want a ten minute timer on magnetar-update.service", timer)
 	}
 }
 
@@ -212,7 +212,7 @@ func TestLaunchdUpdateIsWellFormed(t *testing.T) {
 	if err := xml.NewDecoder(strings.NewReader(plist)).Decode(&probe); err != nil {
 		t.Errorf("LaunchdUpdate() = %q, err %v, want well-formed XML", plist, err)
 	}
-	for _, want := range []string{"<string>pwikit-update</string>", "<integer>600</integer>", "<string>-auto</string>"} {
+	for _, want := range []string{"<string>magnetar-update</string>", "<integer>600</integer>", "<string>-auto</string>"} {
 		if !strings.Contains(plist, want) {
 			t.Errorf("LaunchdUpdate() = %q, want it to contain %q", plist, want)
 		}
@@ -221,9 +221,9 @@ func TestLaunchdUpdateIsWellFormed(t *testing.T) {
 
 func TestTaskXMLRunsAsTheSystemAccount(t *testing.T) {
 	s := updateSpec()
-	s.Executable = `C:\Program Files\pwikit\pwikit.exe`
-	s.Root = `C:\Program Files\pwikit`
-	s.UpdateArgs = []string{"update", "-auto", "-data-dir", `C:\Program Files\pwikit`}
+	s.Executable = `C:\Program Files\magnetar\magnetar.exe`
+	s.Root = `C:\Program Files\magnetar`
+	s.UpdateArgs = []string{"update", "-auto", "-data-dir", `C:\Program Files\magnetar`}
 	task := s.TaskXML()
 	var probe struct{}
 	decoder := xml.NewDecoder(strings.NewReader(strings.Replace(task, `encoding="UTF-16"`, `encoding="UTF-8"`, 1)))
@@ -234,7 +234,7 @@ func TestTaskXMLRunsAsTheSystemAccount(t *testing.T) {
 		"<UserId>S-1-5-18</UserId>",
 		"<Interval>PT10M</Interval>",
 		"<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>",
-		`<Arguments>update -auto -data-dir &#34;C:\Program Files\pwikit&#34;</Arguments>`,
+		`<Arguments>update -auto -data-dir &#34;C:\Program Files\magnetar&#34;</Arguments>`,
 	} {
 		if !strings.Contains(task, want) {
 			t.Errorf("TaskXML() = %q, want it to contain %q", task, want)

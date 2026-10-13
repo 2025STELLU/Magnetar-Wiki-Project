@@ -16,7 +16,7 @@ const (
 	actRefuse
 )
 
-// A link that leads nowhere was left by a moved pwikit and is replaced freely.
+// A link that leads nowhere was left by a moved magnetar and is replaced freely.
 // One that leads to a live program is somebody's working setup.
 func decide(existing entry, exe string, force bool) action {
 	switch {

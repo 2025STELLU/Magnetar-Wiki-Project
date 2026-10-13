@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/form"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/form"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 )
 
 const (

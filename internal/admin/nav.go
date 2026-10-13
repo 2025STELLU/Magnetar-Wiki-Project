@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
 )
 
 type navItem struct {

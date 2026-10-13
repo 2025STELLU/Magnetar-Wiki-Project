@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"slices"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 // The walk that fills this runs newest first, so the oldest entry above the

@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/media"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/media"
 )
 
 func (im *importer) importFiles(ctx context.Context, page Page, articleID int64, articleMedia string) (int, error) {

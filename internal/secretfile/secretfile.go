@@ -1,4 +1,4 @@
-// Package secretfile answers where a secret pwikit makes for itself is kept.
+// Package secretfile answers where a secret magnetar makes for itself is kept.
 package secretfile
 
 import (

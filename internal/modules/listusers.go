@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/printuser"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/printuser"
 )
 
 func init() { module.Register("listusers", renderListUsers) }
@@ -57,7 +57,7 @@ func putChipsBack(html string, chips map[string]string) string {
 
 // The index sits inside the token rather than at its end, so one token is never
 // the beginning of another once there are ten authors.
-func chipToken(i int) string { return "pwikitauthor" + strconv.Itoa(i) + "chip" }
+func chipToken(i int) string { return "magnetarauthor" + strconv.Itoa(i) + "chip" }
 
 func authorTemplates(env module.Env, pc *page.Context, body string, chips map[string]string) ([]string, error) {
 	if pc.Article == nil {

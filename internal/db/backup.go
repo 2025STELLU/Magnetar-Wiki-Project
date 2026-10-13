@@ -11,7 +11,7 @@ import (
 
 // The migration ledger is rebuilt by replaying the migrations a restore names,
 // so carrying its rows would fight with that.
-const LedgerTable = "pwikit_migration"
+const LedgerTable = "magnetar_migration"
 
 var qBackupTables = register("BackupTables", `
 SELECT c.relname

@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
 )
 
 func buttonEnv(t *testing.T, article *db.Article) module.Env {
@@ -25,7 +25,7 @@ func TestRenderButtonEdit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="pwikit.edit(event)">edit</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="magnetar.edit(event)">edit</a>`
 	if got != want {
 		t.Errorf("renderButton(edit) = %q, want %q", got, want)
 	}
@@ -38,7 +38,7 @@ func TestRenderButtonSetTags(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="pwikit.setTags(event, &#x27;-发现 +丢失&#x27;)">丢失</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="magnetar.setTags(event, &#x27;-发现 +丢失&#x27;)">丢失</a>`
 	if got != want {
 		t.Errorf("renderButton(set-tags) = %q, want %q", got, want)
 	}
@@ -51,7 +51,7 @@ func TestRenderButtonSetTagsWithoutTags(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="pwikit.setTags(event, &#x27;&#x27;)">set-tags</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="magnetar.setTags(event, &#x27;&#x27;)">set-tags</a>`
 	if got != want {
 		t.Errorf("renderButton(set-tags without tags) = %q, want %q", got, want)
 	}
@@ -64,7 +64,7 @@ func TestRenderButtonSetTagsEscapesTheOperations(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="pwikit.setTags(event, &#x27;+it\&#x27;s&#x27;)">x</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="magnetar.setTags(event, &#x27;+it\&#x27;s&#x27;)">x</a>`
 	if got != want {
 		t.Errorf("renderButton(quote in tags) = %q, want %q", got, want)
 	}
@@ -77,7 +77,7 @@ func TestRenderButtonWithItsOwnText(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="pwikit.edit(event)">创建此页</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="magnetar.edit(event)">创建此页</a>`
 	if got != want {
 		t.Errorf("renderButton(text) = %q, want %q", got, want)
 	}
@@ -102,7 +102,7 @@ func TestRenderButtonWithEmptyText(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="pwikit.edit(event)"></a>`
+	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="magnetar.edit(event)"></a>`
 	if got != want {
 		t.Errorf("renderButton(text=\"\") = %q, want %q", got, want)
 	}
@@ -115,7 +115,7 @@ func TestRenderButtonLabelsWithTheTypeAsWritten(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="pwikit.setTags(event, &#x27;&#x27;)">Set-Tags</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="set-tags" href="javascript:;" onclick="magnetar.setTags(event, &#x27;&#x27;)">Set-Tags</a>`
 	if got != want {
 		t.Errorf("renderButton(Set-Tags) = %q, want %q", got, want)
 	}
@@ -128,7 +128,7 @@ func TestRenderButtonEscapesTheLabel(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderButton() err = %v, want nil", err)
 	}
-	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="pwikit.edit(event)">&lt;b&gt;&quot;x&quot;&lt;/b&gt;</a>`
+	want := `<a class="wiki-standalone-button" data-button-type="edit" href="javascript:;" onclick="magnetar.edit(event)">&lt;b&gt;&quot;x&quot;&lt;/b&gt;</a>`
 	if got != want {
 		t.Errorf("renderButton(escapes) = %q, want %q", got, want)
 	}

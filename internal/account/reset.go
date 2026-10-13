@@ -9,17 +9,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
-	"github.com/WikitTeam/ProjectWikit/internal/csrf"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/pagerender"
-	"github.com/WikitTeam/ProjectWikit/internal/password"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	"github.com/WikitTeam/ProjectWikit/internal/shell"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/token"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/pagerender"
+	"github.com/2025STELLU/MagnetarWiki/internal/password"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/shell"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/token"
 )
 
 const (

@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 )
 
 const (

@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/csrf"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/session"
+	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/session"
 )
 
 const (

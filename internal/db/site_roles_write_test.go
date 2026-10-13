@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 type seededRole struct {

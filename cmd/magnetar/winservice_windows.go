@@ -7,7 +7,7 @@ import (
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/eventlog"
 
-	"github.com/WikitTeam/ProjectWikit/internal/service"
+	"github.com/2025STELLU/MagnetarWiki/internal/service"
 )
 
 func runAsService(args []string) (bool, error) {
@@ -30,7 +30,7 @@ func (w *windowsService) Execute(_ []string, requests <-chan svc.ChangeRequest, 
 	done := make(chan error, 1)
 	go func() {
 		if len(w.args) == 0 || w.args[0] != "serve" {
-			done <- errors.New("a pwikit service can only run pwikit serve")
+			done <- errors.New("a magnetar service can only run magnetar serve")
 			return
 		}
 		done <- serve(ctx, w.args[1:])
@@ -65,5 +65,5 @@ func report(err error) {
 		return
 	}
 	defer log.Close()
-	log.Error(1, "pwikit stopped: "+err.Error())
+	log.Error(1, "magnetar stopped: "+err.Error())
 }

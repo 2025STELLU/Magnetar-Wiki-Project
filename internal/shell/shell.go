@@ -11,10 +11,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
-	"github.com/WikitTeam/ProjectWikit/internal/timezone"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/timezone"
 )
 
 const (

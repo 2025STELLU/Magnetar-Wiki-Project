@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/printuser"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/printuser"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 func init() {

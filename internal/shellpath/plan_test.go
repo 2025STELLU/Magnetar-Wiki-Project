@@ -8,14 +8,14 @@ import (
 
 func TestDecide(t *testing.T) {
 	dir := t.TempDir()
-	exe := filepath.Join(dir, "pwikit")
-	other := filepath.Join(dir, "other-pwikit")
+	exe := filepath.Join(dir, "magnetar")
+	other := filepath.Join(dir, "other-magnetar")
 	for _, name := range []string{exe, other} {
 		if err := os.WriteFile(name, []byte("x"), 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
-	gone := filepath.Join(dir, "moved-away", "pwikit")
+	gone := filepath.Join(dir, "moved-away", "magnetar")
 
 	cases := []struct {
 		name     string
@@ -25,9 +25,9 @@ func TestDecide(t *testing.T) {
 	}{
 		{"nothing there", entry{}, false, actCreate},
 		{"already ours", entry{present: true, link: true, target: exe, working: true}, false, actKeep},
-		{"left by a moved pwikit", entry{present: true, link: true, target: gone}, false, actReplace},
-		{"another live pwikit", entry{present: true, link: true, target: other, working: true}, false, actRefuse},
-		{"another live pwikit with force", entry{present: true, link: true, target: other, working: true}, true, actReplace},
+		{"left by a moved magnetar", entry{present: true, link: true, target: gone}, false, actReplace},
+		{"another live magnetar", entry{present: true, link: true, target: other, working: true}, false, actRefuse},
+		{"another live magnetar with force", entry{present: true, link: true, target: other, working: true}, true, actReplace},
 		{"a plain file", entry{present: true, working: true}, false, actRefuse},
 		{"a plain file with force", entry{present: true, working: true}, true, actReplace},
 	}

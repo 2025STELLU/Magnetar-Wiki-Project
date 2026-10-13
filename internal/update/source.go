@@ -16,9 +16,9 @@ import (
 )
 
 const (
-	GitHubReleases = "https://github.com/WikitTeam/ProjectWikit/releases"
+	GitHubReleases = "https://github.com/2025STELLU/MagnetarWiki/releases"
 
-	EnvReleases = "PWIKIT_RELEASES_URL"
+	EnvReleases = "MAGNETAR_RELEASES_URL"
 
 	maxManifest = 1 << 20
 )
@@ -152,7 +152,7 @@ func (s Source) get(ctx context.Context, url string, into io.Writer, limit int64
 	if err != nil {
 		return err
 	}
-	req.Header.Set("User-Agent", "pwikit-updater")
+	req.Header.Set("User-Agent", "magnetar-updater")
 	client := s.client
 	if client == nil {
 		client = http.DefaultClient

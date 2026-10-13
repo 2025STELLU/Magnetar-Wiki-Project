@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 const (
@@ -131,17 +131,17 @@ type Reason struct {
 
 var reasonText = map[string]string{
 	"check-off": "checking for releases is off",
-	"container": "pwikit runs in a container, where a new image replaces it",
+	"container": "magnetar runs in a container, where a new image replaces it",
 	"unknown":   "no release is known yet",
 	"no-number": "this build carries no release number",
 	"newest":    "this is the newest release",
-	"pinned":    "held at %s until pwikit update unpin",
+	"pinned":    "held at %s until magnetar update unpin",
 	"auto-off":  "automatic updates are off",
 	"skipped":   "%s was skipped",
 	"failed":    "%s failed before and was rolled back",
 	"postponed": "postponed until %s",
 	"too-new":   "released less than %s hours ago",
-	"postgres":  "it moves the bundled PostgreSQL to %s, which pwikit update does by hand",
+	"postgres":  "it moves the bundled PostgreSQL to %s, which magnetar update does by hand",
 }
 
 func (r Reason) String() string {

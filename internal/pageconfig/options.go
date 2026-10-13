@@ -3,10 +3,10 @@ package pageconfig
 import (
 	"strconv"
 
-	"github.com/WikitTeam/ProjectWikit/internal/article"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/article"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 type Options struct {

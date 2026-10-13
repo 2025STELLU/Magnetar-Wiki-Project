@@ -4,8 +4,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/form"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/form"
 )
 
 func (q Query) hasFormWork() bool { return len(q.FormConds) > 0 || q.FormSort != "" }

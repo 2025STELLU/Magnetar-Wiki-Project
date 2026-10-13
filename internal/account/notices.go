@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/token"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/token"
 )
 
 func (d Deps) link(r *http.Request, purpose string, userID int64, value token.Value) string {

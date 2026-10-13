@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	// Format is the version of the layout inside the archive, not of pwikit. It
+	// Format is the version of the layout inside the archive, not of magnetar. It
 	// changes only when an older build could no longer read a newer file.
 	Format = 1
 
@@ -40,7 +40,7 @@ type Files struct {
 type Manifest struct {
 	Format     int       `json:"format"`
 	CreatedAt  time.Time `json:"created_at"`
-	Pwikit     string    `json:"pwikit_version"`
+	Magnetar     string    `json:"pwikit_version"` // kept for ProjectWikit backup compat
 	PGVersion  int       `json:"pg_version"`
 	Migrations []string  `json:"migrations"`
 	// Site is empty for a whole instance and the slug when one site was taken
@@ -77,7 +77,7 @@ func readManifest(r io.Reader) (Manifest, error) {
 		return Manifest{}, fmt.Errorf("%s names no format version", ManifestName)
 	}
 	if m.Format > Format {
-		return Manifest{}, fmt.Errorf("the backup is format %d and this build reads up to %d; run the newer pwikit", m.Format, Format)
+		return Manifest{}, fmt.Errorf("the backup is format %d and this build reads up to %d; run the newer magnetar", m.Format, Format)
 	}
 	return m, nil
 }

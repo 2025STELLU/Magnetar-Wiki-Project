@@ -3,7 +3,7 @@ package page
 import (
 	"net/http"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 // Context is the state one render writes back to the page around it. Modules

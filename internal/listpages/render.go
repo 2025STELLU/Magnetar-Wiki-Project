@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
 )
 
 type Sections struct {

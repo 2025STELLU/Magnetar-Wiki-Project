@@ -4,14 +4,14 @@ import (
 	"context"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/form"
-	"github.com/WikitTeam/ProjectWikit/internal/pageconfig"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
-	"github.com/WikitTeam/ProjectWikit/internal/printuser"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/form"
+	"github.com/2025STELLU/MagnetarWiki/internal/pageconfig"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/printuser"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 type moduleData struct{ repo *Repository }

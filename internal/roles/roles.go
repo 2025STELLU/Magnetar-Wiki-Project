@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
 )
 
 type InlineVisualMode string

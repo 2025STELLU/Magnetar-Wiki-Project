@@ -16,11 +16,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/migrate"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/migrate"
 )
 
-const envDSN = "PWIKIT_TEST_WRITE_DSN"
+const envDSN = "MAGNETAR_TEST_WRITE_DSN"
 
 func requireDSN(t *testing.T) string {
 	t.Helper()
@@ -47,7 +47,7 @@ func swapDatabase(t *testing.T, dsn, name string) string {
 func scratch(t *testing.T) string {
 	t.Helper()
 	dsn := requireDSN(t)
-	name := fmt.Sprintf("pwikit_backup_%d", rand.Uint32())
+	name := fmt.Sprintf("magnetar_backup_%d", rand.Uint32())
 	admin := swapDatabase(t, dsn, "postgres")
 
 	ctx := context.Background()
@@ -375,7 +375,7 @@ func TestRestoreRefusesWhileSomethingElseIsConnected(t *testing.T) {
 	if err == nil {
 		t.Fatal("Restore(with another connection open) err = nil, want non-nil")
 	}
-	if !strings.Contains(err.Error(), "stop pwikit") {
+	if !strings.Contains(err.Error(), "stop magnetar") {
 		t.Errorf("Restore() err = %v, want it to say what to stop", err)
 	}
 }
@@ -791,7 +791,7 @@ func TestCheckServerLetsAServerNewEnoughThrough(t *testing.T) {
 
 func TestTooOldSaysWhatToRun(t *testing.T) {
 	err := TooOld(120000)
-	for _, want := range []string{"12.0", "14.0", "pwikit backup create", "pwikit backup restore"} {
+	for _, want := range []string{"12.0", "14.0", "magnetar backup create", "magnetar backup restore"} {
 		if !strings.Contains(err.Error(), want) {
 			t.Errorf("Contains(TooOld(120000), %q) = false, want true", want)
 		}

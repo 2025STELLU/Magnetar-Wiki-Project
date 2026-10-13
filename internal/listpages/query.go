@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 const maxPerPage = 250

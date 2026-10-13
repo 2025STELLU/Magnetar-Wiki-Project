@@ -8,7 +8,7 @@ interface StyledProps {
 type Props = Partial<StyledProps> & { className?: string }
 
 const LoaderStyle = styled.div<StyledProps>`
-  @keyframes pwikit-loader {
+  @keyframes magnetar-loader {
     0% {
       left: -35%;
       right: 100%;
@@ -29,7 +29,7 @@ const LoaderStyle = styled.div<StyledProps>`
     top: 0;
     bottom: 0;
     background: ${props => props.color};
-    animation: pwikit-loader 1.1s ease-in-out infinite;
+    animation: magnetar-loader 1.1s ease-in-out infinite;
     will-change: left, right;
   }
 `

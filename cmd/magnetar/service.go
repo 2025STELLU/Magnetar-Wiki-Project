@@ -8,33 +8,33 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/service"
-	"github.com/WikitTeam/ProjectWikit/internal/shellpath"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/service"
+	"github.com/2025STELLU/MagnetarWiki/internal/shellpath"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 func serviceUsage() {
-	fmt.Fprint(os.Stderr, `Usage: pwikit service <install|uninstall|start|stop|status|print> [options] [-- serve options]
+	fmt.Fprint(os.Stderr, `Usage: magnetar service <install|uninstall|start|stop|status|print> [options] [-- serve options]
 
-  install    start pwikit whenever the machine boots, and start it now
-  uninstall  stop pwikit and no longer start it at boot
+  install    start magnetar whenever the machine boots, and start it now
+  uninstall  stop magnetar and no longer start it at boot
   start      start the installed service
   stop       stop the installed service
   status     show whether the installed service is running
   print      show what install would register, without registering it
 
 Options:
-  -name      name the service is registered under; defaults to pwikit
+  -name      name the service is registered under; defaults to magnetar
   -user      account the service runs as on Linux and macOS; defaults to the one sudo was run from
   -data-dir  state directory; defaults to the directory holding the executable
-  -no-path   leave the PATH alone; by default install makes pwikit runnable by name
+  -no-path   leave the PATH alone; by default install makes magnetar runnable by name
              from any directory and uninstall undoes it
 
-Anything after -- is handed to pwikit serve, for example:
-  pwikit service install -- -tls=auto -acme-email you@example.com
+Anything after -- is handed to magnetar serve, for example:
+  magnetar service install -- -tls=auto -acme-email you@example.com
 
 On Linux and on a Mac that should start it at boot, run install with sudo.
 On Windows, run it from a terminal opened with Run as administrator.
@@ -133,7 +133,7 @@ func serviceSpec(name, account, dataDir string, extra []string) (service.Spec, e
 		return service.Spec{}, err
 	}
 	if p.Source() == paths.SourceGoRun {
-		return service.Spec{}, errors.New("go run leaves the program in a temporary directory; build pwikit and install that instead")
+		return service.Spec{}, errors.New("go run leaves the program in a temporary directory; build magnetar and install that instead")
 	}
 	exe, err := os.Executable()
 	if err != nil {
@@ -160,11 +160,11 @@ func serviceSpec(name, account, dataDir string, extra []string) (service.Spec, e
 		spec.UpdateArgs = append([]string{"update", "-auto", "-service", name, "-data-dir", p.Root(), "--"}, extra...)
 	}
 	if runtime.GOOS != "linux" {
-		spec.LogFile = filepath.Join(p.Logs(), "pwikit.log")
+		spec.LogFile = filepath.Join(p.Logs(), "magnetar.log")
 		args = append(args, "-log-file", spec.LogFile)
 	}
 	if runtime.GOOS == "darwin" {
-		spec.CrashFile = filepath.Join(p.Logs(), "pwikit-stderr.log")
+		spec.CrashFile = filepath.Join(p.Logs(), "magnetar-stderr.log")
 	}
 	spec.Args = append(args, extra...)
 

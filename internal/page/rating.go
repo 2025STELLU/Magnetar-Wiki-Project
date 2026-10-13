@@ -3,7 +3,7 @@ package page
 import (
 	"strconv"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 // Rating is what the page options carry. Value is an int under updown and a

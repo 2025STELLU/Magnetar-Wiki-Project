@@ -18,38 +18,38 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/entry"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/mail"
-	"github.com/WikitTeam/ProjectWikit/internal/migrate"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/service"
-	"github.com/WikitTeam/ProjectWikit/internal/shellpath"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
-	"github.com/WikitTeam/ProjectWikit/internal/version"
-	staticfiles "github.com/WikitTeam/ProjectWikit/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/entry"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/mail"
+	"github.com/2025STELLU/MagnetarWiki/internal/migrate"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/service"
+	"github.com/2025STELLU/MagnetarWiki/internal/shellpath"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
+	staticfiles "github.com/2025STELLU/MagnetarWiki/static"
 )
 
 func updateUsage() {
-	fmt.Fprint(os.Stderr, `Usage: pwikit update [check|status|rollback|unpin|postpone|skip|mirror] [options] [-- serve options]
+	fmt.Fprint(os.Stderr, `Usage: magnetar update [check|status|rollback|unpin|postpone|skip|mirror] [options] [-- serve options]
 
   (none)    install the newest release now
   check     say whether a newer release exists
   status    show what the updater knows and has planned
   rollback  put back the release, and the data, from before the last update
-  unpin     let automatic updates run again after pwikit update -to held a release
+  unpin     let automatic updates run again after magnetar update -to held a release
   postpone  put off the scheduled automatic update by 24 hours
   skip      never install the release that is scheduled or newest automatically
-  mirror    show the mirror in pwikit.toml, or set it with pwikit update mirror <address>;
+  mirror    show the mirror in magnetar.toml, or set it with magnetar update mirror <address>;
             an empty address clears it
 
 Options:
   -to        release to install instead of the newest; an older one is held until unpin
-  -service   name of the installed service; defaults to pwikit
+  -service   name of the installed service; defaults to magnetar
   -data-dir  state directory; defaults to the directory holding the executable
   -mirror    mirror to download from when GitHub cannot be reached
   -yes       answer yes to the rollback question
@@ -280,11 +280,11 @@ func secureUpdateTask(p *paths.Paths, name string, l *updateLog) string {
 		return ""
 	}
 	if err := os.MkdirAll(filepath.Dir(bin), 0o755); err != nil {
-		l.logf("could not keep root's copy of pwikit: %v", err)
+		l.logf("could not keep root's copy of magnetar: %v", err)
 		return ""
 	}
 	if err := update.CopyFile(running, bin); err != nil {
-		l.logf("could not keep root's copy of pwikit: %v", err)
+		l.logf("could not keep root's copy of magnetar: %v", err)
 		return ""
 	}
 	os.Chmod(bin, 0o755)
@@ -315,13 +315,13 @@ func secureRootService(p *paths.Paths, name string, l *updateLog) {
 	exe := update.RecordedExecutable(in.Executable)
 	if _, recorded := update.ReadInstance(private); !recorded {
 		if err := update.RecordInstance(private, p.Root(), exe); err != nil {
-			l.logf("could not record where pwikit is installed: %v", err)
+			l.logf("could not record where magnetar is installed: %v", err)
 			return
 		}
 	}
 	if _, err := os.Stat(bin); err != nil {
 		if err := update.CopyFile(exe, bin); err != nil {
-			l.logf("could not keep root's copy of pwikit: %v", err)
+			l.logf("could not keep root's copy of magnetar: %v", err)
 			return
 		}
 		os.Chmod(bin, 0o755)
@@ -335,7 +335,7 @@ func secureRootService(p *paths.Paths, name string, l *updateLog) {
 		l.logf("the service now runs %s, which only root can change, from its next start", bin)
 	}
 	if moved, err := shellpath.Retarget(exe, bin); err == nil && moved {
-		l.logf("the pwikit command on the PATH now runs %s", bin)
+		l.logf("the magnetar command on the PATH now runs %s", bin)
 	}
 }
 
@@ -473,7 +473,7 @@ func manualUpdate(p *paths.Paths, f *updateFlags, serveArgs []string) error {
 		target = m.Version
 	}
 	if target == version.String() {
-		fmt.Printf("pwikit %s is already running\n", target)
+		fmt.Printf("magnetar %s is already running\n", target)
 		return nil
 	}
 	pin := ""
@@ -506,7 +506,7 @@ func installRelease(p *paths.Paths, name string, serveArgs []string, target, pin
 		running = false
 	}
 	if !running && serveAlive(p) {
-		return errors.New("pwikit serve is running in the foreground; stop it first, or update an instance installed with pwikit service install")
+		return errors.New("magnetar serve is running in the foreground; stop it first, or update an instance installed with magnetar service install")
 	}
 	if err := updatable(p, exe); err != nil {
 		return err
@@ -524,7 +524,7 @@ func installRelease(p *paths.Paths, name string, serveArgs []string, target, pin
 		if mirror != "" && os.Geteuid() == 0 && !pinnedMirror(p, mirror) {
 			if why = settingsFileOpenTo(p.Config()); why != "" {
 				ignored, mirror = mirror, ""
-				l.logf("not using the mirror %s from %s because %s, so releases come from GitHub. To update through the mirror, run: sudo pwikit update -mirror %s",
+				l.logf("not using the mirror %s from %s because %s, so releases come from GitHub. To update through the mirror, run: sudo magnetar update -mirror %s",
 					ignored, p.Config(), why, ignored)
 			}
 		}
@@ -533,7 +533,7 @@ func installRelease(p *paths.Paths, name string, serveArgs []string, target, pin
 	src.Log = func(line string) { l.logf("%s", line) }
 	sums, err := src.Checksums(ctx, target)
 	if err != nil && ignored != "" {
-		return fmt.Errorf("read the checksums of %s from GitHub: %w. The mirror %s in pwikit.toml was not used because %s. To update through it, run: sudo pwikit update -mirror %s",
+		return fmt.Errorf("read the checksums of %s from GitHub: %w. The mirror %s in magnetar.toml was not used because %s. To update through it, run: sudo magnetar update -mirror %s",
 			target, err, ignored, why, ignored)
 	}
 	if err != nil {
@@ -593,7 +593,7 @@ func installRelease(p *paths.Paths, name string, serveArgs []string, target, pin
 
 	if outcome.Err == nil {
 		if !running {
-			fmt.Printf("installed %s; start pwikit serve again\n", target)
+			fmt.Printf("installed %s; start magnetar serve again\n", target)
 		}
 		return nil
 	}
@@ -616,10 +616,10 @@ func rollbackUpdate(p *paths.Paths, f *updateFlags, serveArgs []string) error {
 		return fmt.Errorf("the rollback point from %s is older than seven days and is no longer used", point.CreatedAt.Format(time.RFC3339))
 	}
 	if point.From == version.String() {
-		return fmt.Errorf("pwikit %s is already running", point.From)
+		return fmt.Errorf("magnetar %s is already running", point.From)
 	}
 	if point.Kind != update.RollbackNone && !*f.yes {
-		fmt.Printf("This puts back pwikit %s and the database as it was at %s.\n", point.From, point.CreatedAt.Local().Format("2006-01-02 15:04"))
+		fmt.Printf("This puts back magnetar %s and the database as it was at %s.\n", point.From, point.CreatedAt.Local().Format("2006-01-02 15:04"))
 		fmt.Print("Everything written to the site since then is lost. Continue? [y/N] ")
 		answer, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		if a := strings.ToLower(strings.TrimSpace(answer)); a != "y" && a != "yes" {
@@ -644,7 +644,7 @@ func rollbackUpdate(p *paths.Paths, f *updateFlags, serveArgs []string) error {
 	}
 	running, _ := service.Running(*f.name)
 	if !running && serveAlive(p) {
-		return errors.New("pwikit serve is running in the foreground; stop it first")
+		return errors.New("magnetar serve is running in the foreground; stop it first")
 	}
 	if err := updatable(p, exe); err != nil {
 		return err
@@ -676,7 +676,7 @@ func rollbackUpdate(p *paths.Paths, f *updateFlags, serveArgs []string) error {
 	if out, err := runOwner(context.Background(), p.Root(), exe, append(record, serveArgs...)...); err != nil {
 		l.logf("could not record the rollback: %v: %s", err, strings.TrimSpace(string(out)))
 	}
-	fmt.Printf("put back pwikit %s; automatic updates stay off until pwikit update unpin\n", point.From)
+	fmt.Printf("put back magnetar %s; automatic updates stay off until magnetar update unpin\n", point.From)
 	return nil
 }
 
@@ -702,7 +702,7 @@ func checkUpdate(p *paths.Paths, f *updateFlags, serveArgs []string) error {
 		fmt.Printf("it moves the bundled PostgreSQL to version %s, which takes a backup and a restore\n", update.PostgresMajor(m.Postgres))
 	}
 	fmt.Printf("notes     %s\n", m.Notes)
-	fmt.Println("install it with: pwikit update")
+	fmt.Println("install it with: magnetar update")
 	return nil
 }
 
@@ -734,7 +734,7 @@ func updateMirror(p *paths.Paths, args []string) error {
 	fmt.Printf("set the mirror in %s to %s\n", p.Config(), mirror)
 	if why := settingsFileOpenTo(p.Config()); why != "" && !pinnedMirror(p, mirror) {
 		fmt.Printf("automatic updates run as root and will not use it, because %s.\n"+
-			"To update through the mirror, run: sudo pwikit update -mirror %s\n", why, mirror)
+			"To update through the mirror, run: sudo magnetar update -mirror %s\n", why, mirror)
 	}
 	return nil
 }
@@ -770,7 +770,7 @@ func tickUpdate(p *paths.Paths, serveArgs []string) error {
 	// retried into a duplicate, and it never holds up the update itself.
 	if update.NewlyFound(previous, st, version.String()) {
 		if err := announceRelease(ctx, conn, st, now); err != nil {
-			fmt.Fprintf(os.Stderr, "pwikit: tell the administrators about %s: %v\n", st.LatestVersion, err)
+			fmt.Fprintf(os.Stderr, "magnetar: tell the administrators about %s: %v\n", st.LatestVersion, err)
 		}
 	}
 	return json.NewEncoder(os.Stdout).Encode(map[string]any{"apply": apply, "by_hand": apply != "" && st.ScheduledByHand})
@@ -1085,7 +1085,7 @@ func lastJSONLine(out []byte) []byte {
 func updatable(p *paths.Paths, exe string) error {
 	if update.NoExec(p.Root()) {
 		return fmt.Errorf("%s is on a filesystem mounted noexec, where the new release cannot be tried before it is installed. "+
-			"Mount it without noexec, or move the pwikit directory", p.Root())
+			"Mount it without noexec, or move the magnetar directory", p.Root())
 	}
 	if os.Geteuid() != 0 && !update.Writable(filepath.Dir(exe)) {
 		return fmt.Errorf("this account cannot replace %s; run the update with sudo", exe)

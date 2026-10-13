@@ -129,7 +129,7 @@ func OldExecutable(current string) string { return current + ".old" }
 
 const lockName = "update.lock"
 
-var ErrBusy = errors.New("another pwikit update is running")
+var ErrBusy = errors.New("another magnetar update is running")
 
 const staleLock = 6 * time.Hour
 

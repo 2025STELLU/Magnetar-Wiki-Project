@@ -7,12 +7,12 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/repo"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/repo"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 const AllArticlesPath = "/pw-api/articles"

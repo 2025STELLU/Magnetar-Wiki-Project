@@ -15,7 +15,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 var ErrRenderFailed = errors.New("cgo: ftml render failed")
@@ -86,7 +86,7 @@ type entryPoint func(C.FtmlStr, *C.FtmlCallbacks, C.uintptr_t, *C.FtmlPageInfo, 
 
 func (r *Renderer) call(entry entryPoint, source string, info renderer.PageInfo, cb renderer.Callbacks, mode renderer.Mode) (*C.FtmlResult, func(), error) {
 	var callbacks C.FtmlCallbacks
-	C.pwikit_fill_callbacks(&callbacks)
+	C.magnetar_fill_callbacks(&callbacks)
 
 	handle := cgo.NewHandle(cb)
 	defer handle.Delete()

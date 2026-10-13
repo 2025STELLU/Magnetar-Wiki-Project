@@ -12,8 +12,8 @@ const Header: React.FC<Props> = ({ crumb }) => {
   return (
     <Styled.Container>
       <Styled.Brand href="/">
-        <Styled.BrandLogo src={site?.systemIcon || '/-/static/images/wikitHana.png'} alt="ProjectWikit" />
-        <Styled.Wordmark>ProjectWikit</Styled.Wordmark>
+        <Styled.BrandLogo src={site?.systemIcon || '/-/static/images/wikitHana.png'} alt="MagnetarWiki" />
+        <Styled.Wordmark>MagnetarWiki</Styled.Wordmark>
       </Styled.Brand>
       <Styled.Divider />
       <Styled.Path>

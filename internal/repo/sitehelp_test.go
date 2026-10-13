@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
 )
 
 func onlySiteID(ctx context.Context, d *db.DB) int64 {

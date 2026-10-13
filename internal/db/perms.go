@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 var qRoleIDsBySlug = register("RoleIDsBySlug", `

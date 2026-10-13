@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/WikitTeam/ProjectWikit/internal/logfile"
+	"github.com/2025STELLU/MagnetarWiki/internal/logfile"
 )
 
 func openLog(name string) (*slog.Logger, func(), error) {

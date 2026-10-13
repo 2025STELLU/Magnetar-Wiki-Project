@@ -40,7 +40,7 @@ func main() {
 func run(args []string) error {
 	fs := flag.NewFlagSet("ftmllib", flag.ContinueOnError)
 	dir := fs.String("dir", defaultDir, "directory holding the static library")
-	baseURL := fs.String("url", os.Getenv("PWIKIT_FTML_LIB_URL"), "base URL to download a missing library from")
+	baseURL := fs.String("url", os.Getenv("MAGNETAR_FTML_LIB_URL"), "base URL to download a missing library from")
 	target := fs.String("target", defaultTarget(), "target triple the library must be built for")
 	emit := fs.Bool("emit-metadata", false, "write metadata describing the library already in -dir")
 	abi := fs.Int("abi", 0, "ABI version the build expects")

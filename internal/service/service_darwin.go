@@ -61,7 +61,7 @@ func Install(s Spec) error {
 		return err
 	}
 	if _, err := os.Stat(path); err == nil {
-		return fmt.Errorf("a service named %s is already installed. Remove it with pwikit service uninstall, or pick another -name", s.Name)
+		return fmt.Errorf("a service named %s is already installed. Remove it with magnetar service uninstall, or pick another -name", s.Name)
 	}
 
 	if s.CrashFile != "" {

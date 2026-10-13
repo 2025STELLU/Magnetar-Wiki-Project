@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 type NewSite struct {

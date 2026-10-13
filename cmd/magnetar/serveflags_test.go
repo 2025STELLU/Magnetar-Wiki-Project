@@ -4,8 +4,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/entry"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/entry"
 )
 
 func resolved(t *testing.T, args []string, cfg config.File) (*serveOptions, entry.Mode) {
@@ -85,7 +85,7 @@ func TestResolveRefusesAnUnknownTLSMode(t *testing.T) {
 	}
 }
 
-func TestResolveIsAutomaticWhenNothingChoseHowPwikitIsReached(t *testing.T) {
+func TestResolveIsAutomaticWhenNothingChoseHowMagnetarIsReached(t *testing.T) {
 	cases := []struct {
 		name string
 		args []string
@@ -110,7 +110,7 @@ func TestResolveIsAutomaticWhenNothingChoseHowPwikitIsReached(t *testing.T) {
 func TestResolveAutomaticIsOffWithTLSFromTheEnvironment(t *testing.T) {
 	t.Setenv(envTLS, "off")
 	if o, _ := resolved(t, nil, config.File{}); o.automatic {
-		t.Errorf("resolve with PWIKIT_TLS=off .automatic = true, want false")
+		t.Errorf("resolve with MAGNETAR_TLS=off .automatic = true, want false")
 	}
 }
 
@@ -179,7 +179,7 @@ func TestDevListensOnlyOnThisMachine(t *testing.T) {
 func TestDevIgnoresTLSFromTheEnvironment(t *testing.T) {
 	t.Setenv(envTLS, "auto")
 	if _, mode := resolved(t, []string{"-dev"}, config.File{}); mode != entry.Off {
-		t.Errorf("mode with -dev and PWIKIT_TLS=auto = %q, want %q", mode, entry.Off)
+		t.Errorf("mode with -dev and MAGNETAR_TLS=auto = %q, want %q", mode, entry.Off)
 	}
 }
 

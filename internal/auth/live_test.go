@@ -5,14 +5,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/session"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/session"
 )
 
 const (
-	envSecretKey  = "PWIKIT_TEST_SECRET_KEY"
-	envSessionKey = "PWIKIT_TEST_SESSION_KEY"
-	envSessionUse = "PWIKIT_TEST_SESSION_USER"
+	envSecretKey  = "MAGNETAR_TEST_SECRET_KEY"
+	envSessionKey = "MAGNETAR_TEST_SESSION_KEY"
+	envSessionUse = "MAGNETAR_TEST_SESSION_USER"
 )
 
 func TestResolveSessionWrittenByDjango(t *testing.T) {

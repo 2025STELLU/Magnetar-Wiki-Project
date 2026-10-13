@@ -40,7 +40,7 @@ func run(args []string) error {
 }
 
 func packageBase(version, goos, goarch string) string {
-	return "pwikit-" + version + "-" + goos + "-" + goarch
+	return "magnetar-" + version + "-" + goos + "-" + goarch
 }
 
 func packageFile(version, goos, goarch string) string {
@@ -52,7 +52,7 @@ func packageFile(version, goos, goarch string) string {
 
 func executableName(goos string) string {
 	if goos == "windows" {
-		return "pwikit.exe"
+		return "magnetar.exe"
 	}
-	return "pwikit"
+	return "magnetar"
 }

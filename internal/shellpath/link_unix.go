@@ -92,7 +92,7 @@ func Install(exe, dir string, force bool) (Place, Outcome, error) {
 // The new link is made beside the old name and renamed over it, so a shell
 // never finds the command missing halfway through.
 func replaceLink(link, exe string) error {
-	temp := link + ".pwikit-new"
+	temp := link + ".magnetar-new"
 	os.Remove(temp)
 	if err := os.Symlink(exe, temp); err != nil {
 		return err

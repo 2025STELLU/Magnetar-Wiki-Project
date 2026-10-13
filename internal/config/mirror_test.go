@@ -10,7 +10,7 @@ import (
 const testMirror = "https://mirror.example.org/projwikit/update"
 
 func TestSetUpdateMirrorWritesTheTemplateFirst(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "pwikit.toml")
+	path := filepath.Join(t.TempDir(), "magnetar.toml")
 	if err := SetUpdateMirror(path, testMirror); err != nil {
 		t.Fatalf("SetUpdateMirror() err = %v, want nil", err)
 	}

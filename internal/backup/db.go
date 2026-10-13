@@ -17,10 +17,10 @@ func Describe(num int) string {
 // somebody who has never heard of a server_version_num.
 func TooOld(found int) error {
 	return fmt.Errorf(
-		"this database is PostgreSQL %s, and pwikit needs %s or newer.\n"+
-			"  Upgrade PostgreSQL, or point pwikit at a newer server with -database.\n"+
-			"  To move the data: back it up with the pwikit you are running now\n"+
-			"  (pwikit backup create), then restore it into the new server\n"+
-			"  (pwikit backup restore <file> -database <new server>).",
+		"this database is PostgreSQL %s, and magnetar needs %s or newer.\n"+
+			"  Upgrade PostgreSQL, or point magnetar at a newer server with -database.\n"+
+			"  To move the data: back it up with the magnetar you are running now\n"+
+			"  (magnetar backup create), then restore it into the new server\n"+
+			"  (magnetar backup restore <file> -database <new server>).",
 		Describe(found), Describe(MinimumPGVersion))
 }

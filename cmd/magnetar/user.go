@@ -10,13 +10,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 )
 
 func userUsage() {
-	fmt.Fprint(os.Stderr, `Usage: pwikit user merge -from <account> -into <account> [options]
-       pwikit user prune [-apply] [options]
+	fmt.Fprint(os.Stderr, `Usage: magnetar user merge -from <account> -into <account> [options]
+       magnetar user prune [-apply] [options]
 
   merge  move everything one account holds onto another, then delete the first
   prune  list imported Wikidot accounts that no site uses, and with -apply delete them
@@ -24,7 +24,7 @@ func userUsage() {
 Name an account by its user name, by wd:<name> for the name it had on Wikidot,
 or by #<number>. Quote #<number> in a shell, or it is read as a comment:
 
-  pwikit user merge -from '#3404' -into '#121'
+  magnetar user merge -from '#3404' -into '#121'
 
 An imported account is in use while it wrote a page, revision, file or post,
 voted, holds a role, appears in a log, ticket, report or message, or is named

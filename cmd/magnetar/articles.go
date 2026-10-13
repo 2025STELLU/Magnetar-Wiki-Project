@@ -11,28 +11,28 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/account"
-	"github.com/WikitTeam/ProjectWikit/internal/admin"
-	"github.com/WikitTeam/ProjectWikit/internal/articlepage"
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/lang"
-	"github.com/WikitTeam/ProjectWikit/internal/localitem"
-	"github.com/WikitTeam/ProjectWikit/internal/mail"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/proxyheader"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
-	"github.com/WikitTeam/ProjectWikit/internal/session"
-	"github.com/WikitTeam/ProjectWikit/internal/shell"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
-	"github.com/WikitTeam/ProjectWikit/internal/token"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
-	"github.com/WikitTeam/ProjectWikit/internal/userpage"
-	"github.com/WikitTeam/ProjectWikit/internal/webapi"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidotclient"
+	"github.com/2025STELLU/MagnetarWiki/internal/account"
+	"github.com/2025STELLU/MagnetarWiki/internal/admin"
+	"github.com/2025STELLU/MagnetarWiki/internal/articlepage"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/lang"
+	"github.com/2025STELLU/MagnetarWiki/internal/localitem"
+	"github.com/2025STELLU/MagnetarWiki/internal/mail"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/proxyheader"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/session"
+	"github.com/2025STELLU/MagnetarWiki/internal/shell"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/token"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/userpage"
+	"github.com/2025STELLU/MagnetarWiki/internal/webapi"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidotclient"
 )
 
 type pageStack struct {
@@ -219,11 +219,11 @@ func claimVerifier(conn *db.DB, p *paths.Paths, file config.Wikidot, bundle *i18
 		password = strings.TrimSpace(string(raw))
 	}
 	if password == "" {
-		return nil, fmt.Errorf("wikidot.username is set in pwikit.toml but no password is: set wikidot.password, %s, or put it in %s",
+		return nil, fmt.Errorf("wikidot.username is set in magnetar.toml but no password is: set wikidot.password, %s, or put it in %s",
 			envWikidotPassword, filepath.Join(p.Secrets(), wikidotPasswordFile))
 	}
 	if file.MessageBody != "" && !strings.Contains(file.MessageBody, "{code}") {
-		return nil, errors.New("wikidot.message_body in pwikit.toml has no {code} in it")
+		return nil, errors.New("wikidot.message_body in magnetar.toml has no {code} in it")
 	}
 	client := wikidotclient.New(wikidotclient.DefaultBase, username, password)
 	verifier := account.NewLocalVerifier(conn, client, bundle, log)

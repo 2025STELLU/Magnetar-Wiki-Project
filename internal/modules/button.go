@@ -3,8 +3,8 @@ package modules
 import (
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
 )
 
 func init() { module.Register("button", renderButton) }
@@ -19,9 +19,9 @@ func renderButton(env module.Env, params map[string]string, _ string) (string, e
 	var call string
 	switch kind {
 	case "edit":
-		call = "pwikit.edit(event)"
+		call = "magnetar.edit(event)"
 	case "set-tags":
-		call = "pwikit.setTags(event, '" + jsString.Replace(params["tags"]) + "')"
+		call = "magnetar.setTags(event, '" + jsString.Replace(params["tags"]) + "')"
 	default:
 		return "", &module.Error{Message: env.Text("module-button-unknown", "type", params["type"])}
 	}

@@ -5,10 +5,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/respheader"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/respheader"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
 )
 
 // Middleware belongs inside the session resolver, since a member's own choice

@@ -50,9 +50,9 @@ func PrivateDir(root string) (string, error) {
 
 func privateBase() string {
 	if runtime.GOOS == "darwin" {
-		return "/Library/Application Support/pwikit"
+		return "/Library/Application Support/magnetar"
 	}
-	return "/var/lib/pwikit"
+	return "/var/lib/magnetar"
 }
 
 func rootOnly(dir string) error {
@@ -67,7 +67,7 @@ func rootOnly(dir string) error {
 	}
 	st, ok := info.Sys().(*syscall.Stat_t)
 	if !ok || st.Uid != 0 || info.Mode().Perm()&0o022 != 0 {
-		return fmt.Errorf("%s can be changed by accounts other than root, so root cannot keep its own copy of pwikit there", dir)
+		return fmt.Errorf("%s can be changed by accounts other than root, so root cannot keep its own copy of magnetar there", dir)
 	}
 	return nil
 }

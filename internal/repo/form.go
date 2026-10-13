@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/form"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/form"
 )
 
 const templateName = "_template"

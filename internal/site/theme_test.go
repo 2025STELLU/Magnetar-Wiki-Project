@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func TestThemeURLWithoutTheme(t *testing.T) {

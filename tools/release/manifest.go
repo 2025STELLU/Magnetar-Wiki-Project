@@ -15,8 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 func manifestCommand(args []string) error {
@@ -47,7 +47,7 @@ func manifestCommand(args []string) error {
 	if err != nil {
 		return err
 	}
-	pattern := regexp.MustCompile(`^` + regexp.QuoteMeta("pwikit-"+*version+"-") + `([a-z0-9]+-[a-z0-9]+)\.(tar\.gz|zip)$`)
+	pattern := regexp.MustCompile(`^` + regexp.QuoteMeta("magnetar-"+*version+"-") + `([a-z0-9]+-[a-z0-9]+)\.(tar\.gz|zip)$`)
 
 	m := update.Manifest{
 		Format:      update.ManifestFormat,

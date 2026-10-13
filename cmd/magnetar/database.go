@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 const stopBundledWithin = 2 * time.Minute
@@ -57,8 +57,8 @@ func handState(p *paths.Paths) {
 }
 
 const (
-	envDatabasePasswordFile = "PWIKIT_DATABASE_PASSWORD_FILE"
-	envDatabasePasswordFD   = "PWIKIT_DATABASE_PASSWORD_FD"
+	envDatabasePasswordFile = "MAGNETAR_DATABASE_PASSWORD_FILE"
+	envDatabasePasswordFD   = "MAGNETAR_DATABASE_PASSWORD_FD"
 )
 
 var handedPassword struct {
@@ -129,7 +129,7 @@ func stopBundled(server *pgbundle.Server) {
 	ctx, cancel := context.WithTimeout(context.Background(), stopBundledWithin)
 	defer cancel()
 	if err := server.Stop(ctx); err != nil {
-		slog.Default().Warn("pwikit could not stop its PostgreSQL cleanly", "err", err)
+		slog.Default().Warn("magnetar could not stop its PostgreSQL cleanly", "err", err)
 	}
 }
 

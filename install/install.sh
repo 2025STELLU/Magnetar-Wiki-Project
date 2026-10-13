@@ -6,22 +6,22 @@
 #
 # Options:
 #   --version <vX.Y.Z>  release to install; defaults to the newest
-#   --dir <directory>   where pwikit and all of its data go; defaults to the
+#   --dir <directory>   where magnetar and all of its data go; defaults to the
 #                       current directory, which has to be empty
 #   --mirror <url>      mirror to use when GitHub cannot be reached; it is also
-#                       written into pwikit.toml for later updates
+#                       written into magnetar.toml for later updates
 #   --user <account>    account that owns the directory when run as root;
 #                       defaults to the account sudo was run from
-#   --no-path           do not make pwikit runnable by name
+#   --no-path           do not make magnetar runnable by name
 set -eu
 
-releases="${PWIKIT_RELEASES_URL:-https://github.com/WikitTeam/ProjectWikit/releases}"
+releases="${MAGNETAR_RELEASES_URL:-https://github.com/WikitTeam/ProjectWikit/releases}"
 # A mirror that hands out this script writes its own address here, so the
 # script downloads from that mirror without trying GitHub first.
 served_by=""
 version=""
 dir=""
-mirror="${PWIKIT_MIRROR:-$served_by}"
+mirror="${MAGNETAR_MIRROR:-$served_by}"
 owner=""
 add_path=1
 
@@ -42,7 +42,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 mirror="${mirror%/}"
-if [ -n "$served_by" ] && [ -z "${PWIKIT_RELEASES_URL:-}" ]; then
+if [ -n "$served_by" ] && [ -z "${MAGNETAR_RELEASES_URL:-}" ]; then
   releases="$served_by"
 fi
 releases="${releases%/}"
@@ -80,7 +80,7 @@ if [ "$(id -u)" -eq 0 ]; then
   fi
   [ "$owner" != root ] || owner=""
   [ -z "$owner" ] || id "$owner" >/dev/null 2>&1 || fail "no account named $owner"
-  [ -n "$owner" ] || [ "$os" = linux ] || fail "on macOS pwikit does not run as root; run this from an ordinary account, or pass --user <account>"
+  [ -n "$owner" ] || [ "$os" = linux ] || fail "on macOS magnetar does not run as root; run this from an ordinary account, or pass --user <account>"
 else
   [ -z "$owner" ] || fail "--user only applies when running as root"
 fi
@@ -90,8 +90,8 @@ case "$dir" in
   *) dir="$PWD/$dir" ;;
 esac
 
-if [ -e "$dir/pwikit" ]; then
-  fail "$dir already holds pwikit; update it with: $dir/pwikit update"
+if [ -e "$dir/magnetar" ]; then
+  fail "$dir already holds magnetar; update it with: $dir/magnetar update"
 fi
 if [ -d "$dir" ] && [ -n "$(ls -A "$dir" 2>/dev/null)" ]; then
   fail "$dir is not empty; run this from an empty directory, or pass --dir with a new or empty one"
@@ -104,7 +104,7 @@ if [ "$(id -u)" -eq 0 ] && [ -z "$owner" ]; then
   while :; do
     mode="$(stat -c %a "$parent" 2>/dev/null || echo 755)"
     [ $(( ${mode#"${mode%?}"} & 1 )) -eq 1 ] ||
-      fail "$parent is closed to other accounts, and pwikit runs its PostgreSQL under an account of its own that could not reach $dir; install somewhere like /opt/pwikit or /srv/pwikit"
+      fail "$parent is closed to other accounts, and magnetar runs its PostgreSQL under an account of its own that could not reach $dir; install somewhere like /opt/magnetar or /srv/magnetar"
     [ "$parent" != / ] || break
     parent="$(dirname "$parent")"
   done
@@ -142,54 +142,54 @@ if [ -z "$version" ]; then
   [ -n "$version" ] && [ -n "$file" ] && [ -n "$want" ] || fail "latest.json has no package for $os-$arch"
 else
   case "$version" in v*) ;; *) version="v$version" ;; esac
-  file="pwikit-$version-$os-$arch.tar.gz"
+  file="magnetar-$version-$os-$arch.tar.gz"
   download "download/$version/SHA256SUMS" "$work/SHA256SUMS" || fail "could not fetch the checksums of $version; does that release exist?"
   want="$(awk -v f="$file" '$2 == f { print $1; exit }' "$work/SHA256SUMS")"
   [ -n "$want" ] || fail "release $version has no package for $os-$arch"
 fi
 
-say "Downloading pwikit $version for $os-$arch"
+say "Downloading magnetar $version for $os-$arch"
 download "download/$version/$file" "$work/$file" || fail "could not download $file"
 got="$(sha256 "$work/$file")"
 [ "$got" = "$want" ] || fail "$file has sha256 $got, want $want; the download is damaged or was altered"
 
 mkdir -p "$work/unpacked"
 tar -xzf "$work/$file" -C "$work/unpacked"
-top="$work/unpacked/pwikit-$version-$os-$arch"
-[ -x "$top/pwikit" ] || fail "$file does not hold pwikit"
+top="$work/unpacked/magnetar-$version-$os-$arch"
+[ -x "$top/magnetar" ] || fail "$file does not hold magnetar"
 
 mkdir -p "$dir"
-cp "$top/pwikit" "$dir/pwikit"
+cp "$top/magnetar" "$dir/magnetar"
 for doc in LICENSE NOTICE; do
   [ ! -f "$top/$doc" ] || cp "$top/$doc" "$dir/$doc"
 done
-chmod 755 "$dir/pwikit"
+chmod 755 "$dir/magnetar"
 if [ -n "$mirror" ]; then
-  "$dir/pwikit" update mirror -data-dir "$dir" "$mirror" >/dev/null 2>&1 ||
-    say "Could not write the mirror into $dir/pwikit.toml; set it later with: $dir/pwikit update mirror $mirror"
+  "$dir/magnetar" update mirror -data-dir "$dir" "$mirror" >/dev/null 2>&1 ||
+    say "Could not write the mirror into $dir/magnetar.toml; set it later with: $dir/magnetar update mirror $mirror"
 fi
 if [ -n "$owner" ]; then
   chown -R "$owner" "$dir"
 fi
-say "Installed pwikit $version into $dir"
+say "Installed magnetar $version into $dir"
 
 if [ "$add_path" -eq 1 ]; then
-  "$dir/pwikit" path install || say "pwikit is installed, but could not be made runnable by name; run $dir/pwikit path install later"
+  "$dir/magnetar" path install || say "magnetar is installed, but could not be made runnable by name; run $dir/magnetar path install later"
 fi
 
 say ""
 say "Next, create the site from that directory:"
 say "  cd $dir"
 if [ -n "$owner" ]; then
-  create='./pwikit createsite -slug main -title "My Wiki" -headline "A wiki" -domain wiki.example.org -media-domain files.example.org'
+  create='./magnetar createsite -slug main -title "My Wiki" -headline "A wiki" -domain wiki.example.org -media-domain files.example.org'
   if command -v sudo >/dev/null 2>&1; then
     say "  sudo -u $owner $create"
   else
     say "  su -s /bin/sh $owner -c '$create'"
   fi
   say "To start it at boot, run as root from that directory:"
-  say "  ./pwikit service install -user $owner"
+  say "  ./magnetar service install -user $owner"
 else
-  say "  ./pwikit createsite -slug main -title \"My Wiki\" -headline \"A wiki\" -domain wiki.example.org -media-domain files.example.org"
+  say "  ./magnetar createsite -slug main -title \"My Wiki\" -headline \"A wiki\" -domain wiki.example.org -media-domain files.example.org"
 fi
 say "Then follow the quick start: https://github.com/WikitTeam/ProjectWikit/blob/main/quickstart.md"

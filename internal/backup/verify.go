@@ -13,7 +13,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/migrate"
+	"github.com/2025STELLU/MagnetarWiki/internal/migrate"
 )
 
 type Report struct {
@@ -155,11 +155,11 @@ func checkMigrations(r *Report, m Manifest) {
 		}
 	}
 	if len(unknown) > 0 {
-		maker := "the pwikit that made it"
-		if m.Pwikit != "" {
-			maker = "pwikit " + m.Pwikit + " or a newer release"
+		maker := "the magnetar that made it"
+		if m.Magnetar != "" {
+			maker = "magnetar " + m.Magnetar + " or a newer release"
 		}
-		r.problem("the backup was made by a newer pwikit; it carries %s, which this build does not know. Restore it with %s",
+		r.problem("the backup was made by a newer magnetar; it carries %s, which this build does not know. Restore it with %s",
 			strings.Join(unknown, ", "), maker)
 	}
 	if m.PGVersion != 0 && m.PGVersion < MinimumPGVersion {

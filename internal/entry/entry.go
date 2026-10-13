@@ -1,4 +1,4 @@
-// Package entry answers how pwikit gets its listening sockets and who
+// Package entry answers how magnetar gets its listening sockets and who
 // terminates TLS.
 package entry
 
@@ -22,7 +22,7 @@ import (
 	"golang.org/x/crypto/acme"
 	"golang.org/x/crypto/acme/autocert"
 
-	"github.com/WikitTeam/ProjectWikit/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
 )
 
 type Mode string
@@ -148,7 +148,7 @@ func Serve(ctx context.Context, cfg Config) error {
 		listeners = append(listeners, tls.NewListener(secureListener, secure.TLSConfig))
 	}
 
-	log.Info("pwikit listening", "tls", string(cfg.Mode), "plain", plainListener.Addr().String(),
+	log.Info("magnetar listening", "tls", string(cfg.Mode), "plain", plainListener.Addr().String(),
 		"secure", secureAddr(listeners), "inherited", len(in))
 
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)

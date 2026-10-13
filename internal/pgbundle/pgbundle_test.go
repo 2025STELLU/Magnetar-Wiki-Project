@@ -135,7 +135,7 @@ func TestCompatibleExplainsAMismatch(t *testing.T) {
 	if err == nil {
 		t.Fatal("Compatible(16, 17) err = nil, want non-nil")
 	}
-	for _, want := range []string{"16", "17", "pwikit backup create", "pwikit backup restore", "Nothing was started"} {
+	for _, want := range []string{"16", "17", "magnetar backup create", "magnetar backup restore", "Nothing was started"} {
 		if !strings.Contains(err.Error(), want) {
 			t.Errorf("Contains(Compatible(16, 17), %q) = false, want true", want)
 		}
@@ -143,7 +143,7 @@ func TestCompatibleExplainsAMismatch(t *testing.T) {
 }
 
 func TestPlanForWindowsTakesAPasswordOverLoopback(t *testing.T) {
-	p := PlanFor("windows", layout(t), 54321, "pwikit", "secret")
+	p := PlanFor("windows", layout(t), 54321, "magnetar", "secret")
 	if p.Socket != "" {
 		t.Errorf("PlanFor(windows).Socket = %q, want none", p.Socket)
 	}
@@ -175,12 +175,12 @@ func TestPlanForUnixUsesThePeerOverASocketAndNoPort(t *testing.T) {
 }
 
 func TestHBAMapsPeersWhenGiven(t *testing.T) {
-	p := PlanFor("linux", layout(t), 54321, "pwikit", "")
-	p.Peers = []string{"root", "pwikit"}
-	if got, want := p.HBA(), "local all all peer map=pwikit\n"; got != want {
+	p := PlanFor("linux", layout(t), 54321, "magnetar", "")
+	p.Peers = []string{"root", "magnetar"}
+	if got, want := p.HBA(), "local all all peer map=magnetar\n"; got != want {
 		t.Errorf("HBA() = %q, want %q", got, want)
 	}
-	if got, want := p.Ident(), "pwikit root pwikit\npwikit pwikit pwikit\n"; got != want {
+	if got, want := p.Ident(), "magnetar root magnetar\nmagnetar magnetar magnetar\n"; got != want {
 		t.Errorf("Ident() = %q, want %q", got, want)
 	}
 }
@@ -216,7 +216,7 @@ func TestSocketDirMovesOutOfADeepStateDirectory(t *testing.T) {
 
 func TestDSNSurvivesAnAwkwardAccountName(t *testing.T) {
 	p := Plan{Host: "127.0.0.1", Port: 54321, User: `DOMAIN\Some One`, Password: "p@ss/word"}
-	cfg, err := pgx.ParseConfig(p.DSN("pwikit"))
+	cfg, err := pgx.ParseConfig(p.DSN("magnetar"))
 	if err != nil {
 		t.Fatalf("ParseConfig(DSN()) err = %v, want nil", err)
 	}
@@ -233,7 +233,7 @@ func TestDSNSurvivesAnAwkwardAccountName(t *testing.T) {
 
 func TestDSNPointsASocketPlanAtTheDirectory(t *testing.T) {
 	p := Plan{Socket: "/srv/my wiki/pgdata", Port: 54321, User: "kakushi"}
-	u, err := url.Parse(p.DSN("pwikit"))
+	u, err := url.Parse(p.DSN("magnetar"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -246,8 +246,8 @@ func TestRoleFor(t *testing.T) {
 	if got := RoleFor("linux", "kakushi"); got != "kakushi" {
 		t.Errorf("RoleFor(linux) = %q, want the account", got)
 	}
-	if got := RoleFor("windows", `DOMAIN\kakushi`); got != "pwikit" {
-		t.Errorf("RoleFor(windows) = %q, want pwikit", got)
+	if got := RoleFor("windows", `DOMAIN\kakushi`); got != "magnetar" {
+		t.Errorf("RoleFor(windows) = %q, want magnetar", got)
 	}
 }
 
@@ -268,7 +268,7 @@ func TestWriteConfThenReadPort(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(data, "postgresql.conf"), []byte("shared_buffers = 128MB"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	p := PlanFor("windows", Layout{Data: data}, 54999, "pwikit", "x")
+	p := PlanFor("windows", Layout{Data: data}, 54999, "magnetar", "x")
 	if err := WriteConf(data, p); err != nil {
 		t.Fatalf("WriteConf() err = %v, want nil", err)
 	}
@@ -310,7 +310,7 @@ func TestWriteHBAReplacesTrust(t *testing.T) {
 	if err := os.WriteFile(hba, []byte("local all all trust\nhost all all 127.0.0.1/32 trust\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if err := WriteHBA(data, PlanFor("windows", Layout{Data: data}, 54999, "pwikit", "x")); err != nil {
+	if err := WriteHBA(data, PlanFor("windows", Layout{Data: data}, 54999, "magnetar", "x")); err != nil {
 		t.Fatalf("WriteHBA() err = %v, want nil", err)
 	}
 	raw, err := os.ReadFile(hba)

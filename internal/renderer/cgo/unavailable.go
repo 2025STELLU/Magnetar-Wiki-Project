@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 var ErrRenderFailed = errors.New("cgo: built without ftml, use the sidecar renderer")

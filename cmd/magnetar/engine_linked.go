@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	ftml "github.com/WikitTeam/ProjectWikit/internal/renderer/cgo"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	ftml "github.com/2025STELLU/MagnetarWiki/internal/renderer/cgo"
 )
 
 func newRenderer(sidecarPath string) (renderer.Renderer, func(), error) {

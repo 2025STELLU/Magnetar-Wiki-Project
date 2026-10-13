@@ -9,20 +9,20 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/callbacks"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/callbacks"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
 
 	// The modules register themselves; without this nothing answers a
 	// [[module]] and every page carrying one draws an error block instead.
-	_ "github.com/WikitTeam/ProjectWikit/internal/modules"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
-	"github.com/WikitTeam/ProjectWikit/internal/printuser"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	_ "github.com/2025STELLU/MagnetarWiki/internal/modules"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/printuser"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 type Repository struct {

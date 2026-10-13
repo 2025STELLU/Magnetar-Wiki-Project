@@ -10,7 +10,7 @@ import (
 
 func writeConfig(t *testing.T, body string) string {
 	t.Helper()
-	path := filepath.Join(t.TempDir(), "pwikit.toml")
+	path := filepath.Join(t.TempDir(), "magnetar.toml")
 	if err := os.WriteFile(path, []byte(body), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -18,7 +18,7 @@ func writeConfig(t *testing.T, body string) string {
 }
 
 func TestLoadMissingFileIsEmpty(t *testing.T) {
-	got, err := Load(filepath.Join(t.TempDir(), "pwikit.toml"))
+	got, err := Load(filepath.Join(t.TempDir(), "magnetar.toml"))
 	if err != nil {
 		t.Fatalf("Load(missing) err = %v, want nil", err)
 	}
@@ -109,7 +109,7 @@ func TestWriteTemplateLeavesAnExistingFileAlone(t *testing.T) {
 }
 
 func TestWriteTemplateCreatesAPrivateFile(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "pwikit.toml")
+	path := filepath.Join(t.TempDir(), "magnetar.toml")
 	wrote, err := WriteTemplate(path)
 	if err != nil || !wrote {
 		t.Fatalf("WriteTemplate(missing) = %v, %v, want true, nil", wrote, err)

@@ -11,7 +11,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/version"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
 )
 
 //go:embed sql/*.sql
@@ -28,7 +28,7 @@ const (
 
 	lockKey = int64(0x7077696B_69746D67)
 
-	versionTable = "pwikit_migration"
+	versionTable = "magnetar_migration"
 
 	declarationPrefix = "-- compat: "
 	compatible        = "compatible"
@@ -65,11 +65,11 @@ type NewerSchemaError struct {
 }
 
 func (e *NewerSchemaError) Error() string {
-	by := "a newer pwikit"
+	by := "a newer magnetar"
 	if e.AppliedBy != "" {
-		by = "pwikit " + e.AppliedBy
+		by = "magnetar " + e.AppliedBy
 	}
-	return fmt.Sprintf("the database was upgraded by %s, which applied %s; this pwikit (%s) cannot run on that schema. "+
+	return fmt.Sprintf("the database was upgraded by %s, which applied %s; this magnetar (%s) cannot run on that schema. "+
 		"Run %s or a newer release, or restore a backup taken before the upgrade",
 		by, strings.Join(e.Migrations, ", "), version.String(), by)
 }
@@ -201,7 +201,7 @@ func run(ctx context.Context, conn *pgx.Conn) (Result, error) {
 	var out Result
 	if len(state.Unknown) > 0 {
 		if len(state.Pending) > 0 {
-			return Result{}, fmt.Errorf("the database holds %s from a newer pwikit while this build still has %s to apply; run the newer pwikit",
+			return Result{}, fmt.Errorf("the database holds %s from a newer magnetar while this build still has %s to apply; run the newer magnetar",
 				strings.Join(state.Unknown, ", "), strings.Join(state.Pending, ", "))
 		}
 		out.Newer = state.Unknown
@@ -391,7 +391,7 @@ SELECT coalesce(max(name), '') FROM public.django_migrations WHERE app = 'web'`)
 	if reached == "" || reached >= BaselineSchema {
 		return nil
 	}
-	return fmt.Errorf("this database stopped at %q and pwikit needs the schema of %q, so nothing was changed", reached, BaselineSchema)
+	return fmt.Errorf("this database stopped at %q and magnetar needs the schema of %q, so nothing was changed", reached, BaselineSchema)
 }
 
 func tableExists(ctx context.Context, conn *pgx.Conn, name string) (bool, error) {

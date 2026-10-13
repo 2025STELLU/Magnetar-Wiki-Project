@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 func TestBacklinksKeepsIncludesApartFromLinks(t *testing.T) {

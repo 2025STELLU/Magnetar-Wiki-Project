@@ -12,9 +12,9 @@ import (
 	"strconv"
 	"syscall"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 // The bundled PostgreSQL lets in only the account that owns the data

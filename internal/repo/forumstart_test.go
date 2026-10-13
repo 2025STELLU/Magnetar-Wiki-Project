@@ -13,9 +13,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/callbacks"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/callbacks"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
 )
 
 var update = flag.Bool("update", false, "rewrite the golden file and the corpus the oracle reads")

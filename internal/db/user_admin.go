@@ -40,7 +40,7 @@ const adminUserColumns = `id, type, username, coalesce(wikidot_username, ''), co
 
 const adminUserBanned = `(
 	(type <> 'wikidot' AND CASE WHEN inactive_until IS NULL THEN NOT is_active ELSE inactive_until > now() END)
-	OR EXISTS (SELECT 1 FROM pwikit_member_sanction s
+	OR EXISTS (SELECT 1 FROM magnetar_member_sanction s
 		WHERE s.site_id = $4 AND s.user_id = web_user.id AND s.kind = 'ban' AND (s.until IS NULL OR s.until > now())))`
 
 const adminUserWhere = `

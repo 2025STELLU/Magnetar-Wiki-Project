@@ -286,7 +286,7 @@ func writePair(t *testing.T, certFile, keyFile string, serial int64) int64 {
 	}
 	template := &x509.Certificate{
 		SerialNumber:          big.NewInt(serial),
-		Subject:               pkix.Name{CommonName: "pwikit test"},
+		Subject:               pkix.Name{CommonName: "magnetar test"},
 		NotBefore:             time.Now().Add(-time.Hour),
 		NotAfter:              time.Now().Add(time.Hour),
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,

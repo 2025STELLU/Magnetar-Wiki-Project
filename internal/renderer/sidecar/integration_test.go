@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 type stubHost struct {

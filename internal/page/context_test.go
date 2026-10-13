@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func article(title string) *db.Article {

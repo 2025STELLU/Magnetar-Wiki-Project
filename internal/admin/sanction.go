@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/auth"
+	"github.com/2025STELLU/MagnetarWiki/internal/auth"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 // Every sanction a site can put on a member, in the order the screen shows

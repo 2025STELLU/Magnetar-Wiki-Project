@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/wikinum"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikinum"
 )
 
 func init() { module.Register("tagcloud", renderTagCloud) }

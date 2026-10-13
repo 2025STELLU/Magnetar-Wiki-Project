@@ -26,7 +26,7 @@ func scratchSite(t *testing.T, d *DB) int64 {
 			`DELETE FROM web_role_permissions WHERE role_id IN (SELECT id FROM web_role WHERE site_id = $1)`,
 			`DELETE FROM web_role WHERE site_id = $1`,
 			`DELETE FROM web_settings WHERE site_id = $1`,
-			`DELETE FROM pwikit_admin_log WHERE site_id = $1`,
+			`DELETE FROM magnetar_admin_log WHERE site_id = $1`,
 			`DELETE FROM web_userreport WHERE site_id = $1`,
 			`DELETE FROM web_site WHERE id = $1`,
 		} {

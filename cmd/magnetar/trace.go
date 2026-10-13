@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 type tracer struct {

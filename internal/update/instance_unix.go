@@ -10,7 +10,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
 )
 
 func dirIdentity(root string) (uint64, uint64, error) {
@@ -62,12 +62,12 @@ func writePrivate(path string, data []byte) error {
 func (in Instance) Check() error {
 	dev, ino, err := dirIdentity(in.Root)
 	if os.IsNotExist(err) {
-		return fmt.Errorf("the data directory %s no longer exists. If pwikit was moved, run pwikit service uninstall, "+
-			"then sudo pwikit service install from its new location", in.Root)
+		return fmt.Errorf("the data directory %s no longer exists. If magnetar was moved, run magnetar service uninstall, "+
+			"then sudo magnetar service install from its new location", in.Root)
 	}
 	if err != nil || dev != in.Dev || ino != in.Ino {
-		return fmt.Errorf("%s is no longer the directory pwikit was installed in, so pwikit will not run as root from it. "+
-			"If pwikit was moved, run pwikit service uninstall, then sudo pwikit service install from its new location; "+
+		return fmt.Errorf("%s is no longer the directory magnetar was installed in, so magnetar will not run as root from it. "+
+			"If magnetar was moved, run magnetar service uninstall, then sudo magnetar service install from its new location; "+
 			"otherwise find out who replaced the directory", in.Root)
 	}
 	return nil

@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 func grantedWith(names ...string) perms.Set {

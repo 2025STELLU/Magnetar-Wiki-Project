@@ -75,7 +75,7 @@ func checkAccess(root string, u *user.User) error {
 			(slices.Contains(groups, strconv.Itoa(int(st.Gid))) && mode&0o010 != 0)
 		if !reachable {
 			return fmt.Errorf("the account %s cannot reach %s, because %s is closed to it.\n"+
-				"  Move the pwikit directory somewhere it can reach, such as /opt/pwikit or its home directory", u.Username, root, dir)
+				"  Move the magnetar directory somewhere it can reach, such as /opt/magnetar or its home directory", u.Username, root, dir)
 		}
 		if dir == filepath.Dir(dir) {
 			return nil

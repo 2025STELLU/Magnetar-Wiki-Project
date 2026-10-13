@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func linkEnv(t *testing.T) (*Env, *db.Site) {

@@ -3,8 +3,8 @@ package article
 import (
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 const (

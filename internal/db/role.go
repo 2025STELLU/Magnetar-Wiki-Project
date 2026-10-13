@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
 )
 
 var qRolesByUser = register("RolesByUser", `

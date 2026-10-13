@@ -9,17 +9,17 @@ import (
 	"os"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/article"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/entry"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
-	"github.com/WikitTeam/ProjectWikit/internal/version"
+	"github.com/2025STELLU/MagnetarWiki/internal/article"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/entry"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
 )
 
 // Set by the official image only. A marker file would also catch a whole
 // machine run inside a container, which updates itself like any other.
-const envContainer = "PWIKIT_CONTAINER"
+const envContainer = "MAGNETAR_CONTAINER"
 
 func inContainer() bool {
 	return os.Getenv(envContainer) != ""

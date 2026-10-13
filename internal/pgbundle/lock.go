@@ -23,12 +23,12 @@ type HeldError struct {
 }
 
 func (e *HeldError) Error() string {
-	who := "another pwikit"
+	who := "another magnetar"
 	switch e.Owner {
 	case OwnerServe:
-		who = "pwikit serve"
+		who = "magnetar serve"
 	case OwnerCommand:
-		who = "another pwikit command"
+		who = "another magnetar command"
 	}
 	if e.PID > 0 {
 		who += fmt.Sprintf(", process %d,", e.PID)

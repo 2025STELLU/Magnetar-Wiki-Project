@@ -3,7 +3,7 @@ package module
 import (
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/wikijson"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
 type API func(env Env, params map[string]string) (wikijson.Object, error)

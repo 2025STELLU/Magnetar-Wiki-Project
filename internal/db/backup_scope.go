@@ -71,7 +71,7 @@ const peopleQuery = scopeCTE + `,
        UNION SELECT reviewed_by_id FROM web_userreport WHERE site_id = (SELECT id FROM s)
        UNION SELECT author_id FROM web_userticket WHERE site_id = (SELECT id FROM s)
        UNION SELECT reviewed_by_id FROM web_userticket WHERE site_id = (SELECT id FROM s)
-       UNION SELECT user_id FROM pwikit_admin_log WHERE site_id = (SELECT id FROM s)
+       UNION SELECT user_id FROM magnetar_admin_log WHERE site_id = (SELECT id FROM s)
      )
 SELECT id FROM who WHERE id IS NOT NULL`
 
@@ -122,9 +122,9 @@ var rules = map[string]rule{
 	"web_invitelink":   {owned, `site_id = (SELECT id FROM s)`, ""},
 	"web_userreport":   {owned, `site_id = (SELECT id FROM s)`, ""},
 	"web_userticket":   {owned, `site_id = (SELECT id FROM s)`, ""},
-	"pwikit_admin_log": {owned, `site_id = (SELECT id FROM s)`, ""},
+	"magnetar_admin_log": {owned, `site_id = (SELECT id FROM s)`, ""},
 
-	"pwikit_member_sanction": {owned, `site_id = (SELECT id FROM s)`, ""},
+	"magnetar_member_sanction": {owned, `site_id = (SELECT id FROM s)`, ""},
 
 	// A subscription can hang off an article or off a forum thread, and the
 	// thread need not belong to an article.
@@ -146,10 +146,10 @@ var rules = map[string]rule{
 
 	"web_directmessage":                         {left, "", "private mail belongs to the two people, not to a site"},
 	"web_directmessageblock":                    {left, "", "a block follows the person across every site"},
-	"pwikit_message_clear":                      {left, "", "what someone hid from their own inbox follows them across every site"},
+	"magnetar_message_clear":                      {left, "", "what someone hid from their own inbox follows them across every site"},
 	"web_usernotification":                      {left, "", "a notice can point at a page on a site that is staying"},
 	"web_usernotificationmapping":               {left, "", "it hangs off a notice that is staying"},
-	"pwikit_user_address":                       {left, "", "sign-in addresses are what the operator watches, not site content"},
+	"magnetar_user_address":                       {left, "", "sign-in addresses are what the operator watches, not site content"},
 	"web_usedtoken":                             {left, "", "a spent token is worth nothing anywhere"},
 	"web_actionlogentry":                        {left, "", "nothing writes it any more"},
 	"django_session":                            {left, "", "a session belongs to the server it was opened on"},
@@ -159,8 +159,8 @@ var rules = map[string]rule{
 	"web_user_groups":                           {left, "", "roles took over from groups"},
 	"web_user_user_permissions":                 {left, "", "roles took over from per-account rights"},
 	"dynamic_preferences_globalpreferencemodel": {left, "", "it belongs to the instance"},
-	"pwikit_update":                             {left, "", "it tracks the release the instance runs, not a site"},
-	"pwikit_claim_code":                         {left, "", "a pending claim code is spent within minutes and tied to no site"},
+	"magnetar_update":                             {left, "", "it tracks the release the instance runs, not a site"},
+	"magnetar_claim_code":                         {left, "", "a pending claim code is spent within minutes and tied to no site"},
 }
 
 // An empty return means the table does not travel.

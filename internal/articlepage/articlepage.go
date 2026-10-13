@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/csrf"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
-	"github.com/WikitTeam/ProjectWikit/internal/shell"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/shell"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
 )
 
 type Deps struct {

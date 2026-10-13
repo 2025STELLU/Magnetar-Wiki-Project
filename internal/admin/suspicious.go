@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/WikitTeam/ProjectWikit/internal/csrf"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 )
 
 const suspiciousSlug = "suspicious"

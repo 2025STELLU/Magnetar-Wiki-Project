@@ -5,7 +5,7 @@ package main
 import (
 	"errors"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 func newRenderer(sidecarPath string) (renderer.Renderer, func(), error) {

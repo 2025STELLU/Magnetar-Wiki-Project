@@ -23,7 +23,7 @@ var perSiteTables = []string{
 	"web_invitelink",
 	"web_userreport",
 	"web_userticket",
-	"pwikit_admin_log",
+	"magnetar_admin_log",
 	"web_externallink",
 }
 
@@ -79,7 +79,7 @@ func TestEveryPerSiteQueryNamesTheSite(t *testing.T) {
 		t.Errorf("query %q is in siteScopePending but no longer needs to be, want it removed", name)
 	}
 
-	if os.Getenv("PWIKIT_SITE_SCOPE_LIST") != "" {
+	if os.Getenv("MAGNETAR_SITE_SCOPE_LIST") != "" {
 		var left []string
 		for _, q := range queries {
 			if pending[q.name] {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
 	"github.com/jackc/pgx/v5"
 )
 

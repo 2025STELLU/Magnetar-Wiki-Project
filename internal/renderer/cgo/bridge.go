@@ -13,7 +13,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
 // Callers owe the borrowed string a runtime.KeepAlive: nothing else holds it
@@ -56,8 +56,8 @@ func host(h C.uintptr_t) renderer.Callbacks {
 	return cgo.Handle(h).Value().(renderer.Callbacks)
 }
 
-//export pwikitModuleHasBody
-func pwikitModuleHasBody(h C.uintptr_t, name C.FtmlStr) C.int {
+//export magnetarModuleHasBody
+func magnetarModuleHasBody(h C.uintptr_t, name C.FtmlStr) C.int {
 	ok, err := host(h).ModuleHasBody(goString(name))
 	if err != nil || !ok {
 		return 0
@@ -65,8 +65,8 @@ func pwikitModuleHasBody(h C.uintptr_t, name C.FtmlStr) C.int {
 	return 1
 }
 
-//export pwikitModuleIsInline
-func pwikitModuleIsInline(h C.uintptr_t, name C.FtmlStr) C.int {
+//export magnetarModuleIsInline
+func magnetarModuleIsInline(h C.uintptr_t, name C.FtmlStr) C.int {
 	ok, err := host(h).ModuleIsInline(goString(name))
 	if err != nil || !ok {
 		return 0
@@ -74,8 +74,8 @@ func pwikitModuleIsInline(h C.uintptr_t, name C.FtmlStr) C.int {
 	return 1
 }
 
-//export pwikitRenderModule
-func pwikitRenderModule(h C.uintptr_t, name C.FtmlStr, params *C.FtmlKeyValue, count C.size_t, body C.FtmlStr, sink *C.FtmlStringSink) {
+//export magnetarRenderModule
+func magnetarRenderModule(h C.uintptr_t, name C.FtmlStr, params *C.FtmlKeyValue, count C.size_t, body C.FtmlStr, sink *C.FtmlStringSink) {
 	values := make(map[string]string, int(count))
 	if params != nil && count > 0 {
 		for _, kv := range unsafe.Slice(params, int(count)) {
@@ -90,8 +90,8 @@ func pwikitRenderModule(h C.uintptr_t, name C.FtmlStr, params *C.FtmlKeyValue, c
 	runtime.KeepAlive(out)
 }
 
-//export pwikitRenderUser
-func pwikitRenderUser(h C.uintptr_t, user C.FtmlStr, avatar C.int, sink *C.FtmlStringSink) {
+//export magnetarRenderUser
+func magnetarRenderUser(h C.uintptr_t, user C.FtmlStr, avatar C.int, sink *C.FtmlStringSink) {
 	out, err := host(h).RenderUser(goString(user), avatar != 0)
 	if err != nil {
 		return
@@ -100,8 +100,8 @@ func pwikitRenderUser(h C.uintptr_t, user C.FtmlStr, avatar C.int, sink *C.FtmlS
 	runtime.KeepAlive(out)
 }
 
-//export pwikitGetI18nMessage
-func pwikitGetI18nMessage(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSink) {
+//export magnetarGetI18nMessage
+func magnetarGetI18nMessage(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSink) {
 	out, err := host(h).GetI18nMessage(goString(id))
 	if err != nil {
 		return
@@ -110,8 +110,8 @@ func pwikitGetI18nMessage(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSink) {
 	runtime.KeepAlive(out)
 }
 
-//export pwikitGetHTMLInjectedCode
-func pwikitGetHTMLInjectedCode(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSink) {
+//export magnetarGetHTMLInjectedCode
+func magnetarGetHTMLInjectedCode(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSink) {
 	out, err := host(h).GetHTMLInjectedCode(goString(id))
 	if err != nil {
 		return
@@ -120,8 +120,8 @@ func pwikitGetHTMLInjectedCode(h C.uintptr_t, id C.FtmlStr, sink *C.FtmlStringSi
 	runtime.KeepAlive(out)
 }
 
-//export pwikitGetPageInfo
-func pwikitGetPageInfo(h C.uintptr_t, refs *C.FtmlStr, count C.size_t, sink *C.FtmlPageInfoSink) {
+//export magnetarGetPageInfo
+func magnetarGetPageInfo(h C.uintptr_t, refs *C.FtmlStr, count C.size_t, sink *C.FtmlPageInfoSink) {
 	names := make([]string, 0, int(count))
 	if refs != nil && count > 0 {
 		for _, ref := range unsafe.Slice(refs, int(count)) {
@@ -149,8 +149,8 @@ func pwikitGetPageInfo(h C.uintptr_t, refs *C.FtmlStr, count C.size_t, sink *C.F
 	}
 }
 
-//export pwikitEvaluateExpression
-func pwikitEvaluateExpression(h C.uintptr_t, expr C.FtmlStr, out *C.FtmlExpressionResult, sink *C.FtmlStringSink) {
+//export magnetarEvaluateExpression
+func magnetarEvaluateExpression(h C.uintptr_t, expr C.FtmlStr, out *C.FtmlExpressionResult, sink *C.FtmlStringSink) {
 	result, err := host(h).EvaluateExpression(goString(expr))
 	if err != nil {
 		return
@@ -174,8 +174,8 @@ func pwikitEvaluateExpression(h C.uintptr_t, expr C.FtmlStr, out *C.FtmlExpressi
 	}
 }
 
-//export pwikitNormalizePageName
-func pwikitNormalizePageName(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStringSink) {
+//export magnetarNormalizePageName
+func magnetarNormalizePageName(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStringSink) {
 	out, err := host(h).NormalizePageName(goString(fullName))
 	if err != nil {
 		return
@@ -184,8 +184,8 @@ func pwikitNormalizePageName(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStri
 	runtime.KeepAlive(out)
 }
 
-//export pwikitIncludePages
-func pwikitIncludePages(h C.uintptr_t, refs *C.FtmlIncludeRef, count C.size_t, sink *C.FtmlFetchedPageSink) {
+//export magnetarIncludePages
+func magnetarIncludePages(h C.uintptr_t, refs *C.FtmlIncludeRef, count C.size_t, sink *C.FtmlFetchedPageSink) {
 	includes := make([]renderer.IncludeRef, 0, int(count))
 	if refs != nil && count > 0 {
 		for _, ref := range unsafe.Slice(refs, int(count)) {
@@ -218,8 +218,8 @@ func pwikitIncludePages(h C.uintptr_t, refs *C.FtmlIncludeRef, count C.size_t, s
 	}
 }
 
-//export pwikitNoSuchInclude
-func pwikitNoSuchInclude(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStringSink) {
+//export magnetarNoSuchInclude
+func magnetarNoSuchInclude(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStringSink) {
 	out, err := host(h).NoSuchInclude(goString(fullName))
 	if err != nil {
 		return
@@ -228,8 +228,8 @@ func pwikitNoSuchInclude(h C.uintptr_t, fullName C.FtmlStr, sink *C.FtmlStringSi
 	runtime.KeepAlive(out)
 }
 
-//export pwikitNextIncludeLevel
-func pwikitNextIncludeLevel(h C.uintptr_t) C.int {
+//export magnetarNextIncludeLevel
+func magnetarNextIncludeLevel(h C.uintptr_t) C.int {
 	ok, err := host(h).NextIncludeLevel()
 	if err != nil || !ok {
 		return 0

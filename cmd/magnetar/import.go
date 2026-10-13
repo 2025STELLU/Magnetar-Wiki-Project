@@ -11,16 +11,16 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/archive"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/archive"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
 )
 
 func importCommand(args []string) error {
 	flags := flag.NewFlagSet("import", flag.ContinueOnError)
 	flags.Usage = func() {
-		fmt.Fprint(flags.Output(), `Usage: pwikit import [directory] [options]
+		fmt.Fprint(flags.Output(), `Usage: magnetar import [directory] [options]
 
 Imports an unpacked wikitCLI backup: a site directory, or the directory holding
 several of them next to _users. Without a directory, archive/ in the state

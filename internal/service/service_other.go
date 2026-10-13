@@ -7,8 +7,8 @@ import (
 	"os/user"
 )
 
-var errUnsupported = errors.New("pwikit can only register itself on Linux with systemd, macOS and Windows.\n" +
-	"  Have your init system run the command that pwikit service print shows")
+var errUnsupported = errors.New("magnetar can only register itself on Linux with systemd, macOS and Windows.\n" +
+	"  Have your init system run the command that magnetar service print shows")
 
 func Preview(s Spec) (string, error) {
 	return s.Systemd(), nil

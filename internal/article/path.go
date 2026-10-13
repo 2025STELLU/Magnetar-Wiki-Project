@@ -8,8 +8,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 )
 
 const defaultHomePage = "main"

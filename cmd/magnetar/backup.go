@@ -11,8 +11,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/backup"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/backup"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
 )
 
 func backupCommand(args []string) error {
@@ -23,7 +23,7 @@ func backupCommand(args []string) error {
 	switch sub {
 	case "create", "list", "verify", "restore":
 	default:
-		fmt.Fprint(os.Stderr, `Usage: pwikit backup <create|list|verify|restore> [options]
+		fmt.Fprint(os.Stderr, `Usage: magnetar backup <create|list|verify|restore> [options]
 
   create   write a backup of the database and the uploaded files
   list     show the backups in the backup directory
@@ -145,7 +145,7 @@ func verifyBackup(name string) error {
 func printReport(name string, report backup.Report) {
 	m := report.Manifest
 	fmt.Printf("%s\n", name)
-	fmt.Printf("  made      %s by pwikit %s\n", m.CreatedAt.Format(time.RFC3339), m.Pwikit)
+	fmt.Printf("  made      %s by magnetar %s\n", m.CreatedAt.Format(time.RFC3339), m.Magnetar)
 	fmt.Printf("  postgres  %s\n", backup.Describe(m.PGVersion))
 	fmt.Printf("  holds     %d tables, %d rows, %d files\n", len(m.Tables), m.TotalRows(), m.Files.Count)
 	for _, note := range report.Notes {
@@ -212,7 +212,7 @@ func listBackups(dir string) error {
 		return nil
 	}
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(w, "FILE\tMADE\tPWIKIT\tPOSTGRES\tROWS\tFILES\tSIZE")
+	fmt.Fprintln(w, "FILE\tMADE\tMAGNETAR\tPOSTGRES\tROWS\tFILES\tSIZE")
 	for _, one := range found {
 		if one.Problem != "" {
 			fmt.Fprintf(w, "%s\tUNREADABLE\t\t\t\t\t%s\n", filepath.Base(one.Path), size(one.Bytes))
@@ -225,7 +225,7 @@ func listBackups(dir string) error {
 		}
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%d\t%s\t%s\n",
 			filepath.Base(one.Path), m.CreatedAt.Format("2006-01-02 15:04"),
-			m.Pwikit, backup.Describe(m.PGVersion), m.TotalRows(), files, size(one.Bytes))
+			m.Magnetar, backup.Describe(m.PGVersion), m.TotalRows(), files, size(one.Bytes))
 	}
 	if err := w.Flush(); err != nil {
 		return err

@@ -24,7 +24,7 @@ func mustWrite(t *testing.T, w *Writer, line string) {
 }
 
 func TestWriteAppendsToWhatIsThere(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "pwikit.log")
+	path := filepath.Join(t.TempDir(), "magnetar.log")
 	if err := os.WriteFile(path, []byte("old\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func TestWriteAppendsToWhatIsThere(t *testing.T) {
 }
 
 func TestWriteRotatesPastTheLimit(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "pwikit.log")
+	path := filepath.Join(t.TempDir(), "magnetar.log")
 	w, err := Open(path, 10, 3)
 	if err != nil {
 		t.Fatalf("Open() err = %v, want nil", err)
@@ -49,16 +49,16 @@ func TestWriteRotatesPastTheLimit(t *testing.T) {
 	mustWrite(t, w, "bbbbbbbb\n")
 	w.Close()
 	if got := readFile(t, path); got != "bbbbbbbb\n" {
-		t.Errorf("pwikit.log = %q, want %q", got, "bbbbbbbb\n")
+		t.Errorf("magnetar.log = %q, want %q", got, "bbbbbbbb\n")
 	}
 	if got := readFile(t, path+".1"); got != "aaaaaaaa\n" {
-		t.Errorf("pwikit.log.1 = %q, want %q", got, "aaaaaaaa\n")
+		t.Errorf("magnetar.log.1 = %q, want %q", got, "aaaaaaaa\n")
 	}
 }
 
 func TestWriteKeepsOnlySoManyOldFiles(t *testing.T) {
 	dir := t.TempDir()
-	path := filepath.Join(dir, "pwikit.log")
+	path := filepath.Join(dir, "magnetar.log")
 	w, err := Open(path, 4, 2)
 	if err != nil {
 		t.Fatalf("Open() err = %v, want nil", err)
@@ -75,16 +75,16 @@ func TestWriteKeepsOnlySoManyOldFiles(t *testing.T) {
 	for _, e := range entries {
 		names = append(names, e.Name())
 	}
-	if got, want := strings.Join(names, ","), "pwikit.log,pwikit.log.1,pwikit.log.2"; got != want {
+	if got, want := strings.Join(names, ","), "magnetar.log,magnetar.log.1,magnetar.log.2"; got != want {
 		t.Errorf("files = %s, want %s", got, want)
 	}
 	if got := readFile(t, path+".2"); got != "2222" {
-		t.Errorf("pwikit.log.2 = %q, want %q", got, "2222")
+		t.Errorf("magnetar.log.2 = %q, want %q", got, "2222")
 	}
 }
 
 func TestWriteLetsOneOversizedLineThrough(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "pwikit.log")
+	path := filepath.Join(t.TempDir(), "magnetar.log")
 	w, err := Open(path, 4, 2)
 	if err != nil {
 		t.Fatalf("Open() err = %v, want nil", err)
@@ -92,12 +92,12 @@ func TestWriteLetsOneOversizedLineThrough(t *testing.T) {
 	mustWrite(t, w, "a line longer than the limit\n")
 	w.Close()
 	if _, err := os.Stat(path + ".1"); !os.IsNotExist(err) {
-		t.Errorf("Stat(pwikit.log.1) err = %v, want not exist", err)
+		t.Errorf("Stat(magnetar.log.1) err = %v, want not exist", err)
 	}
 }
 
 func TestWriteAfterCloseFails(t *testing.T) {
-	w, err := Open(filepath.Join(t.TempDir(), "pwikit.log"), 1<<20, 2)
+	w, err := Open(filepath.Join(t.TempDir(), "magnetar.log"), 1<<20, 2)
 	if err != nil {
 		t.Fatalf("Open() err = %v, want nil", err)
 	}

@@ -1,7 +1,7 @@
 package roles
 
 import (
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
 )
 
 // FileIcons reads role icons out of the media root. The icon column holds a

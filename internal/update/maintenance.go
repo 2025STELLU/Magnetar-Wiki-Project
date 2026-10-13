@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/shell"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/shell"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
 )
 
 func MaintenanceHandler(bundle *i18n.Bundle, assets *static.Assets, files http.Handler) http.Handler {

@@ -12,11 +12,11 @@ import (
 const addressQuiet = time.Hour
 
 var qSeenAddress = register("SeenAddress", `
-INSERT INTO pwikit_user_address (user_id, address, first_seen, last_seen)
+INSERT INTO magnetar_user_address (user_id, address, first_seen, last_seen)
 VALUES ($1, $2, $3, $3)
 ON CONFLICT (user_id, address) DO UPDATE
-SET last_seen = EXCLUDED.last_seen, hits = pwikit_user_address.hits + 1
-WHERE pwikit_user_address.last_seen < EXCLUDED.last_seen - $4::interval`)
+SET last_seen = EXCLUDED.last_seen, hits = magnetar_user_address.hits + 1
+WHERE magnetar_user_address.last_seen < EXCLUDED.last_seen - $4::interval`)
 
 func (d *DB) SeenAddress(ctx context.Context, userID int64, address *netip.Addr, at time.Time) error {
 	if address == nil || !address.IsValid() {
@@ -47,7 +47,7 @@ type AdminNote struct {
 }
 
 var qWriteAdminNote = register("WriteAdminNote", `
-INSERT INTO pwikit_admin_log (user_id, stale_name, action, screen, target, label, created_at, site_id)
+INSERT INTO magnetar_admin_log (user_id, stale_name, action, screen, target, label, created_at, site_id)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`)
 
 func (d *DB) WriteAdminNote(ctx context.Context, n AdminNote) error {
@@ -72,14 +72,14 @@ type AdminNoteRow struct {
 
 var qAdminNotes = register("AdminNotes", `
 SELECT l.id, coalesce(u.username, ''), l.stale_name, l.action, l.screen, l.target, l.label, l.created_at
-FROM pwikit_admin_log l
+FROM magnetar_admin_log l
 LEFT JOIN web_user u ON u.id = l.user_id
 WHERE ($1 = '' OR l.screen = $1) AND l.site_id = $4
 ORDER BY l.created_at DESC, l.id DESC
 LIMIT $2 OFFSET $3`)
 
 var qAdminNoteScreens = register("AdminNoteScreens", `
-SELECT DISTINCT screen FROM pwikit_admin_log WHERE site_id = $1 ORDER BY 1`)
+SELECT DISTINCT screen FROM magnetar_admin_log WHERE site_id = $1 ORDER BY 1`)
 
 func (d *DB) AdminNotes(ctx context.Context, siteID int64, screen string, limit, offset int) ([]AdminNoteRow, error) {
 	rows, err := d.pool.Query(ctx, qAdminNotes, screen, limit, offset, siteID)
@@ -118,10 +118,10 @@ func (d *DB) AdminNoteScreens(ctx context.Context, siteID int64) ([]string, erro
 	return out, rows.Err()
 }
 
-var qClearAddresses = register("ClearAddresses", `DELETE FROM pwikit_user_address`)
+var qClearAddresses = register("ClearAddresses", `DELETE FROM magnetar_user_address`)
 
 var qClearUserAddresses = register("ClearUserAddresses", `
-DELETE FROM pwikit_user_address WHERE user_id = $1`)
+DELETE FROM magnetar_user_address WHERE user_id = $1`)
 
 func (d *DB) ClearAddresses(ctx context.Context, userID *int64) (int64, error) {
 	sql, args := qClearAddresses, []any{}
@@ -135,7 +135,7 @@ func (d *DB) ClearAddresses(ctx context.Context, userID *int64) (int64, error) {
 	return tag.RowsAffected(), nil
 }
 
-var qAddressCount = register("AddressCount", `SELECT count(*) FROM pwikit_user_address`)
+var qAddressCount = register("AddressCount", `SELECT count(*) FROM magnetar_user_address`)
 
 func (d *DB) AddressCount(ctx context.Context) (int, error) {
 	var total int
@@ -154,7 +154,7 @@ var qLastSeen = register("LastSeen", `
 SELECT u.last_login, coalesce(host(a.address), '')
 FROM web_user u
 LEFT JOIN LATERAL (
-  SELECT address FROM pwikit_user_address WHERE user_id = u.id ORDER BY last_seen DESC LIMIT 1
+  SELECT address FROM magnetar_user_address WHERE user_id = u.id ORDER BY last_seen DESC LIMIT 1
 ) a ON true
 WHERE u.id = $1`)
 

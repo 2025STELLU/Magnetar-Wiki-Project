@@ -16,7 +16,7 @@ type MemberSanction struct {
 
 var qActiveSanctions = register("ActiveSanctions", `
 SELECT kind
-FROM pwikit_member_sanction
+FROM magnetar_member_sanction
 WHERE site_id = $1 AND user_id = $2 AND (until IS NULL OR until > $3)`)
 
 func (d *DB) ActiveSanctions(ctx context.Context, siteID, userID int64, now time.Time) ([]string, error) {
@@ -39,7 +39,7 @@ func (d *DB) ActiveSanctions(ctx context.Context, siteID, userID int64, now time
 
 var qMemberSanctions = register("MemberSanctions", `
 SELECT kind, until, reason, set_by_id, set_at
-FROM pwikit_member_sanction
+FROM magnetar_member_sanction
 WHERE site_id = $1 AND user_id = $2
 ORDER BY kind`)
 
@@ -62,7 +62,7 @@ func (d *DB) MemberSanctions(ctx context.Context, siteID, userID int64) ([]Membe
 }
 
 var qSetSanction = register("SetSanction", `
-INSERT INTO pwikit_member_sanction (site_id, user_id, kind, until, reason, set_by_id, set_at)
+INSERT INTO magnetar_member_sanction (site_id, user_id, kind, until, reason, set_by_id, set_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7)
 ON CONFLICT (site_id, user_id, kind) DO UPDATE
 SET until = EXCLUDED.until, reason = EXCLUDED.reason,
@@ -78,7 +78,7 @@ func (d *DB) SetSanction(ctx context.Context, siteID, userID int64, kind string,
 }
 
 var qClearSanction = register("ClearSanction", `
-DELETE FROM pwikit_member_sanction WHERE site_id = $1 AND user_id = $2 AND kind = $3`)
+DELETE FROM magnetar_member_sanction WHERE site_id = $1 AND user_id = $2 AND kind = $3`)
 
 func (d *DB) ClearSanction(ctx context.Context, siteID, userID int64, kind string) error {
 	if _, err := d.pool.Exec(ctx, qClearSanction, siteID, userID, kind); err != nil {

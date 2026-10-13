@@ -36,12 +36,12 @@ func (d *DB) WikidotUserID(ctx context.Context, userID int64) (int64, error) {
 }
 
 var qReserveClaimCode = register("ReserveClaimCode", `
-INSERT INTO pwikit_claim_code (user_id, code_hash, sent_at, expires_at, attempts)
+INSERT INTO magnetar_claim_code (user_id, code_hash, sent_at, expires_at, attempts)
 VALUES ($1, $2, $3, $4, 0)
 ON CONFLICT (user_id) DO UPDATE
 SET code_hash = EXCLUDED.code_hash, sent_at = EXCLUDED.sent_at,
 	expires_at = EXCLUDED.expires_at, attempts = 0
-WHERE pwikit_claim_code.sent_at < $5
+WHERE magnetar_claim_code.sent_at < $5
 RETURNING user_id`)
 
 // The check and the write are one statement, so two sends racing for the same
@@ -59,7 +59,7 @@ func (d *DB) ReserveClaimCode(ctx context.Context, userID int64, hash string, no
 }
 
 var qDropClaimCode = register("DropClaimCode", `
-DELETE FROM pwikit_claim_code WHERE user_id = $1 AND code_hash = $2`)
+DELETE FROM magnetar_claim_code WHERE user_id = $1 AND code_hash = $2`)
 
 func (d *DB) DropClaimCode(ctx context.Context, userID int64, hash string) error {
 	if _, err := d.pool.Exec(ctx, qDropClaimCode, userID, hash); err != nil {
@@ -70,11 +70,11 @@ func (d *DB) DropClaimCode(ctx context.Context, userID int64, hash string) error
 
 var (
 	qLockClaimCode = register("LockClaimCode", `
-SELECT code_hash, expires_at, attempts FROM pwikit_claim_code WHERE user_id = $1 FOR UPDATE`)
+SELECT code_hash, expires_at, attempts FROM magnetar_claim_code WHERE user_id = $1 FOR UPDATE`)
 	qDeleteClaimCode = register("DeleteClaimCode", `
-DELETE FROM pwikit_claim_code WHERE user_id = $1`)
+DELETE FROM magnetar_claim_code WHERE user_id = $1`)
 	qMissClaimCode = register("MissClaimCode", `
-UPDATE pwikit_claim_code SET attempts = attempts + 1 WHERE user_id = $1`)
+UPDATE magnetar_claim_code SET attempts = attempts + 1 WHERE user_id = $1`)
 )
 
 func (d *DB) UseClaimCode(ctx context.Context, userID int64, hash string, now time.Time, maxAttempts int) (ClaimOutcome, error) {

@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-const versionPackage = "github.com/WikitTeam/ProjectWikit/internal/version.Release"
+const versionPackage = "github.com/2025STELLU/MagnetarWiki/internal/version.Release"
 
 var versionPattern = regexp.MustCompile(`^v\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$`)
 
@@ -39,7 +39,7 @@ func buildCommand(args []string) error {
 	if !versionPattern.MatchString(*version) {
 		return fmt.Errorf("-version %q is not a version such as v1.0.0", *version)
 	}
-	if _, err := os.Stat(filepath.Join("cmd", "pwikit")); err != nil {
+	if _, err := os.Stat(filepath.Join("cmd", "magnetar")); err != nil {
 		return errors.New("run this from the repository root")
 	}
 
@@ -76,9 +76,9 @@ func buildCommand(args []string) error {
 	}
 	binary := filepath.Join(stage, executableName(runtime.GOOS))
 	env := []string{"CGO_ENABLED=1"}
-	if err := step("pwikit", ".", env, "go", "build", "-tags", "bundle", "-trimpath",
+	if err := step("magnetar", ".", env, "go", "build", "-tags", "bundle", "-trimpath",
 		"-ldflags", "-s -w -X "+versionPackage+"="+*version,
-		"-o", binary, "./cmd/pwikit"); err != nil {
+		"-o", binary, "./cmd/magnetar"); err != nil {
 		return err
 	}
 	if err := copyFile("LICENSE", filepath.Join(stage, "LICENSE"), 0o644); err != nil {
@@ -188,7 +188,7 @@ func packedMode(name string, info os.FileInfo) int64 {
 	if info.IsDir() {
 		return 0o755
 	}
-	if base := filepath.Base(name); base == "pwikit" || base == "pwikit.exe" {
+	if base := filepath.Base(name); base == "magnetar" || base == "magnetar.exe" {
 		return 0o755
 	}
 	return 0o644

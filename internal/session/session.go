@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	CookieName = "pwikit_sessionid"
+	CookieName = "magnetar_sessionid"
 	CookieAge  = 14 * 24 * time.Hour
 
 	Salt = "django.contrib.sessions.SessionStore"

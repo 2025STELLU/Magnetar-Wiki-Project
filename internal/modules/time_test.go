@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
 )
 
 func timeEnv(t *testing.T) module.Env {

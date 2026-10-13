@@ -36,7 +36,7 @@ func manifestServer(t *testing.T, asked *recorded) *httptest.Server {
 		case strings.HasSuffix(r.URL.Path, "/latest.json"):
 			w.Write([]byte(`{"version":"v1.2.0","published_at":"2026-09-10T00:00:00Z","packages":{}}`))
 		case strings.HasSuffix(r.URL.Path, "/SHA256SUMS"):
-			w.Write([]byte("abc  pwikit-v1.2.0-linux-amd64.tar.gz\n"))
+			w.Write([]byte("abc  magnetar-v1.2.0-linux-amd64.tar.gz\n"))
 		default:
 			http.NotFound(w, r)
 		}

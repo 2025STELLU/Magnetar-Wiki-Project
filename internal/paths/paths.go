@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	EnvDataDir  = "PWIKIT_DATA_DIR"
-	DataDirFile = "pwikit.data-dir"
+	EnvDataDir  = "MAGNETAR_DATA_DIR"
+	DataDirFile = "magnetar.data-dir"
 )
 
 type Source string
@@ -96,7 +96,7 @@ func isGoRunTemp(dir string) bool {
 func (p *Paths) Root() string   { return p.root }
 func (p *Paths) Source() Source { return p.source }
 
-func (p *Paths) Config() string   { return filepath.Join(p.root, "pwikit.toml") }
+func (p *Paths) Config() string   { return filepath.Join(p.root, "magnetar.toml") }
 func (p *Paths) Files() string    { return filepath.Join(p.root, "files") }
 func (p *Paths) Archive() string  { return filepath.Join(p.root, "archive") }
 func (p *Paths) Secrets() string  { return filepath.Join(p.root, "secrets") }

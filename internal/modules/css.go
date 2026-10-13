@@ -3,7 +3,7 @@ package modules
 import (
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
 )

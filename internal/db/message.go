@@ -33,7 +33,7 @@ WITH mine AS (
 ), visible AS (
 	SELECT m.id, m.partner_id
 	FROM mine m
-	LEFT JOIN pwikit_message_clear c ON c.user_id = $1 AND c.partner_id = m.partner_id
+	LEFT JOIN magnetar_message_clear c ON c.user_id = $1 AND c.partner_id = m.partner_id
 	WHERE c.through_id IS NULL OR m.id > c.through_id
 ), newest AS (
 	SELECT partner_id, max(id) AS last_id
@@ -75,7 +75,7 @@ SELECT id, sender_id, recipient_id, body, created_at, is_read
 FROM web_directmessage
 WHERE ((sender_id = $1 AND recipient_id = $2) OR (sender_id = $2 AND recipient_id = $1))
 	AND ($3::bigint IS NULL OR id < $3)
-	AND id > coalesce((SELECT through_id FROM pwikit_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
+	AND id > coalesce((SELECT through_id FROM magnetar_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
 ORDER BY id DESC
 LIMIT $4`)
 
@@ -88,7 +88,7 @@ SELECT id, sender_id, recipient_id, body, created_at, is_read
 FROM web_directmessage
 WHERE ((sender_id = $1 AND recipient_id = $2) OR (sender_id = $2 AND recipient_id = $1))
 	AND id > $3
-	AND id > coalesce((SELECT through_id FROM pwikit_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
+	AND id > coalesce((SELECT through_id FROM magnetar_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
 ORDER BY id
 LIMIT $4`)
 
@@ -109,7 +109,7 @@ var qMessagesBetween = register("MessagesBetween", `
 SELECT id, sender_id, recipient_id, body, created_at, is_read
 FROM web_directmessage
 WHERE ((sender_id = $1 AND recipient_id = $2) OR (sender_id = $2 AND recipient_id = $1))
-	AND id > coalesce((SELECT through_id FROM pwikit_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
+	AND id > coalesce((SELECT through_id FROM magnetar_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
 ORDER BY created_at`)
 
 func (d *DB) MessagesBetween(ctx context.Context, userID, partnerID int64) ([]DirectMessage, error) {
@@ -126,7 +126,7 @@ SELECT id, sender_id, recipient_id, body, created_at, is_read
 FROM web_directmessage
 WHERE id = ANY($3)
 	AND ((sender_id = $1 AND recipient_id = $2) OR (sender_id = $2 AND recipient_id = $1))
-	AND id > coalesce((SELECT through_id FROM pwikit_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
+	AND id > coalesce((SELECT through_id FROM magnetar_message_clear WHERE user_id = $1 AND partner_id = $2), 0)
 ORDER BY created_at`)
 
 func (d *DB) MessagesByIDs(ctx context.Context, userID, partnerID int64, ids []int64) ([]DirectMessage, error) {
@@ -228,7 +228,7 @@ type SuspiciousUser struct {
 
 var qSuspiciousUsers = register("SuspiciousUsers", `
 SELECT a.user_id, u.username, host(a.address)
-FROM pwikit_user_address a
+FROM magnetar_user_address a
 JOIN web_user u ON u.id = a.user_id
 ORDER BY a.user_id, a.address`)
 

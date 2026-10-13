@@ -33,7 +33,7 @@ func ParseManifest(body []byte) (Manifest, error) {
 		return Manifest{}, fmt.Errorf("read %s: %w", ManifestName, err)
 	}
 	if m.Format > ManifestFormat {
-		return Manifest{}, fmt.Errorf("%s is format %d and this pwikit reads up to %d; update by hand once", ManifestName, m.Format, ManifestFormat)
+		return Manifest{}, fmt.Errorf("%s is format %d and this magnetar reads up to %d; update by hand once", ManifestName, m.Format, ManifestFormat)
 	}
 	if _, ok := ParseVersion(m.Version); !ok {
 		return Manifest{}, fmt.Errorf("%s names %q, which is not a release", ManifestName, m.Version)
@@ -50,7 +50,7 @@ func (m Manifest) Published() time.Time {
 }
 
 func PackageFile(version, goos, goarch string) string {
-	base := "pwikit-" + version + "-" + goos + "-" + goarch
+	base := "magnetar-" + version + "-" + goos + "-" + goarch
 	if goos == "windows" {
 		return base + ".zip"
 	}
@@ -58,12 +58,12 @@ func PackageFile(version, goos, goarch string) string {
 }
 
 func PackageDir(version, goos, goarch string) string {
-	return "pwikit-" + version + "-" + goos + "-" + goarch
+	return "magnetar-" + version + "-" + goos + "-" + goarch
 }
 
 func ExecutableName(goos string) string {
 	if goos == "windows" {
-		return "pwikit.exe"
+		return "magnetar.exe"
 	}
-	return "pwikit"
+	return "magnetar"
 }

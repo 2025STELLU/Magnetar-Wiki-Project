@@ -17,10 +17,10 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
-const Database = "pwikit"
+const Database = "magnetar"
 
 const (
 	postmasterFile = "postmaster.pid"
@@ -93,14 +93,14 @@ func Start(ctx context.Context, cfg Config, owner Owner) (_ *Server, err error) 
 	if unpacked, err := Unpack(cfg.Postgres); err != nil {
 		return nil, err
 	} else if unpacked {
-		log.Info("pwikit unpacked its PostgreSQL", "version", Version, "dir", cfg.Postgres)
+		log.Info("magnetar unpacked its PostgreSQL", "version", Version, "dir", cfg.Postgres)
 	}
 	if err := handOver(s.as, cfg.Postgres); err != nil {
 		return nil, err
 	}
 	if err := s.layout.Locate(runtime.GOOS); err != nil {
 		if !Embedded() {
-			return nil, fmt.Errorf("this pwikit was built without a PostgreSQL of its own and found none in %s.\n"+
+			return nil, fmt.Errorf("this magnetar was built without a PostgreSQL of its own and found none in %s.\n"+
 				"  Point it at a PostgreSQL you run yourself with -database or DATABASE_URL", cfg.Postgres)
 		}
 		return nil, err
@@ -128,7 +128,7 @@ func Start(ctx context.Context, cfg Config, owner Owner) (_ *Server, err error) 
 		return nil, err
 	}
 	if dataMajor == 0 {
-		log.Info("pwikit is creating its PostgreSQL data directory", "dir", cfg.Data)
+		log.Info("magnetar is creating its PostgreSQL data directory", "dir", cfg.Data)
 		if err := s.initdb(ctx); err != nil {
 			return nil, err
 		}
@@ -166,14 +166,14 @@ func Start(ctx context.Context, cfg Config, owner Owner) (_ *Server, err error) 
 	if err := s.ensureDatabase(ctx); err != nil {
 		return nil, err
 	}
-	log.Info("pwikit started its PostgreSQL", "version", binaryMajor, "port", s.plan.Port, "socket", s.plan.Socket)
+	log.Info("magnetar started its PostgreSQL", "version", binaryMajor, "port", s.plan.Port, "socket", s.plan.Socket)
 	return s, nil
 }
 
 func Attach(ctx context.Context, cfg Config) (string, error) {
 	st, ok := readPostmaster(cfg.Data)
 	if !ok || st.status != "ready" {
-		return "", errors.New("pwikit serve holds the bundled PostgreSQL but it is not ready yet. Try again in a moment")
+		return "", errors.New("magnetar serve holds the bundled PostgreSQL but it is not ready yet. Try again in a moment")
 	}
 	port, err := ReadPort(cfg.Data)
 	if err != nil {
@@ -419,9 +419,9 @@ func (s *Server) clearLeftover(ctx context.Context) error {
 		return nil
 	}
 	if !samePath(image, s.layout.Binary(runtime.GOOS, "postgres")) {
-		return fmt.Errorf("a PostgreSQL from %s is running on %s as process %d. Stop it before starting pwikit", image, s.cfg.Data, st.pid)
+		return fmt.Errorf("a PostgreSQL from %s is running on %s as process %d. Stop it before starting magnetar", image, s.cfg.Data, st.pid)
 	}
-	s.cfg.logger().Info("pwikit is stopping the PostgreSQL an earlier run left behind", "pid", st.pid)
+	s.cfg.logger().Info("magnetar is stopping the PostgreSQL an earlier run left behind", "pid", st.pid)
 	return stopLeftover(ctx, s, st.pid)
 }
 
@@ -479,7 +479,7 @@ func emptyOrMissing(dir string) error {
 		return err
 	}
 	if len(entries) > 0 {
-		return fmt.Errorf("%s holds files but no PostgreSQL data. Move them somewhere else and start pwikit again", dir)
+		return fmt.Errorf("%s holds files but no PostgreSQL data. Move them somewhere else and start magnetar again", dir)
 	}
 	return nil
 }
@@ -497,7 +497,7 @@ func accountName() (string, error) {
 			return v, nil
 		}
 	}
-	return "", errors.New("cannot tell which account pwikit runs as, which the bundled PostgreSQL needs to name its user")
+	return "", errors.New("cannot tell which account magnetar runs as, which the bundled PostgreSQL needs to name its user")
 }
 
 func toolEnv() []string {

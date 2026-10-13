@@ -12,10 +12,10 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
-const envDSN = "PWIKIT_TEST_DSN"
+const envDSN = "MAGNETAR_TEST_DSN"
 
 func TestNamesAreOrderedAndStartAtTheBaseline(t *testing.T) {
 	got := Names()
@@ -347,7 +347,7 @@ func scratch(t *testing.T) string {
 	if err != nil {
 		t.Fatalf("ParseConfig() err = %v, want nil", err)
 	}
-	name := fmt.Sprintf("pwikit_migrate_%d", rand.Uint32())
+	name := fmt.Sprintf("magnetar_migrate_%d", rand.Uint32())
 
 	admin := swapDatabase(t, dsn, "postgres")
 	ctx := context.Background()

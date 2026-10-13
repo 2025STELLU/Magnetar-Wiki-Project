@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 const redirectContentType = "text/html; charset=utf-8"

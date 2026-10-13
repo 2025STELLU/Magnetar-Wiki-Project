@@ -14,7 +14,7 @@ import (
 
 // CookieName is the name the frontend already reads the token back from, so
 // the two have to stay spelled the same.
-const CookieName = "pwikit_csrftoken"
+const CookieName = "magnetar_csrftoken"
 
 const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 

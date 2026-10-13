@@ -1,6 +1,6 @@
 package admin
 
-import "github.com/WikitTeam/ProjectWikit/internal/i18n"
+import "github.com/2025STELLU/MagnetarWiki/internal/i18n"
 
 // The stored value of a category that takes the site's answer.
 const followSite = "default"

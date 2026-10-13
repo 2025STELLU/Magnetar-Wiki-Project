@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer/sidecar"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer/sidecar"
 )
 
 func TestListPagesRendersAListUsersInItsBody(t *testing.T) {

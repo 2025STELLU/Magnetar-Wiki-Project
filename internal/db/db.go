@@ -1,4 +1,4 @@
-// Package db is the only place in pwikit that issues SQL.
+// Package db is the only place in magnetar that issues SQL.
 package db
 
 import (
@@ -17,11 +17,11 @@ var ErrNotFound = errors.New("db: not found")
 
 // EnvDSN points database-backed tests at a live Postgres. It lives here rather
 // than in a _test.go file because other packages' tests gate on the same name.
-const EnvDSN = "PWIKIT_TEST_DSN"
+const EnvDSN = "MAGNETAR_TEST_DSN"
 
 // A test that writes needs a database of its own. Rows it leaves standing for a
 // moment are visible to every other package's tests while they run.
-const EnvWriteDSN = "PWIKIT_TEST_WRITE_DSN"
+const EnvWriteDSN = "MAGNETAR_TEST_WRITE_DSN"
 
 type DB struct {
 	pool *pgxpool.Pool

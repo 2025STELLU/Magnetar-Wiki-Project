@@ -23,8 +23,8 @@ import (
 var texts embed.FS
 
 const (
-	mainModule = "github.com/WikitTeam/ProjectWikit"
-	sourceBase = "https://github.com/WikitTeam/ProjectWikit/tree/"
+	mainModule = "github.com/2025STELLU/MagnetarWiki"
+	sourceBase = "https://github.com/2025STELLU/MagnetarWiki/tree/"
 	rule       = "================================================================================"
 )
 
@@ -98,7 +98,7 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
-	w.section("Go modules compiled into pwikit")
+	w.section("Go modules compiled into magnetar")
 	for _, e := range goEntries {
 		w.entry(e)
 	}
@@ -111,7 +111,7 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
-	w.section("Rust crates linked into pwikit through ftml")
+	w.section("Rust crates linked into magnetar through ftml")
 	for _, e := range rustEntries {
 		w.entry(e)
 	}
@@ -210,7 +210,7 @@ func (w *writer) manual(section, name string) error {
 
 func goModules(goos, goarch, tags string) ([]entry, error) {
 	cmd := exec.Command("go", "list", "-deps", "-tags", tags, "-f",
-		"{{if .Standard}}std{{else if .Module}}{{.Module.Path}}\t{{.Module.Version}}\t{{.Module.Dir}}\t{{.Dir}}{{end}}", "./cmd/pwikit")
+		"{{if .Standard}}std{{else if .Module}}{{.Module.Path}}\t{{.Module.Version}}\t{{.Module.Dir}}\t{{.Dir}}{{end}}", "./cmd/magnetar")
 	cmd.Env = append(os.Environ(), "GOOS="+goos, "GOARCH="+goarch, "CGO_ENABLED=1")
 	cmd.Stderr = os.Stderr
 	listed, err := cmd.Output()

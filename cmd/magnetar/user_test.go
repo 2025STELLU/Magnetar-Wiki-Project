@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func TestSplitMentioned(t *testing.T) {

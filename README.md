@@ -1,28 +1,34 @@
-# ProjectWikit
+# MagnetarWiki
 
-A Wikidot-compatible wiki engine and migration target.
+A Wikidot-compatible wiki engine with a graphical admin console, fine-grained permission groups, and a powerful user level system — built for the F0921 universe.
 
-ProjectWikit began as a fork of [RuFoundation](https://github.com/scpru/rufoundation),
-the wiki software of the Russian SCP branch. It has since been redesigned
-and rewritten in Go with its own architecture. The goal is a wiki engine
-that any Wikidot community can move to without losing its pages, history,
-and keep the way it works today, while gaining what Wikidot never offered
-and continuing where Wikidot has stood still.
+MagnetarWiki is a fork of [ProjectWikit](https://github.com/WikitTeam/ProjectWikit)
+(which itself began as a fork of [RuFoundation](https://github.com/scpru/rufoundation),
+the wiki software of the Russian SCP branch). Where ProjectWikit focuses on
+faithful Wikidot compatibility and migration, MagnetarWiki goes further:
+a wiki engine that any Wikidot community can move to without losing its pages,
+history, and the way it works today — while gaining the modern community
+management tools Wikidot never offered.
 
-The project owes its existence and much of its early direction to
-RuFoundation, and some parts are still derived from it (see [NOTICE](NOTICE)).
+## What it adds on top of ProjectWikit
 
-Wikidot syntax parsing uses [FTML-WIKIT](https://github.com/WikitTeam/ProjectWikit/tree/main/ftml), a hard fork of Wikijump's [FTML](https://github.com/scpwiki/ftml). Upstream FTML focuses on the subset of Wikidot syntax considered well-formed, and as a result, some syntax constructs do not remain compatible. The fork is maintained separately and is not expected to merge back. Our goal is to achieve exact compatibility with Wikidot's output.
+- **Graphical admin console** — manage the wiki farm, users, and content from a visual backend instead of config files and CLI
+- **Fine-grained permission groups** — define custom groups with per-action permissions, beyond the fixed admin/member split
+- **User level system** — contribution-driven levels and progression for community members
 
-## What it does
+## What it keeps
 
 - Imports Wikidot sites (users, pages, history, votes, forums) from backups
 - Renders Wikidot syntax with output matched against real Wikidot HTML
 - Wiki Farm, one instance serves many wikis
 - Wikidot account claiming with external verification
+- Wikidot syntax parsing via FTML-WIKIT, a hard fork of Wikijump's FTML (see [NOTICE](NOTICE))
 
 ## Install
 
 ## Documentation
 
+## License
 
+GNU Affero General Public License v3.0 or later. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+As a derivative of ProjectWikit, MagnetarWiki is distributed under the same license.

@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidotclient"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidotclient"
 )
 
 const (
@@ -125,7 +125,7 @@ func (v *LocalVerifier) wikidotError(what string, target ClaimTarget, err error)
 		v.Log.Warn(what, "user", target.Name, "err", err)
 		return refused(CodeMessagesRefused)
 	case errors.Is(err, wikidotclient.ErrLogin):
-		v.Log.Error("wikidot refused to sign in the account set in pwikit.toml", "account", v.Wikidot.Username())
+		v.Log.Error("wikidot refused to sign in the account set in magnetar.toml", "account", v.Wikidot.Username())
 		return refused(CodeLoginFailed)
 	case errors.Is(err, wikidotclient.ErrUnavailable):
 		v.Log.Warn(what, "user", target.Name, "err", err)

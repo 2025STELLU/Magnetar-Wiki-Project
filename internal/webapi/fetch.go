@@ -5,8 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 )
 
 func (h *Articles) fetch(r *http.Request, _ *i18n.Localizer, name string) (string, int, error) {

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
 )
 
 var update = flag.Bool("update", false, "rewrite the golden file and the corpus the oracle reads")

@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
 )
 
 func init() { module.Register("time", renderTime) }
@@ -51,7 +51,7 @@ func renderTime(env module.Env, _ map[string]string, body string) (string, error
 	return putChipsBack(html, stamps), nil
 }
 
-func timeToken(format string) string { return "pwikittime" + format[1:] + "stamp" }
+func timeToken(format string) string { return "magnetartime" + format[1:] + "stamp" }
 
 func dateSpan(at time.Time, format string) string {
 	return `<span class="odate w-date" data-timestamp="` +

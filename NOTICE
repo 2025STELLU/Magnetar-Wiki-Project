@@ -17,3 +17,13 @@ modified version and modified in ProjectWikit since 2026. Licensed under
 AGPL-3.0-or-later, see ftml/LICENSE.md. Because ftml is statically linked
 into the pwikit binary, the binary as a whole is distributed under
 AGPL-3.0-or-later.
+
+---
+MagnetarWiki
+Copyright (c) 2026 2025STELLU
+
+MagnetarWiki is a fork of ProjectWikit (https://github.com/WikitTeam/ProjectWikit),
+Copyright (c) 2026 Kakushi, AGPL-3.0-or-later. All ProjectWikit, RuFoundation,
+and FTML attributions above continue to apply to the parts derived from them.
+Modifications, the admin console, permission groups, and user level system are
+Copyright (c) 2026 2025STELLU, licensed under AGPL-3.0-or-later. See LICENSE.

@@ -3,7 +3,7 @@ package webapi
 import (
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func entry(rev int, kind, meta string) db.LogEntry {

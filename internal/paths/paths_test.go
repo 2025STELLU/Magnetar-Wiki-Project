@@ -144,12 +144,12 @@ func TestIsGoRunTemp(t *testing.T) {
 		},
 		{
 			name: "normal install location",
-			dir:  filepath.Join(tmp, "pwikit"),
+			dir:  filepath.Join(tmp, "magnetar"),
 			want: false,
 		},
 		{
 			name: "go-build outside the temp directory",
-			dir:  filepath.Join("/opt", "go-build", "pwikit"),
+			dir:  filepath.Join("/opt", "go-build", "magnetar"),
 			want: false,
 		},
 	}
@@ -189,7 +189,7 @@ func TestResolveBlocksEscape(t *testing.T) {
 	escapes := []string{
 		"../secrets/certs/key.pem",
 		"..",
-		"page/../../pwikit.toml",
+		"page/../../magnetar.toml",
 		"a/b/c/../../../../etc/passwd",
 	}
 	for _, rel := range escapes {
@@ -213,14 +213,14 @@ func TestResolveRejectsAbsolute(t *testing.T) {
 
 func TestResolveEscapeReturnValues(t *testing.T) {
 	base := filepath.Join(t.TempDir(), "files")
-	got, err := Resolve(base, "../../pwikit.toml")
+	got, err := Resolve(base, "../../magnetar.toml")
 	if err == nil {
 		t.Fatalf("Resolve() = %q, err = nil, want ErrEscapes", got)
 	}
 	if got != "" {
 		t.Errorf("Resolve() on error = %q, want empty string", got)
 	}
-	if !strings.Contains(err.Error(), "pwikit.toml") {
-		t.Errorf("err = %v, want substring %q", err, "pwikit.toml")
+	if !strings.Contains(err.Error(), "magnetar.toml") {
+		t.Errorf("err = %v, want substring %q", err, "magnetar.toml")
 	}
 }

@@ -17,16 +17,16 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/service"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/service"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 var instanceEntries = []string{
 	"LICENSE", "NOTICE", "README", "README.md",
-	"pwikit", "pwikit.old", "pwikit.new", "pwikit.toml", "pwikit.toml.part",
+	"magnetar", "magnetar.old", "magnetar.new", "magnetar.toml", "magnetar.toml.part",
 	"files", "archive", "secrets", "pgdata", "postgres", "postgres.old", "postgres.lock",
 	"locales", "backups", "logs", "update",
 }
@@ -48,10 +48,10 @@ func protectInstance(p *paths.Paths, exe string) string {
 	if top.Uid != 0 {
 		if extra := strangers(root); len(extra) > 0 {
 			if ownCopy {
-				return fmt.Sprintf("%s also holds %s, which pwikit did not put there, so pwikit left its owner as it is and another account can still change what root reads and writes there",
+				return fmt.Sprintf("%s also holds %s, which magnetar did not put there, so magnetar left its owner as it is and another account can still change what root reads and writes there",
 					root, strings.Join(extra, ", "))
 			}
-			return fmt.Sprintf("%s also holds %s, which pwikit did not put there, so pwikit left its owner as it is and another account can still replace %s",
+			return fmt.Sprintf("%s also holds %s, which magnetar did not put there, so magnetar left its owner as it is and another account can still replace %s",
 				root, strings.Join(extra, ", "), exe)
 		}
 		uid, gid := int(top.Uid), int(top.Gid)
@@ -159,7 +159,7 @@ func releaseInstance(root, exe string, uid, gid int) {
 	if acct, _, ok := update.Account(root); !ok || int(acct) != uid {
 		return
 	}
-	for _, path := range []string{root, filepath.Join(root, "pwikit.toml"), exe} {
+	for _, path := range []string{root, filepath.Join(root, "magnetar.toml"), exe} {
 		if path == exe && filepath.Dir(exe) != root {
 			continue
 		}
@@ -201,8 +201,8 @@ func prepareInstall(spec *service.Spec) error {
 		return nil
 	}
 	if update.NoExec(spec.Root) {
-		return fmt.Errorf("%s is on a filesystem mounted noexec, so the programs pwikit unpacks there cannot run. "+
-			"Mount it without noexec, or move the pwikit directory", spec.Root)
+		return fmt.Errorf("%s is on a filesystem mounted noexec, so the programs magnetar unpacks there cannot run. "+
+			"Mount it without noexec, or move the magnetar directory", spec.Root)
 	}
 	if spec.User == pgbundle.SystemAccountName {
 		if err := dedicate(spec); err != nil {
@@ -232,14 +232,14 @@ func prepareInstall(spec *service.Spec) error {
 	}
 	if spec.Executable != bin {
 		if err := update.CopyFile(spec.Executable, bin); err != nil {
-			return fmt.Errorf("keep root's copy of pwikit: %w", err)
+			return fmt.Errorf("keep root's copy of magnetar: %w", err)
 		}
 	}
 	if err := os.Chmod(bin, 0o755); err != nil {
 		return err
 	}
 	if err := update.RecordInstance(private, spec.Root, spec.Executable); err != nil {
-		return fmt.Errorf("record where pwikit is installed: %w", err)
+		return fmt.Errorf("record where magnetar is installed: %w", err)
 	}
 	if len(spec.UpdateArgs) > 0 {
 		spec.UpdateExecutable = bin
@@ -310,7 +310,7 @@ func configLinkTrusted(path string) error {
 	if st, ok := info.Sys().(*syscall.Stat_t); ok && st.Uid == 0 {
 		return nil
 	}
-	return fmt.Errorf("%s is a link another account made, so pwikit will not read it as root", path)
+	return fmt.Errorf("%s is a link another account made, so magnetar will not read it as root", path)
 }
 
 func dedicate(spec *service.Spec) error {
@@ -345,7 +345,7 @@ func dedicate(spec *service.Spec) error {
 	if _, err := pgbundle.Unpack(filepath.Join(root, "postgres")); err != nil {
 		return err
 	}
-	cfg := filepath.Join(root, "pwikit.toml")
+	cfg := filepath.Join(root, "magnetar.toml")
 	if _, err := config.WriteTemplate(cfg); err != nil {
 		return err
 	}

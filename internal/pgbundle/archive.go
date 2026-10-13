@@ -12,13 +12,13 @@ import (
 
 	"github.com/klauspost/compress/zstd"
 
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
 )
 
 const Version = "18.6.0"
 
 const (
-	markerFile = ".pwikit-archive"
+	markerFile = ".magnetar-archive"
 
 	// Bump when Unpack lays files out differently, or old unpacked copies are kept.
 	unpackRevision = "1"

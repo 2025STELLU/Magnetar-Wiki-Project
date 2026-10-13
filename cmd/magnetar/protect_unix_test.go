@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 const testAccount = 4242
@@ -37,19 +37,19 @@ func instanceLike(t *testing.T) (*paths.Paths, string) {
 	if err := os.Chmod(parent, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	root := filepath.Join(parent, "pwikit")
+	root := filepath.Join(parent, "magnetar")
 	for _, dir := range []string{root, filepath.Join(root, "pgdata"), filepath.Join(root, "files"), filepath.Join(root, "secrets")} {
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
-	exe := filepath.Join(root, "pwikit")
-	for _, file := range []string{exe, filepath.Join(root, "pwikit.toml"), filepath.Join(root, "LICENSE"), filepath.Join(root, "pgdata", "PG_VERSION")} {
+	exe := filepath.Join(root, "magnetar")
+	for _, file := range []string{exe, filepath.Join(root, "magnetar.toml"), filepath.Join(root, "LICENSE"), filepath.Join(root, "pgdata", "PG_VERSION")} {
 		if err := os.WriteFile(file, []byte("x"), 0o644); err != nil {
 			t.Fatal(err)
 		}
 	}
-	for _, path := range []string{root, exe, filepath.Join(root, "pwikit.toml"), filepath.Join(root, "pgdata"), filepath.Join(root, "pgdata", "PG_VERSION")} {
+	for _, path := range []string{root, exe, filepath.Join(root, "magnetar.toml"), filepath.Join(root, "pgdata"), filepath.Join(root, "pgdata", "PG_VERSION")} {
 		if err := os.Lchown(path, testAccount, testAccount); err != nil {
 			t.Fatal(err)
 		}
@@ -111,7 +111,7 @@ func TestExposureOfAProgramOutside(t *testing.T) {
 	if err := os.Chmod(dir, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	exe := filepath.Join(dir, "pwikit")
+	exe := filepath.Join(dir, "magnetar")
 	if err := os.WriteFile(exe, []byte("x"), 0o755); err != nil {
 		t.Fatal(err)
 	}

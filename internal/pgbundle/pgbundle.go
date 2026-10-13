@@ -1,4 +1,4 @@
-// Package pgbundle answers how pwikit runs the Postgres it ships with.
+// Package pgbundle answers how magnetar runs the Postgres it ships with.
 package pgbundle
 
 import (
@@ -15,13 +15,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/secretfile"
+	"github.com/2025STELLU/MagnetarWiki/internal/secretfile"
 )
 
 const (
 	passwordFile = "postgres-password"
-	overrideFile = "pwikit.conf"
-	roleFile     = "pwikit.role"
+	overrideFile = "magnetar.conf"
+	roleFile     = "magnetar.role"
 	versionFile  = "PG_VERSION"
 
 	defaultPort = 5432
@@ -30,11 +30,11 @@ const (
 
 	longestSocket = ".s.PGSQL.65535"
 
-	windowsRole = "pwikit"
+	windowsRole = "magnetar"
 
-	SystemAccountName = "pwikit"
+	SystemAccountName = "magnetar"
 
-	identMap = "pwikit"
+	identMap = "magnetar"
 )
 
 var binaries = []string{"initdb", "pg_ctl", "postgres"}
@@ -73,7 +73,7 @@ func (l Layout) Locate(goos string) error {
 		return nil
 	}
 	return fmt.Errorf("the bundled PostgreSQL is incomplete; %s %s missing from %s.\n"+
-		"  Unpack the pwikit release again, or point pwikit at a PostgreSQL you run\n"+
+		"  Unpack the magnetar release again, or point magnetar at a PostgreSQL you run\n"+
 		"  yourself with -database or DATABASE_URL.",
 		strings.Join(missing, ", "), plural(len(missing)), l.Bin)
 }
@@ -107,11 +107,11 @@ func Compatible(dataMajor, binaryMajor int) error {
 	if dataMajor == 0 || dataMajor == binaryMajor {
 		return nil
 	}
-	return fmt.Errorf("the data in pgdata/ was written by PostgreSQL %d, and this pwikit carries PostgreSQL %d.\n"+
+	return fmt.Errorf("the data in pgdata/ was written by PostgreSQL %d, and this magnetar carries PostgreSQL %d.\n"+
 		"  Nothing was started and nothing was changed. To move the data across:\n"+
-		"    1. With the pwikit that made it, run: pwikit backup create\n"+
-		"    2. Move pgdata/ aside, then start this pwikit so it makes a fresh one\n"+
-		"    3. Stop it, then run: pwikit backup restore <file>",
+		"    1. With the magnetar that made it, run: magnetar backup create\n"+
+		"    2. Move pgdata/ aside, then start this magnetar so it makes a fresh one\n"+
+		"    3. Stop it, then run: magnetar backup restore <file>",
 		dataMajor, binaryMajor)
 }
 
@@ -139,7 +139,7 @@ func SocketDir(l Layout) string {
 		return l.Data
 	}
 	sum := sha256.Sum256([]byte(l.Root))
-	return filepath.Join(os.TempDir(), "pwikit-"+hex.EncodeToString(sum[:4]))
+	return filepath.Join(os.TempDir(), "magnetar-"+hex.EncodeToString(sum[:4]))
 }
 
 func (p Plan) HBA() string {
@@ -165,7 +165,7 @@ func (p Plan) Ident() string {
 // An empty listen_addresses turns TCP off entirely.
 func (p Plan) Conf() string {
 	var b strings.Builder
-	b.WriteString("# Written by pwikit on every start. Put your own settings in postgresql.conf.\n")
+	b.WriteString("# Written by magnetar on every start. Put your own settings in postgresql.conf.\n")
 	fmt.Fprintf(&b, "port = %d\n", p.Port)
 	if p.Socket != "" {
 		b.WriteString("listen_addresses = ''\n")
@@ -232,7 +232,7 @@ func EnsurePassword(secrets string) (string, error) {
 func ReadPort(data string) (int, error) {
 	raw, err := os.ReadFile(filepath.Join(data, overrideFile))
 	if err != nil {
-		return 0, fmt.Errorf("read the port pwikit chose: %w", err)
+		return 0, fmt.Errorf("read the port magnetar chose: %w", err)
 	}
 	for _, line := range strings.Split(string(raw), "\n") {
 		key, value, ok := strings.Cut(line, "=")
@@ -244,7 +244,7 @@ func ReadPort(data string) (int, error) {
 	return 0, fmt.Errorf("%s names no port", overrideFile)
 }
 
-// Never connect. Whatever answers on 5432 was not set up for pwikit.
+// Never connect. Whatever answers on 5432 was not set up for magnetar.
 func DefaultPortTaken(timeout time.Duration) bool {
 	return taken(net.JoinHostPort("127.0.0.1", strconv.Itoa(defaultPort)), timeout)
 }
@@ -260,7 +260,7 @@ func taken(addr string, timeout time.Duration) bool {
 
 func Hint() string {
 	return "Something is listening on port 5432, most likely a PostgreSQL you installed yourself.\n" +
-		"  pwikit is starting its own PostgreSQL and leaving that one alone. To use it instead,\n" +
+		"  magnetar is starting its own PostgreSQL and leaving that one alone. To use it instead,\n" +
 		"  pass -database postgres://user:password@127.0.0.1:5432/dbname or set DATABASE_URL."
 }
 

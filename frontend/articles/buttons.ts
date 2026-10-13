@@ -89,5 +89,5 @@ async function comments(event: Event) {
 // The markup calls these by name from an inline onclick, because themes reach
 // their buttons through [onclick*="..."] and a listener would leave no match.
 export function makeButtons() {
-  ;(window as any).pwikit = { ...((window as any).pwikit || {}), setTags, edit, files, comments }
+  ;(window as any).magnetar = { ...((window as any).magnetar || {}), setTags, edit, files, comments }
 }

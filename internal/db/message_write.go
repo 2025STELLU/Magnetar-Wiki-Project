@@ -102,7 +102,7 @@ func (d *DB) CreateReport(ctx context.Context, siteID, reporterID, reportedID in
 const ReportPending = "pending"
 
 var qClearConversations = register("ClearConversations", `
-INSERT INTO pwikit_message_clear (user_id, partner_id, through_id)
+INSERT INTO magnetar_message_clear (user_id, partner_id, through_id)
 SELECT $1, p.partner_id, max(m.id)
 FROM unnest($2::bigint[]) AS p(partner_id)
 JOIN web_directmessage m
@@ -110,13 +110,13 @@ JOIN web_directmessage m
 WHERE p.partner_id <> $1
 GROUP BY p.partner_id
 ON CONFLICT (user_id, partner_id) DO UPDATE
-SET through_id = greatest(pwikit_message_clear.through_id, EXCLUDED.through_id)
+SET through_id = greatest(magnetar_message_clear.through_id, EXCLUDED.through_id)
 RETURNING partner_id`)
 
 var qReadClearedMessages = register("ReadClearedMessages", `
 UPDATE web_directmessage m
 SET is_read = true
-FROM pwikit_message_clear c
+FROM magnetar_message_clear c
 WHERE c.user_id = $1
 	AND c.partner_id = ANY($2)
 	AND m.recipient_id = $1

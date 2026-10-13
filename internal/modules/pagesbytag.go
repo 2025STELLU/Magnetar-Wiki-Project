@@ -3,8 +3,8 @@ package modules
 import (
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
 )
 
 func init() { module.Register("pagesbytag", renderPagesByTag) }

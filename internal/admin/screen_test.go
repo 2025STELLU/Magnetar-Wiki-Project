@@ -3,7 +3,7 @@ package admin
 import (
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 func TestSuperScreenOpensOnlyForSuperusers(t *testing.T) {

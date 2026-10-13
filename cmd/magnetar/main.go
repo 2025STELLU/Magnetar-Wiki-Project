@@ -20,32 +20,32 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/account"
-	"github.com/WikitTeam/ProjectWikit/internal/admin"
-	"github.com/WikitTeam/ProjectWikit/internal/backup"
-	"github.com/WikitTeam/ProjectWikit/internal/compress"
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/entry"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/localitem"
-	"github.com/WikitTeam/ProjectWikit/internal/media"
-	"github.com/WikitTeam/ProjectWikit/internal/migrate"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/proxyheader"
-	"github.com/WikitTeam/ProjectWikit/internal/respheader"
-	"github.com/WikitTeam/ProjectWikit/internal/routing"
-	"github.com/WikitTeam/ProjectWikit/internal/secretfile"
-	"github.com/WikitTeam/ProjectWikit/internal/seed"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/static"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
-	"github.com/WikitTeam/ProjectWikit/internal/userpage"
-	"github.com/WikitTeam/ProjectWikit/internal/version"
-	"github.com/WikitTeam/ProjectWikit/internal/webapi"
-	staticfiles "github.com/WikitTeam/ProjectWikit/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/account"
+	"github.com/2025STELLU/MagnetarWiki/internal/admin"
+	"github.com/2025STELLU/MagnetarWiki/internal/backup"
+	"github.com/2025STELLU/MagnetarWiki/internal/compress"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/entry"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/localitem"
+	"github.com/2025STELLU/MagnetarWiki/internal/media"
+	"github.com/2025STELLU/MagnetarWiki/internal/migrate"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/proxyheader"
+	"github.com/2025STELLU/MagnetarWiki/internal/respheader"
+	"github.com/2025STELLU/MagnetarWiki/internal/routing"
+	"github.com/2025STELLU/MagnetarWiki/internal/secretfile"
+	"github.com/2025STELLU/MagnetarWiki/internal/seed"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/static"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/userpage"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
+	"github.com/2025STELLU/MagnetarWiki/internal/webapi"
+	staticfiles "github.com/2025STELLU/MagnetarWiki/static"
 )
 
 const (
@@ -62,24 +62,24 @@ const (
 	envMailEngine   = "EMAIL_ENGINE"
 	envMailFrom     = "EMAIL_DEFAULT_FROM"
 
-	envWikidotUser      = "PWIKIT_WIKIDOT_USERNAME"
-	envWikidotPassword  = "PWIKIT_WIKIDOT_PASSWORD"
+	envWikidotUser      = "MAGNETAR_WIKIDOT_USERNAME"
+	envWikidotPassword  = "MAGNETAR_WIKIDOT_PASSWORD"
 	wikidotPasswordFile = "wikidot-password"
 
 	envStorageLimit = "ABSOLUTE_MEDIA_UPLOAD_LIMIT"
-	envTLS          = "PWIKIT_TLS"
-	envTLSCert      = "PWIKIT_TLS_CERT"
-	envTLSKey       = "PWIKIT_TLS_KEY"
-	envTLSListen    = "PWIKIT_TLS_LISTEN"
-	envACMEEmail    = "PWIKIT_ACME_EMAIL"
-	envACMEDir      = "PWIKIT_ACME_DIRECTORY"
-	envUpdateAuto   = "PWIKIT_UPDATE_AUTO"
-	envUpdateBanner = "PWIKIT_UPDATE_PUBLIC_BANNER"
-	envUpdateCheck  = "PWIKIT_UPDATE_CHECK"
-	envUpdateWindow = "PWIKIT_UPDATE_WINDOW"
-	envUpdateZone   = "PWIKIT_UPDATE_TIME_ZONE"
-	envUpdateMinAge = "PWIKIT_UPDATE_MIN_AGE"
-	envUpdateMirror = "PWIKIT_UPDATE_MIRROR"
+	envTLS          = "MAGNETAR_TLS"
+	envTLSCert      = "MAGNETAR_TLS_CERT"
+	envTLSKey       = "MAGNETAR_TLS_KEY"
+	envTLSListen    = "MAGNETAR_TLS_LISTEN"
+	envACMEEmail    = "MAGNETAR_ACME_EMAIL"
+	envACMEDir      = "MAGNETAR_ACME_DIRECTORY"
+	envUpdateAuto   = "MAGNETAR_UPDATE_AUTO"
+	envUpdateBanner = "MAGNETAR_UPDATE_PUBLIC_BANNER"
+	envUpdateCheck  = "MAGNETAR_UPDATE_CHECK"
+	envUpdateWindow = "MAGNETAR_UPDATE_WINDOW"
+	envUpdateZone   = "MAGNETAR_UPDATE_TIME_ZONE"
+	envUpdateMinAge = "MAGNETAR_UPDATE_MIN_AGE"
+	envUpdateMirror = "MAGNETAR_UPDATE_MIRROR"
 	defaultListen   = "127.0.0.1:8080"
 	defaultTLSPlain = ":80"
 	defaultTLSAddr  = ":443"
@@ -89,13 +89,13 @@ const (
 func main() {
 	if handled, err := runAsService(os.Args[1:]); handled || err != nil {
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "pwikit: "+err.Error())
+			fmt.Fprintln(os.Stderr, "magnetar: "+err.Error())
 			os.Exit(1)
 		}
 		return
 	}
 	if err := run(os.Args[1:]); err != nil {
-		fmt.Fprintln(os.Stderr, "pwikit: "+err.Error())
+		fmt.Fprintln(os.Stderr, "magnetar: "+err.Error())
 		os.Exit(1)
 	}
 }
@@ -160,7 +160,7 @@ func run(args []string) error {
 }
 
 func usage() {
-	fmt.Fprint(os.Stderr, `Usage: pwikit <command> [options]
+	fmt.Fprint(os.Stderr, `Usage: magnetar <command> [options]
 
 Commands:
   serve       start the HTTP server
@@ -172,8 +172,8 @@ Commands:
   seed        write the pages a new site starts with
   import      import an unpacked wikidot backup
   reindex     put every page of a site back into the search index
-  service     start pwikit whenever the machine boots
-  path        make pwikit runnable by name from any directory
+  service     start magnetar whenever the machine boots
+  path        make magnetar runnable by name from any directory
   update      install a newer release, or put back the one before it
   render      render wikitext read from stdin or a file
   migrate     apply or inspect the schema migrations
@@ -229,17 +229,17 @@ func serve(ctx context.Context, args []string) (err error) {
 	}
 	defer closeLog()
 	if cfg.Mail.Password != "" && config.ReadableByOthers(p.Config()) {
-		log.Warn("pwikit.toml holds the mail password and other accounts on this machine can read it", "path", p.Config())
+		log.Warn("magnetar.toml holds the mail password and other accounts on this machine can read it", "path", p.Config())
 	}
 	if cfg.Wikidot.Password != "" && config.ReadableByOthers(p.Config()) {
-		log.Warn("pwikit.toml holds the Wikidot password and other accounts on this machine can read it", "path", p.Config())
+		log.Warn("magnetar.toml holds the Wikidot password and other accounts on this machine can read it", "path", p.Config())
 	}
 	exposed := ""
 	if exe, err := runningExecutable(); err == nil {
 		exposed = protectInstance(p, update.RecordedExecutable(exe))
 	}
 	if exposed != "" {
-		log.Warn("pwikit runs as root from a place another account can change", "detail", exposed)
+		log.Warn("magnetar runs as root from a place another account can change", "detail", exposed)
 	}
 
 	// Caught this early so a stop during a slow PostgreSQL start still stops PostgreSQL.
@@ -254,7 +254,7 @@ func serve(ctx context.Context, args []string) (err error) {
 	if dsn == "" {
 		if update.NoExec(p.Root()) {
 			return fmt.Errorf("%s is on a filesystem mounted noexec, so the bundled PostgreSQL cannot run from it. "+
-				"Mount it without noexec, move the pwikit directory, or use a PostgreSQL of your own with -database", p.Root())
+				"Mount it without noexec, move the magnetar directory, or use a PostgreSQL of your own with -database", p.Root())
 		}
 		bundledPostgres = pgbundle.Version
 		bundled, err := startBundled(ctx, p, log)
@@ -270,7 +270,7 @@ func serve(ctx context.Context, args []string) (err error) {
 		go func() {
 			select {
 			case <-bundled.Exited():
-				log.Error("PostgreSQL stopped while pwikit was serving")
+				log.Error("PostgreSQL stopped while magnetar was serving")
 				cancel()
 			case <-ctx.Done():
 			}
@@ -305,7 +305,7 @@ func serve(ctx context.Context, args []string) (err error) {
 	if err != nil {
 		return err
 	}
-	log.Info("pwikit reached postgres", "version", backup.Describe(found))
+	log.Info("magnetar reached postgres", "version", backup.Describe(found))
 
 	if !*o.noMigrate {
 		result, err := migrate.Run(ctx, dsn)
@@ -313,13 +313,13 @@ func serve(ctx context.Context, args []string) (err error) {
 			return err
 		}
 		if result.Adopted {
-			log.Info("pwikit adopted the schema", "baseline", migrate.BaselineName)
+			log.Info("magnetar adopted the schema", "baseline", migrate.BaselineName)
 		}
 		for _, name := range result.Applied {
-			log.Info("pwikit applied a migration", "name", name)
+			log.Info("magnetar applied a migration", "name", name)
 		}
 		if len(result.Newer) > 0 {
-			log.Warn("the database holds migrations from a newer pwikit that this one runs alongside",
+			log.Warn("the database holds migrations from a newer magnetar that this one runs alongside",
 				"migrations", strings.Join(result.Newer, ", "))
 		}
 	}
@@ -335,10 +335,10 @@ func serve(ctx context.Context, args []string) (err error) {
 	}
 	if domain, ok := o.promote(hostsBound); ok {
 		mode = entry.Auto
-		log.Info("pwikit serves HTTPS because a site is bound to a public domain", "domain", domain)
+		log.Info("magnetar serves HTTPS because a site is bound to a public domain", "domain", domain)
 	}
 	if *o.dev {
-		log.Info("pwikit is in development mode, and only this machine can reach it", "url", "http://"+*o.listen)
+		log.Info("magnetar is in development mode, and only this machine can reach it", "url", "http://"+*o.listen)
 	}
 
 	notFound := http.NotFoundHandler()
@@ -361,7 +361,7 @@ func serve(ctx context.Context, args []string) (err error) {
 		Exposed: exposed, AsRoot: runtime.GOOS == "linux" && os.Geteuid() == 0,
 		Announce: func(ctx context.Context, st db.UpdateState) {
 			if err := announceRelease(ctx, conn, st, time.Now()); err != nil {
-				log.Warn("pwikit could not tell the administrators about a new release", "version", st.LatestVersion, "err", err)
+				log.Warn("magnetar could not tell the administrators about a new release", "version", st.LatestVersion, "err", err)
 			}
 		},
 	}
@@ -466,7 +466,7 @@ func serve(ctx context.Context, args []string) (err error) {
 		return err
 	}
 
-	log.Info("pwikit serve", "listen", *o.listen, "root", p.Root(),
+	log.Info("magnetar serve", "listen", *o.listen, "root", p.Root(),
 		"root_source", string(p.Source()), "static_dir", *o.staticDir, "assets_embedded", staticfiles.Embedded)
 
 	var hosts entry.Hosts
@@ -702,7 +702,7 @@ func migrateCommand(args []string) error {
 		sub = args[0]
 	}
 	if sub != "status" && sub != "up" {
-		fmt.Fprint(os.Stderr, `Usage: pwikit migrate <status|up> [-database <url>] [-data-dir <dir>]
+		fmt.Fprint(os.Stderr, `Usage: magnetar migrate <status|up> [-database <url>] [-data-dir <dir>]
 
   status  print which schema migrations the database carries
   up      apply the migrations the database is missing
@@ -814,7 +814,7 @@ func siteCommand(args []string) error {
 		sub = args[0]
 	}
 	if sub != "list" && sub != "rebind" {
-		fmt.Fprint(os.Stderr, `Usage: pwikit site <list|rebind> [options]
+		fmt.Fprint(os.Stderr, `Usage: magnetar site <list|rebind> [options]
 
   list    print the slug and the two domains of every site
   rebind  point a site at another domain, for when the stored one cannot be reached
@@ -904,7 +904,7 @@ func rebindSite(ctx context.Context, conn *db.DB, slug, domain, mediaDomain stri
 
 func announceHTTPS(domain string) {
 	if site.PublicHost(domain) {
-		fmt.Printf("https://%s answers once pwikit serve starts, or restarts if it is already running\n", domain)
+		fmt.Printf("https://%s answers once magnetar serve starts, or restarts if it is already running\n", domain)
 	}
 }
 

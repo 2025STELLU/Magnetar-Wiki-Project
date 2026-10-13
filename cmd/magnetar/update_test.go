@@ -7,8 +7,8 @@ import (
 )
 
 func TestTickFailureKeepsTheLastLine(t *testing.T) {
-	out := []byte("starting\npwikit: read /srv/pwikit/pwikit.toml: permission denied\n")
-	if got, want := tickFailure(errors.New("exit status 1"), out), "pwikit: read /srv/pwikit/pwikit.toml: permission denied"; got != want {
+	out := []byte("starting\nmagnetar: read /srv/magnetar/magnetar.toml: permission denied\n")
+	if got, want := tickFailure(errors.New("exit status 1"), out), "magnetar: read /srv/magnetar/magnetar.toml: permission denied"; got != want {
 		t.Errorf("tickFailure() = %q, want %q", got, want)
 	}
 }

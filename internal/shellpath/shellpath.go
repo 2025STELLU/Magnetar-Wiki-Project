@@ -1,4 +1,4 @@
-// Package shellpath puts the pwikit command where a shell looks for it.
+// Package shellpath puts the magnetar command where a shell looks for it.
 package shellpath
 
 import (
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const command = "pwikit"
+const command = "magnetar"
 
 type Place struct {
 	// Path is the link on Linux and macOS, and the directory added to Path on

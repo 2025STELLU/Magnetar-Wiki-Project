@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-const systemAccount = "pwikit"
+const systemAccount = "magnetar"
 
 type process struct {
 	cmd *exec.Cmd
@@ -132,8 +132,8 @@ func postgresAccount(cfg Config) (*account, error) {
 	}
 	if runtime.GOOS != "linux" {
 		return nil, errors.New("the bundled PostgreSQL will not run as root.\n" +
-			"  Start pwikit from an ordinary account, or install it as a service with\n" +
-			"  sudo pwikit service install, which runs it as the account you used sudo from")
+			"  Start magnetar from an ordinary account, or install it as a service with\n" +
+			"  sudo magnetar service install, which runs it as the account you used sudo from")
 	}
 	dirs := []string{cfg.Data, cfg.Root}
 	for _, name := range []string{"update", "logs", "files", "archive", "backups"} {
@@ -224,8 +224,8 @@ func createAccount(name, home string) error {
 	case lookPath("adduser"):
 		cmd = exec.Command("adduser", "-S", "-D", "-H", "-h", home, "-s", shell, name)
 	default:
-		return fmt.Errorf("pwikit runs as root, and the bundled PostgreSQL needs an ordinary account to run under.\n"+
-			"  Neither useradd nor adduser is here to make one. Create an account named %s, or start pwikit from an ordinary account", name)
+		return fmt.Errorf("magnetar runs as root, and the bundled PostgreSQL needs an ordinary account to run under.\n"+
+			"  Neither useradd nor adduser is here to make one. Create an account named %s, or start magnetar from an ordinary account", name)
 	}
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("create the account %s for the bundled PostgreSQL: %w\n%s", name, err, indent(strings.TrimSpace(string(out))))
@@ -297,7 +297,7 @@ func reach(a *account, paths ...string) error {
 				(int(st.Gid) == a.gid && mode&0o010 != 0)
 			if !open {
 				return fmt.Errorf("the bundled PostgreSQL runs as %s, which cannot enter %s.\n"+
-					"  Move the pwikit directory somewhere every account can reach, such as /opt/pwikit or /srv/pwikit", a.name, dir)
+					"  Move the magnetar directory somewhere every account can reach, such as /opt/magnetar or /srv/magnetar", a.name, dir)
 			}
 			if dir == filepath.Dir(dir) {
 				break

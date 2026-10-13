@@ -9,11 +9,11 @@ func TestPathWith(t *testing.T) {
 		dir   string
 		want  string
 	}{
-		{"empty", "", `C:\pwikit`, `C:\pwikit`},
-		{"appended", `C:\Windows;C:\Tools`, `C:\pwikit`, `C:\Windows;C:\Tools;C:\pwikit`},
-		{"already there", `C:\Windows;C:\pwikit`, `C:\pwikit`, `C:\Windows;C:\pwikit`},
-		{"already there in another case", `C:\Windows;c:\PWIKIT\`, `C:\pwikit`, `C:\Windows;c:\PWIKIT\`},
-		{"empty entries dropped", `C:\Windows;;C:\Tools;`, `C:\pwikit`, `C:\Windows;C:\Tools;C:\pwikit`},
+		{"empty", "", `C:\magnetar`, `C:\magnetar`},
+		{"appended", `C:\Windows;C:\Tools`, `C:\magnetar`, `C:\Windows;C:\Tools;C:\magnetar`},
+		{"already there", `C:\Windows;C:\magnetar`, `C:\magnetar`, `C:\Windows;C:\magnetar`},
+		{"already there in another case", `C:\Windows;c:\MAGNETAR\`, `C:\magnetar`, `C:\Windows;c:\MAGNETAR\`},
+		{"empty entries dropped", `C:\Windows;;C:\Tools;`, `C:\magnetar`, `C:\Windows;C:\Tools;C:\magnetar`},
 	}
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
@@ -31,10 +31,10 @@ func TestPathWithout(t *testing.T) {
 		dir   string
 		want  string
 	}{
-		{"removed", `C:\Windows;C:\old\pwikit;C:\Tools`, `C:\old\pwikit`, `C:\Windows;C:\Tools`},
-		{"removed ignoring case and slash", `C:\Windows;c:\OLD\pwikit\`, `C:\old\pwikit`, `C:\Windows`},
-		{"not there", `C:\Windows;C:\Tools`, `C:\old\pwikit`, `C:\Windows;C:\Tools`},
-		{"only entry", `C:\old\pwikit`, `C:\old\pwikit`, ``},
+		{"removed", `C:\Windows;C:\old\magnetar;C:\Tools`, `C:\old\magnetar`, `C:\Windows;C:\Tools`},
+		{"removed ignoring case and slash", `C:\Windows;c:\OLD\magnetar\`, `C:\old\magnetar`, `C:\Windows`},
+		{"not there", `C:\Windows;C:\Tools`, `C:\old\magnetar`, `C:\Windows;C:\Tools`},
+		{"only entry", `C:\old\magnetar`, `C:\old\magnetar`, ``},
 	}
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
@@ -46,7 +46,7 @@ func TestPathWithout(t *testing.T) {
 }
 
 func TestPathHasKeepsUnrelatedEntriesApart(t *testing.T) {
-	if pathHas(`C:\pwikit-old;C:\Tools`, `C:\pwikit`) {
-		t.Errorf("pathHas(%q, %q) = true, want false", `C:\pwikit-old;C:\Tools`, `C:\pwikit`)
+	if pathHas(`C:\magnetar-old;C:\Tools`, `C:\magnetar`) {
+		t.Errorf("pathHas(%q, %q) = true, want false", `C:\magnetar-old;C:\Tools`, `C:\magnetar`)
 	}
 }

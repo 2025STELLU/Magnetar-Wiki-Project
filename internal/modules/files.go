@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/module"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/module"
 )
 
 func init() { module.Register("files", renderFiles) }
@@ -35,7 +35,7 @@ func renderFiles(env module.Env, _ map[string]string, _ string) (string, error) 
 			`</td><td>` + escape.HTML(fileSize(f.Size)) + `</td><td></td></tr>`)
 	}
 	b.WriteString("</table>\n" + ind8 + `<p style="text-align: center;" class="manage-attachments-link">` +
-		`<a href="javascript:;" onclick="pwikit.files(event)">` +
+		`<a href="javascript:;" onclick="magnetar.files(event)">` +
 		escape.HTML(env.Text("module-files-manage")) + `</a></p>`)
 	return b.String(), nil
 }

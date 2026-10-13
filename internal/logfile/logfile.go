@@ -1,4 +1,4 @@
-// Package logfile answers how pwikit keeps its own log a bounded size.
+// Package logfile answers how magnetar keeps its own log a bounded size.
 package logfile
 
 import (

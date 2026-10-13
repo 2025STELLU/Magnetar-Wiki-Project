@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/escape"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/escape"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 )
 
 const boardCache = 30 * time.Second
@@ -201,14 +201,14 @@ func bannerHTML(loc *i18n.Localizer, at time.Time) string {
 	stamp := `<time datetime="` + utc.Format(time.RFC3339) + `">` + utc.Format("15:04") + ` UTC</time>`
 	text := strings.Replace(escape.HTML(loc.T("update.banner", "time", timeToken)), escape.HTML(timeToken), stamp, 1)
 	key := strconv.FormatInt(utc.Unix(), 10)
-	return `<div id="pwikit-update-banner" role="status" data-key="` + key + `" style="position:fixed;top:0;left:0;right:0;z-index:2147483000;` +
+	return `<div id="magnetar-update-banner" role="status" data-key="` + key + `" style="position:fixed;top:0;left:0;right:0;z-index:2147483000;` +
 		`margin:0;padding:8px 44px 8px 16px;background:#fff3cd;color:#664d03;border-bottom:1px solid #ffe69c;` +
 		`box-shadow:0 1px 4px rgba(0,0,0,.12);font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-align:center">` +
 		`<span>` + text + `</span>` +
 		`<button type="button" aria-label="` + escape.HTML(loc.T("update.banner-close")) + `" style="position:absolute;right:10px;top:4px;` +
 		`margin:0;padding:0 4px;background:none;border:0;color:inherit;font-size:22px;line-height:1.2;cursor:pointer">&times;</button></div>` +
-		`<script>(function(){var b=document.getElementById('pwikit-update-banner');if(!b)return;` +
-		`var k='pwikit-update-banner:'+b.getAttribute('data-key');` +
+		`<script>(function(){var b=document.getElementById('magnetar-update-banner');if(!b)return;` +
+		`var k='magnetar-update-banner:'+b.getAttribute('data-key');` +
 		`try{if(localStorage.getItem(k)){b.parentNode.removeChild(b);return;}}catch(e){}` +
 		`var t=b.querySelector('time'),d=new Date(t.getAttribute('datetime'));` +
 		`if(!isNaN(d.getTime())){t.textContent=d.toLocaleString([],{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});}` +

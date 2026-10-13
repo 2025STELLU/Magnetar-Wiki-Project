@@ -11,10 +11,10 @@ import (
 	"os/exec"
 	"sync"
 
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
 )
 
-const EnvBinary = "PWIKIT_FTML_SIDECAR"
+const EnvBinary = "MAGNETAR_FTML_SIDECAR"
 
 const maxMessageBytes = 64 << 20
 

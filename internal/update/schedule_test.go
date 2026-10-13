@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 )
 
 func TestNewer(t *testing.T) {

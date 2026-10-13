@@ -22,13 +22,13 @@ import (
 	"github.com/klauspost/compress/zstd"
 	"github.com/ulikunitz/xz"
 
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
 )
 
 const (
 	defaultDir = "internal/pgbundle/archive"
 	mavenBase  = "https://repo1.maven.org/maven2/io/zonky/test/postgres"
-	linuxBase  = "https://github.com/kakushi-w/pwikit-postgres/releases/download"
+	linuxBase  = "https://github.com/kakushi-w/magnetar-postgres/releases/download"
 	linuxBuild = "2"
 )
 

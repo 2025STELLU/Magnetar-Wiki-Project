@@ -1,4 +1,4 @@
-// Package config answers what a person wrote into pwikit.toml.
+// Package config answers what a person wrote into magnetar.toml.
 package config
 
 import (
@@ -79,7 +79,7 @@ const (
 	EngineConsole = "console"
 )
 
-const FDEnv = "PWIKIT_CONFIG_FD"
+const FDEnv = "MAGNETAR_CONFIG_FD"
 
 var piped struct {
 	once sync.Once
@@ -125,7 +125,7 @@ func checked(f File, meta toml.MetaData, path string) (File, error) {
 			keys[i] = key.String()
 		}
 		sort.Strings(keys)
-		return File{}, fmt.Errorf("%s has settings pwikit does not know: %s", path, strings.Join(keys, ", "))
+		return File{}, fmt.Errorf("%s has settings magnetar does not know: %s", path, strings.Join(keys, ", "))
 	}
 	if e := f.Mail.Engine; e != "" && e != EngineSMTP && e != EngineConsole {
 		return File{}, fmt.Errorf("%s sets mail.engine to %q; it takes %q or %q", path, e, EngineSMTP, EngineConsole)
@@ -156,13 +156,13 @@ func ReadableByOthers(path string) bool {
 	return err == nil && info.Mode().Perm()&0o077 != 0
 }
 
-const Template = `# Settings for pwikit. A line starting with # is an example and changes nothing
+const Template = `# Settings for magnetar. A line starting with # is an example and changes nothing
 # until the # is taken away.
 # A flag on the command line wins over this file, and so does an environment variable.
-# Restart pwikit after changing anything here.
+# Restart magnetar after changing anything here.
 
-# A PostgreSQL of your own. Left unset, pwikit runs the one it carries.
-# database = "postgres://user:password@127.0.0.1:5432/pwikit"
+# A PostgreSQL of your own. Left unset, magnetar runs the one it carries.
+# database = "postgres://user:password@127.0.0.1:5432/magnetar"
 
 [server]
 # listen = "127.0.0.1:8080"
@@ -171,7 +171,7 @@ const Template = `# Settings for pwikit. A line starting with # is an example an
 # storage_limit = "0"
 
 [tls]
-# Left unset, pwikit serves HTTPS on ports 80 and 443 with certificates from
+# Left unset, magnetar serves HTTPS on ports 80 and 443 with certificates from
 # Let's Encrypt once a site is bound to a public domain, and plain HTTP on
 # 127.0.0.1:8080 until then. Setting listen or trusted_proxies means a proxy sits
 # in front, and turns that off.
@@ -198,13 +198,13 @@ const Template = `# Settings for pwikit. A line starting with # is an example an
 # google_tag_id = ""
 
 [update]
-# pwikit installed as a system service looks for a new release every hour and
+# magnetar installed as a system service looks for a new release every hour and
 # installs it by itself inside the window below.
 # auto = true
 # Whether every visitor sees the banner announcing an automatic update, or only
 # the people who can open the admin panel.
 # public_banner = true
-# false stops pwikit from asking for new releases at all.
+# false stops magnetar from asking for new releases at all.
 # check = true
 # The hours in which updates are installed, read in time_zone.
 # window = "03:00-05:00"
@@ -215,11 +215,11 @@ const Template = `# Settings for pwikit. A line starting with # is an example an
 # 0s installs it in the next window.
 # min_age = "0s"
 # A mirror to download from when GitHub cannot be reached. Use only a mirror you trust.
-# pwikit update mirror <address> sets this line.
+# magnetar update mirror <address> sets this line.
 # mirror = ""
 
 [wikidot]
-# The Wikidot account pwikit signs in as to send the code that proves someone
+# The Wikidot account magnetar signs in as to send the code that proves someone
 # owns an imported Wikidot account. Left unset, a shared service sends it.
 # The password can also go in the file wikidot-password in the secrets folder.
 # username = ""
@@ -237,7 +237,7 @@ func readInherited(raw string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	f := os.NewFile(uintptr(fd), "pwikit.toml")
+	f := os.NewFile(uintptr(fd), "magnetar.toml")
 	if f == nil {
 		return nil, errors.New("not an open descriptor")
 	}

@@ -41,10 +41,10 @@ failed_versions, pinned_version, last_from, last_to, last_outcome, last_error, l
 rollback_version, rollback_kind, rollback_expires_at, scheduled_by_hand`
 
 var (
-	qUpdateState = register("UpdateState", `SELECT `+updateColumns+` FROM pwikit_update WHERE id = 1`)
+	qUpdateState = register("UpdateState", `SELECT `+updateColumns+` FROM magnetar_update WHERE id = 1`)
 
 	qSaveUpdateState = register("SaveUpdateState", `
-INSERT INTO pwikit_update (id, `+updateColumns+`)
+INSERT INTO magnetar_update (id, `+updateColumns+`)
 VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
 ON CONFLICT (id) DO UPDATE SET
 	checked_at = EXCLUDED.checked_at, check_error = EXCLUDED.check_error,

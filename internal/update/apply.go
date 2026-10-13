@@ -172,7 +172,7 @@ func (a *Applier) Apply(ctx context.Context, t Target) Outcome {
 	case pre.Problem != "":
 		return fail(errors.New(pre.Problem))
 	case pre.PostgresMoves && !t.AllowPostgresMove:
-		return fail(fmt.Errorf("%s moves the bundled PostgreSQL to version %s; run pwikit update by hand", t.Version, PostgresMajor(pre.Postgres)))
+		return fail(fmt.Errorf("%s moves the bundled PostgreSQL to version %s; run magnetar update by hand", t.Version, PostgresMajor(pre.Postgres)))
 	}
 
 	kind := RollbackNone
@@ -247,7 +247,7 @@ func (a *Applier) Apply(ctx context.Context, t Target) Outcome {
 	}
 	if cause == nil && a.Offline {
 		a.clearStaging(staging)
-		a.logf("installed %s; it runs once pwikit is started again", t.Version)
+		a.logf("installed %s; it runs once magnetar is started again", t.Version)
 		return out
 	}
 	if cause == nil {
@@ -351,7 +351,7 @@ func (a *Applier) restore(ctx context.Context, p RollbackPoint, point string) er
 		return err
 	}
 	if a.Offline {
-		a.logf("put back %s; it runs once pwikit is started again", p.From)
+		a.logf("put back %s; it runs once magnetar is started again", p.From)
 		return nil
 	}
 	since := time.Now()
@@ -433,7 +433,7 @@ func (a *Applier) refreshRootCopy(from string) error {
 		err = os.Chmod(a.RootCopy, 0o755)
 	}
 	if err != nil {
-		return fmt.Errorf("refresh the copy of pwikit root runs: %w", err)
+		return fmt.Errorf("refresh the copy of magnetar root runs: %w", err)
 	}
 	return nil
 }

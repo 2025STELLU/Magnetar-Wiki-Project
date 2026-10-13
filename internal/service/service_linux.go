@@ -38,8 +38,8 @@ func Install(s Spec) error {
 		return err
 	}
 	if _, err := os.Stat("/run/systemd/system"); err != nil {
-		return errors.New("this machine does not run systemd, so pwikit cannot register itself.\n" +
-			"  Have your init system run the command that pwikit service print shows")
+		return errors.New("this machine does not run systemd, so magnetar cannot register itself.\n" +
+			"  Have your init system run the command that magnetar service print shows")
 	}
 	u, err := serviceUser(s.User)
 	if err != nil {
@@ -50,7 +50,7 @@ func Install(s Spec) error {
 	if _, err := os.Stat(path); err == nil {
 		in, _ := Lookup(s.Name)
 		if in.DataDir != s.Root {
-			return fmt.Errorf("a service named %s is already installed. Remove it with pwikit service uninstall, or pick another -name", s.Name)
+			return fmt.Errorf("a service named %s is already installed. Remove it with magnetar service uninstall, or pick another -name", s.Name)
 		}
 		if err := runTool("systemctl", "stop", s.Name+".service"); err != nil {
 			return err

@@ -374,7 +374,7 @@
   "notifications.item.type-new-post": "新的论坛消息",
   "notifications.item.type-post-like": "点赞",
   "notifications.item.type-post-reply": "回复了您的消息",
-  "notifications.item.type-release": "pwikit {version} 已发布",
+  "notifications.item.type-release": "MagnetarWiki {version} 已发布",
   "notifications.item.type-watched-edit": "关注的页面有新的编辑",
   "notifications.item.type-welcome": "欢迎来到本站",
   "notifications.item.view-conversation": "查看会话",

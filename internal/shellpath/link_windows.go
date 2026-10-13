@@ -43,7 +43,7 @@ func writeUserPath(value string, kind uint32) error {
 	return key.SetExpandStringValue("Path", value)
 }
 
-// Path cannot say which of its entries pwikit added once the program has moved,
+// Path cannot say which of its entries magnetar added once the program has moved,
 // so the entry is remembered beside it.
 func readMarker() string {
 	key, err := registry.OpenKey(registry.CURRENT_USER, markerKey, registry.QUERY_VALUE)
@@ -103,7 +103,7 @@ func place(dir, exe, value string) Place {
 
 func Install(exe, dir string, force bool) (Place, Outcome, error) {
 	if dir != "" {
-		return Place{}, "", errors.New("on Windows pwikit adds the directory holding it to your Path, so -dir does not apply")
+		return Place{}, "", errors.New("on Windows magnetar adds the directory holding it to your Path, so -dir does not apply")
 	}
 	here := filepath.Dir(exe)
 	value, kind, err := readUserPath()
@@ -121,7 +121,7 @@ func Install(exe, dir string, force bool) (Place, Outcome, error) {
 				continue
 			}
 			if exists(filepath.Join(part, command+".exe")) {
-				return Place{}, "", fmt.Errorf("%s is already on your Path and holds another pwikit; pass -force to use %s instead", part, here)
+				return Place{}, "", fmt.Errorf("%s is already on your Path and holds another magnetar; pass -force to use %s instead", part, here)
 			}
 		}
 	}

@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/service"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/service"
 )
 
 func protectInstance(*paths.Paths, string) string { return "" }

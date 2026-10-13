@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/repo"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/repo"
 )
 
 var update = flag.Bool("update", false, "rewrite testdata/vars.golden and testdata/vars_corpus.json")
@@ -19,7 +19,7 @@ var update = flag.Bool("update", false, "rewrite testdata/vars.golden and testda
 const (
 	goldenPath = "testdata/vars.golden"
 	corpusPath = "testdata/vars_corpus.json"
-	envHost    = "PWIKIT_TEST_HOST"
+	envHost    = "MAGNETAR_TEST_HOST"
 )
 
 type varsCorpus struct {

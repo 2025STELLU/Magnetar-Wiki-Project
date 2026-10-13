@@ -16,7 +16,7 @@ import (
 	"golang.org/x/sys/windows/svc/mgr"
 )
 
-const EventSource = "pwikit"
+const EventSource = "magnetar"
 
 // A virtual account rather than LocalSystem, so the site cannot touch the whole machine.
 func account(name string) string {
@@ -60,7 +60,7 @@ func Install(spec Spec) (err error) {
 	defer m.Disconnect()
 	if existing, err := m.OpenService(spec.Name); err == nil {
 		existing.Close()
-		return fmt.Errorf("a service named %s is already installed. Remove it with pwikit service uninstall, or pick another -name", spec.Name)
+		return fmt.Errorf("a service named %s is already installed. Remove it with magnetar service uninstall, or pick another -name", spec.Name)
 	}
 
 	s, err := m.CreateService(spec.Name, spec.Executable, mgr.Config{
@@ -97,7 +97,7 @@ func Install(spec Spec) (err error) {
 		return err
 	}
 	if err := openFirewall(spec.Name, spec.Executable); err != nil {
-		fmt.Fprintf(os.Stderr, "could not let pwikit through Windows Firewall: %v; visitors from other machines stay blocked until it is allowed in\n", err)
+		fmt.Fprintf(os.Stderr, "could not let magnetar through Windows Firewall: %v; visitors from other machines stay blocked until it is allowed in\n", err)
 	}
 	if err := s.Start(); err != nil {
 		return fmt.Errorf("start service %s: %w", spec.Name, err)
@@ -125,7 +125,7 @@ func createUpdateTask(spec Spec) error {
 		body[2+2*i] = byte(u)
 		body[3+2*i] = byte(u >> 8)
 	}
-	file, err := os.CreateTemp("", "pwikit-update-task-*.xml")
+	file, err := os.CreateTemp("", "magnetar-update-task-*.xml")
 	if err != nil {
 		return err
 	}

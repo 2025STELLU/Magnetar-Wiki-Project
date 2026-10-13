@@ -5,12 +5,12 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/pgbundle"
-	"github.com/WikitTeam/ProjectWikit/internal/version"
+	"github.com/2025STELLU/MagnetarWiki/internal/pgbundle"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
 )
 
 func printVersion() error {
-	fmt.Printf("pwikit %s\n", version.String())
+	fmt.Printf("magnetar %s\n", version.String())
 	if commit := version.Commit(); commit != "" {
 		fmt.Printf("commit      %s\n", commit)
 	}

@@ -18,8 +18,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/version"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/version"
 )
 
 type CreateOptions struct {
@@ -104,7 +104,7 @@ func stage(ctx context.Context, conn *pgx.Conn, opts CreateOptions) (staging, Ma
 	m := Manifest{
 		Format:    Format,
 		CreatedAt: time.Now().UTC(),
-		Pwikit:    version.String(),
+		Magnetar:    version.String(),
 		Site:      opts.Site,
 		Tables:    map[string]Table{},
 		Files:     Files{Entries: map[string]string{}},
@@ -315,7 +315,7 @@ func writeManifest(tw *tar.Writer, m Manifest) error {
 }
 
 func DefaultName(at time.Time, site string) string {
-	name := "pwikit-"
+	name := "magnetar-"
 	if site != "" {
 		name += site + "-"
 	}

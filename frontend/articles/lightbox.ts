@@ -1,4 +1,4 @@
-const containerId = 'pwikit-lightbox'
+const containerId = 'magnetar-lightbox'
 
 function close() {
   document.getElementById(containerId)?.remove()

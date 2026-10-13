@@ -14,7 +14,7 @@ export const Page: React.FC<Props> = ({ children, title, crumb }) => {
   return (
     <Styled.Container>
       <Helmet>
-        <title>{title} - ProjectWikit</title>
+        <title>{title} - MagnetarWiki</title>
       </Helmet>
       <Styled.RootStyles />
       <Header crumb={crumb || title} />

@@ -8,23 +8,23 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/shellpath"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/shellpath"
 )
 
 func pathUsage() {
-	fmt.Fprint(os.Stderr, `Usage: pwikit path <install|uninstall|status> [options]
+	fmt.Fprint(os.Stderr, `Usage: magnetar path <install|uninstall|status> [options]
 
-  install    make pwikit runnable by name from any directory
+  install    make magnetar runnable by name from any directory
   uninstall  undo install
-  status     show where the pwikit command is reachable from
+  status     show where the magnetar command is reachable from
 
 Options:
   -dir    directory to put the command in on Linux and macOS; defaults to
           /usr/local/bin, or ~/.local/bin when that cannot be written
   -force  replace a command of the same name that leads somewhere else
 
-On Windows, install adds the directory holding pwikit to your own Path.
+On Windows, install adds the directory holding magnetar to your own Path.
 `)
 }
 
@@ -71,7 +71,7 @@ func runnableExecutable() (string, error) {
 		return "", err
 	}
 	if p.Source() == paths.SourceGoRun {
-		return "", errors.New("go run leaves the program in a temporary directory; build pwikit and run that instead")
+		return "", errors.New("go run leaves the program in a temporary directory; build magnetar and run that instead")
 	}
 	exe, err := os.Executable()
 	if err != nil {
@@ -90,7 +90,7 @@ func installPath(exe, dir string, force bool) error {
 	}
 	switch {
 	case outcome == shellpath.Unchanged:
-		fmt.Printf("pwikit is already reachable through %s\n", place.Path)
+		fmt.Printf("magnetar is already reachable through %s\n", place.Path)
 	case runtime.GOOS == "windows":
 		fmt.Printf("added %s to your Path\n", place.Path)
 	case outcome == shellpath.Replaced:
@@ -108,7 +108,7 @@ func uninstallPath(exe, dir string) error {
 		return err
 	}
 	if outcome == shellpath.Absent {
-		fmt.Println("pwikit was not on the PATH through this command")
+		fmt.Println("magnetar was not on the PATH through this command")
 		return nil
 	}
 	fmt.Println(removedMessage(place))
@@ -128,16 +128,16 @@ func pathStatus(exe, dir string) error {
 		return err
 	}
 	if len(places) == 0 {
-		fmt.Println("pwikit is not on the PATH; run ./pwikit path install from its directory")
+		fmt.Println("magnetar is not on the PATH; run ./magnetar path install from its directory")
 		return nil
 	}
 	for _, place := range places {
-		state := "leads to this pwikit"
+		state := "leads to this magnetar"
 		switch {
 		case !place.Working:
-			state = "leads nowhere; run ./pwikit path install from the new directory"
+			state = "leads nowhere; run ./magnetar path install from the new directory"
 		case !place.Ours:
-			state = "leads to another pwikit at " + place.Target
+			state = "leads to another magnetar at " + place.Target
 		}
 		fmt.Printf("%s: %s\n", place.Path, state)
 		printReach(place)
@@ -155,22 +155,22 @@ func printReach(place shellpath.Place) {
 	}
 }
 
-// Setting up the service is when pwikit is being put in place for good, so the
+// Setting up the service is when magnetar is being put in place for good, so the
 // command goes on the PATH then too. A failure here leaves the service working.
 func servicePath(exe string, install bool) {
 	if install {
 		place, _, err := shellpath.Install(exe, "", false)
 		if err != nil {
-			fmt.Printf("  could not put pwikit on the PATH: %v\n  run pwikit path install to try again\n", err)
+			fmt.Printf("  could not put magnetar on the PATH: %v\n  run magnetar path install to try again\n", err)
 			return
 		}
-		fmt.Printf("  pwikit can now be run by name through %s\n", place.Path)
+		fmt.Printf("  magnetar can now be run by name through %s\n", place.Path)
 		printReach(place)
 		return
 	}
 	place, outcome, err := shellpath.Uninstall(exe, "")
 	if err != nil {
-		fmt.Printf("  could not take pwikit off the PATH: %v\n", err)
+		fmt.Printf("  could not take magnetar off the PATH: %v\n", err)
 		return
 	}
 	if outcome == shellpath.Removed {

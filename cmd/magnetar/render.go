@@ -10,18 +10,18 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/WikitTeam/ProjectWikit/internal/callbacks"
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/page"
-	"github.com/WikitTeam/ProjectWikit/internal/paths"
-	"github.com/WikitTeam/ProjectWikit/internal/printuser"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	"github.com/WikitTeam/ProjectWikit/internal/repo"
-	"github.com/WikitTeam/ProjectWikit/internal/roles"
+	"github.com/2025STELLU/MagnetarWiki/internal/callbacks"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/page"
+	"github.com/2025STELLU/MagnetarWiki/internal/paths"
+	"github.com/2025STELLU/MagnetarWiki/internal/printuser"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/repo"
+	"github.com/2025STELLU/MagnetarWiki/internal/roles"
 )
 
-const envSidecar = "PWIKIT_FTML_SIDECAR"
+const envSidecar = "MAGNETAR_FTML_SIDECAR"
 
 func render(args []string) error {
 	fs := flag.NewFlagSet("render", flag.ContinueOnError)

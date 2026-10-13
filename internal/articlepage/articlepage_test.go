@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/WikitTeam/ProjectWikit/internal/article"
+	"github.com/2025STELLU/MagnetarWiki/internal/article"
 )
 
 func TestExcerpt(t *testing.T) {

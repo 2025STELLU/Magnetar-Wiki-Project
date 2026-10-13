@@ -11,8 +11,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
 )
 
 func TestNoteRecordsTheSiteOfTheRequest(t *testing.T) {
@@ -39,7 +39,7 @@ func TestNoteRecordsTheSiteOfTheRequest(t *testing.T) {
 			return
 		}
 		defer raw.Close(context.Background())
-		if _, err := raw.Exec(context.Background(), `DELETE FROM pwikit_admin_log WHERE screen = $1`, screen); err != nil {
+		if _, err := raw.Exec(context.Background(), `DELETE FROM magnetar_admin_log WHERE screen = $1`, screen); err != nil {
 			t.Errorf("clean up admin log err = %v, want nil", err)
 		}
 	})

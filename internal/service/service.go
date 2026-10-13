@@ -1,4 +1,4 @@
-// Package service answers how pwikit starts itself when the machine boots.
+// Package service answers how magnetar starts itself when the machine boots.
 package service
 
 import (
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const DefaultName = "pwikit"
+const DefaultName = "magnetar"
 
 const StopTimeout = 180
 
@@ -45,7 +45,7 @@ type Firewall struct {
 	Ports []int
 }
 
-const firewallMarker = "# pwikit-firewall"
+const firewallMarker = "# magnetar-firewall"
 
 func (f Firewall) line() string {
 	if f.Tool == "" || len(f.Ports) == 0 {
@@ -119,7 +119,7 @@ func (s Spec) runExecutable() string {
 func (s Spec) Systemd() string {
 	var b strings.Builder
 	if line := s.Opened.line(); line != "" {
-		b.WriteString("# The ports below were opened by pwikit service install, and uninstall closes them again.\n")
+		b.WriteString("# The ports below were opened by magnetar service install, and uninstall closes them again.\n")
 		b.WriteString(line + "\n")
 	}
 	b.WriteString("[Unit]\n")
@@ -139,7 +139,7 @@ func (s Spec) Systemd() string {
 	fmt.Fprintf(&b, "ExecStart=%s\n", strings.Join(quoted, " "))
 	b.WriteString("Restart=on-failure\n")
 	b.WriteString("RestartSec=5\n")
-	// pwikit stops PostgreSQL itself. SIGTERM to the whole group would cut that short.
+	// magnetar stops PostgreSQL itself. SIGTERM to the whole group would cut that short.
 	b.WriteString("KillMode=mixed\n")
 	fmt.Fprintf(&b, "TimeoutStopSec=%d\n", StopTimeout)
 	b.WriteString("AmbientCapabilities=CAP_NET_BIND_SERVICE\n")
@@ -201,7 +201,7 @@ func (s Spec) LaunchdUpdate() string {
 	fmt.Fprintf(&b, "\t<key>StartInterval</key>\n\t<integer>%d</integer>\n", UpdateEvery)
 	b.WriteString("\t<key>RunAtLoad</key>\n\t<false/>\n")
 	if s.CrashFile != "" {
-		updateLog := strings.TrimSuffix(s.CrashFile, "pwikit-stderr.log") + "update-stderr.log"
+		updateLog := strings.TrimSuffix(s.CrashFile, "magnetar-stderr.log") + "update-stderr.log"
 		plistString(&b, "StandardOutPath", updateLog)
 		plistString(&b, "StandardErrorPath", updateLog)
 	}

@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 )
 
 func boardWith(t *testing.T, st db.UpdateState, s Settings) *Board {
@@ -37,10 +37,10 @@ func TestWrapAddsTheBannerBeforeTheBodyEnds(t *testing.T) {
 
 	rec := serveThrough(b, "text/html; charset=utf-8", "<html><body><div id=\"container\">page</div></body></html>")
 	got := rec.Body.String()
-	if !strings.Contains(got, `id="pwikit-update-banner"`) {
+	if !strings.Contains(got, `id="magnetar-update-banner"`) {
 		t.Fatalf("page = %q, want the banner in it", got)
 	}
-	if strings.Index(got, "pwikit-update-banner") > strings.Index(got, "</body>") {
+	if strings.Index(got, "magnetar-update-banner") > strings.Index(got, "</body>") {
 		t.Errorf("page = %q, want the banner before </body>", got)
 	}
 	if !strings.Contains(got, `<div id="container">page</div>`) {
@@ -71,7 +71,7 @@ func TestWrapLeavesOtherResponsesAlone(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			rec := serveThrough(boardWith(t, tt.st, tt.s), tt.contentType, "<body>x</body>")
-			if strings.Contains(rec.Body.String(), "pwikit-update-banner") {
+			if strings.Contains(rec.Body.String(), "magnetar-update-banner") {
 				t.Errorf("body = %q, want no banner", rec.Body.String())
 			}
 		})

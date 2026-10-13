@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/i18n"
-	"github.com/WikitTeam/ProjectWikit/internal/perms"
+	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
+	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 )
 
 const recentPostSlug = "forum-posts"

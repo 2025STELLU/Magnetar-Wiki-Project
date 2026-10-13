@@ -230,7 +230,7 @@ func TestApplyPutsBackTheDataABreakingReleaseChanged(t *testing.T) {
 func TestApplyTouchesNothingWhenThePreflightObjects(t *testing.T) {
 	f := newFakeInstance(t)
 	server, target := releaseServer(t)
-	f.preflight = Preflight{Version: "v1.1.0", Problem: "the database was upgraded by a newer pwikit"}
+	f.preflight = Preflight{Version: "v1.1.0", Problem: "the database was upgraded by a newer magnetar"}
 
 	out := f.applier(server.URL).Apply(context.Background(), target)
 	if out.Err == nil || out.RolledBack {
@@ -368,8 +368,8 @@ func TestRollbackRefusesWithoutRootsCopy(t *testing.T) {
 }
 
 func TestReplaceFromAnotherDirectory(t *testing.T) {
-	current := filepath.Join(t.TempDir(), "pwikit")
-	next := filepath.Join(t.TempDir(), "pwikit")
+	current := filepath.Join(t.TempDir(), "magnetar")
+	next := filepath.Join(t.TempDir(), "magnetar")
 	must(t, os.WriteFile(current, []byte("old"), 0o755))
 	must(t, os.WriteFile(next, []byte("new"), 0o700))
 	if err := Replace(current, next); err != nil {

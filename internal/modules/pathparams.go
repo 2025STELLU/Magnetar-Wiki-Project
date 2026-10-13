@@ -1,6 +1,6 @@
 package modules
 
-import "github.com/WikitTeam/ProjectWikit/internal/module"
+import "github.com/2025STELLU/MagnetarWiki/internal/module"
 
 // pathUnder puts the path parameters underneath the module's own, so what the
 // page wrote wins over what the reader appended to the URL.

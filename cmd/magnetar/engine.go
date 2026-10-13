@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/WikitTeam/ProjectWikit/internal/renderer"
-	"github.com/WikitTeam/ProjectWikit/internal/renderer/sidecar"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer"
+	"github.com/2025STELLU/MagnetarWiki/internal/renderer/sidecar"
 )
 
 func newSidecarEngine(path string) (renderer.Renderer, func(), error) {

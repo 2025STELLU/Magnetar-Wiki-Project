@@ -1,4 +1,4 @@
-name: pwikit
+name: magnetar
 
 services:
   password:
@@ -6,12 +6,12 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - |
-        if [ ! -s /run/pwikit/db-password ]; then
+        if [ ! -s /run/magnetar/db-password ]; then
           umask 022
-          head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' > /run/pwikit/db-password
+          head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' > /run/magnetar/db-password
         fi
     volumes:
-      - secrets:/run/pwikit
+      - secrets:/run/magnetar
     restart: "no"
 
   postgres:
@@ -21,32 +21,32 @@ services:
       password:
         condition: service_completed_successfully
     environment:
-      POSTGRES_USER: pwikit
-      POSTGRES_DB: pwikit
-      POSTGRES_PASSWORD_FILE: /run/pwikit/db-password
+      POSTGRES_USER: magnetar
+      POSTGRES_DB: magnetar
+      POSTGRES_PASSWORD_FILE: /run/magnetar/db-password
     volumes:
       - pgdata:/var/lib/postgresql
-      - secrets:/run/pwikit:ro
+      - secrets:/run/magnetar:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pwikit -d pwikit"]
+      test: ["CMD-SHELL", "pg_isready -U magnetar -d magnetar"]
       interval: 5s
       timeout: 3s
       retries: 20
 
-  pwikit:
-    image: ${PWIKIT_IMAGE:-ghcr.io/wikitteam/pwikit:latest}
+  magnetar:
+    image: ${MAGNETAR_IMAGE:-ghcr.io/wikitteam/magnetar:latest}
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://pwikit@postgres:5432/pwikit?sslmode=disable
-      PWIKIT_DATABASE_PASSWORD_FILE: /run/pwikit/db-password
+      DATABASE_URL: postgres://magnetar@postgres:5432/magnetar?sslmode=disable
+      MAGNETAR_DATABASE_PASSWORD_FILE: /run/magnetar/db-password
     volumes:
       - data:/data
-      - secrets:/run/pwikit:ro
+      - secrets:/run/magnetar:ro
     ports:
-      - "${PWIKIT_PORT:-8080}:8080"
+      - "${MAGNETAR_PORT:-8080}:8080"
 
 volumes:
   data:

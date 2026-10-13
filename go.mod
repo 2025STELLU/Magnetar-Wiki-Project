@@ -1,4 +1,4 @@
-module github.com/WikitTeam/ProjectWikit
+module github.com/2025STELLU/MagnetarWiki
 
 go 1.26.0
 

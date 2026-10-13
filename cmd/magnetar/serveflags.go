@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/WikitTeam/ProjectWikit/internal/config"
-	"github.com/WikitTeam/ProjectWikit/internal/entry"
-	"github.com/WikitTeam/ProjectWikit/internal/site"
-	"github.com/WikitTeam/ProjectWikit/internal/timezone"
-	"github.com/WikitTeam/ProjectWikit/internal/update"
+	"github.com/2025STELLU/MagnetarWiki/internal/config"
+	"github.com/2025STELLU/MagnetarWiki/internal/entry"
+	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/timezone"
+	"github.com/2025STELLU/MagnetarWiki/internal/update"
 )
 
 type serveOptions struct {
@@ -58,7 +58,7 @@ func newServeOptions() *serveOptions {
 		trusted:       fs.String("trusted-proxies", "", "trusted reverse proxy addresses or CIDRs, comma separated; empty trusts no X-Forwarded-* header"),
 		staticDir:     fs.String("static-dir", "", "directory holding the frontend asset bundle"),
 		database:      fs.String("database", "", "PostgreSQL connection string; empty runs the bundled PostgreSQL"),
-		secret:        fs.String("secret-key", "", "key the session cookie is signed with; defaults to one pwikit makes and keeps in secrets/"+sessionKeyFile),
+		secret:        fs.String("secret-key", "", "key the session cookie is signed with; defaults to one magnetar makes and keeps in secrets/"+sessionKeyFile),
 		sidecar:       fs.String("sidecar", "", "path to the ftml sidecar binary; without it the linked-in ftml is used"),
 		noMigrate:     fs.Bool("no-migrate", false, "start without applying pending schema migrations"),
 		uploadLimit:   fs.String("upload-limit", "0", "size the files still attached to pages may reach, such as 4GB; 0 for no ceiling"),
@@ -71,7 +71,7 @@ func newServeOptions() *serveOptions {
 		acmeDirectory: fs.String("acme-directory", "", "ACME directory URL; empty uses Let's Encrypt"),
 		logFile:       fs.String("log-file", "", "file log lines are appended to; empty writes them to standard error"),
 		dev:           fs.Bool("dev", false, "development mode; plain HTTP that only this machine can reach, whatever the sites and settings say; -listen 9000 picks another port"),
-		updateAuto:    fs.Bool("update-auto", true, "install new releases by themselves when pwikit runs as a system service"),
+		updateAuto:    fs.Bool("update-auto", true, "install new releases by themselves when magnetar runs as a system service"),
 		updateBanner:  fs.Bool("update-public-banner", true, "announce an automatic update to every visitor, not only to the people who can open the admin panel"),
 		updateCheck:   fs.Bool("update-check", true, "look for new releases at all"),
 		updateWindow:  fs.String("update-window", update.DefaultWindow, "hours in which releases are installed by themselves, read in -update-time-zone"),

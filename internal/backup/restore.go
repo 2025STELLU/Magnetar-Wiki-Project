@@ -14,8 +14,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/migrate"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/migrate"
 )
 
 type RestoreOptions struct {
@@ -41,7 +41,7 @@ var ErrNotEmpty = errors.New("the database already holds data")
 var seeded = map[string]bool{
 	"auth_permission":      true,
 	"django_content_type":  true,
-	"pwikit_update":        true,
+	"magnetar_update":        true,
 	"web_role":             true,
 	"web_role_permissions": true,
 	"web_rolecategory":     true,
@@ -160,7 +160,7 @@ func readyToRestore(ctx context.Context, conn *pgx.Conn, force bool) (bool, erro
 		return false, err
 	}
 	if others > 0 {
-		return false, fmt.Errorf("%d other connections are using this database; stop pwikit before restoring", others)
+		return false, fmt.Errorf("%d other connections are using this database; stop magnetar before restoring", others)
 	}
 	tables, err := db.BackupTables(ctx, conn)
 	if err != nil {
@@ -342,7 +342,7 @@ func safeJoin(root, rel string) (string, error) {
 }
 
 func canCreateIn(dir string) bool {
-	probe, err := os.CreateTemp(dir, ".pwikit-probe-*")
+	probe, err := os.CreateTemp(dir, ".magnetar-probe-*")
 	if err != nil {
 		return false
 	}

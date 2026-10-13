@@ -12,9 +12,9 @@ import (
 
 	"golang.org/x/term"
 
-	"github.com/WikitTeam/ProjectWikit/internal/db"
-	"github.com/WikitTeam/ProjectWikit/internal/password"
-	"github.com/WikitTeam/ProjectWikit/internal/wikidot"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
+	"github.com/2025STELLU/MagnetarWiki/internal/password"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 )
 
 func adminCommand(args []string) error {
@@ -23,7 +23,7 @@ func adminCommand(args []string) error {
 		sub = args[0]
 	}
 	if sub != "create" && sub != "grant" && sub != "revoke" {
-		fmt.Fprint(os.Stderr, `Usage: pwikit admin <create|grant|revoke> -name <name> [options]
+		fmt.Fprint(os.Stderr, `Usage: magnetar admin <create|grant|revoke> -name <name> [options]
 
   create  take over an imported account or make a new one, and give it every right
   grant   give every right to an account that already exists
@@ -100,7 +100,7 @@ func createAdmin(ctx context.Context, conn *db.DB, raw, canonical string, fromSt
 	case err != nil && !errors.Is(err, db.ErrNotFound):
 		return err
 	case err == nil && password.IsUsable(hash):
-		return fmt.Errorf("%s (#%d) already has a password; run `pwikit admin grant -name %q` instead",
+		return fmt.Errorf("%s (#%d) already has a password; run `magnetar admin grant -name %q` instead",
 			found.Username, found.ID, raw)
 	}
 
@@ -212,7 +212,7 @@ func revokeAdmin(ctx context.Context, conn *db.DB, raw, canonical string) error 
 	}
 	fmt.Printf("took every right back from %s (#%d)\n", found.Username, found.ID)
 	if left <= 1 {
-		fmt.Fprintln(os.Stderr, "that was the last one; nobody can reach the admin pages until `pwikit admin grant` runs")
+		fmt.Fprintln(os.Stderr, "that was the last one; nobody can reach the admin pages until `magnetar admin grant` runs")
 	}
 	return nil
 }

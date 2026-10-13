@@ -123,7 +123,7 @@ func Open(path string) (*Archive, error) {
 		return nil, err
 	}
 	if !info.IsDir() {
-		return nil, fmt.Errorf("%q is a file, and pwikit reads the unpacked backup; unpack it and pass the directory", path)
+		return nil, fmt.Errorf("%q is a file, and magnetar reads the unpacked backup; unpack it and pass the directory", path)
 	}
 	a := &Archive{sites: map[string]string{}}
 	shared := path
