@@ -6,12 +6,13 @@ import (
 )
 
 type SiteSettings struct {
-	RatingMode string
-	CreateTags string
+	RatingMode  string
+	CreateTags  string
+	LevelPrefix string
 }
 
 var qSiteSettingsRow = register("SiteSettingsRow", `
-SELECT rating_mode, can_user_create_tags
+SELECT rating_mode, can_user_create_tags, level_prefix
 FROM web_settings WHERE site_id = $1 AND category_id IS NULL`)
 
 func (d *DB) SiteSettings(ctx context.Context, siteID int64) (SiteSettings, error) {
@@ -22,9 +23,12 @@ func (d *DB) SiteSettings(ctx context.Context, siteID int64) (SiteSettings, erro
 	}
 	defer rows.Close()
 	if rows.Next() {
-		if err := rows.Scan(&s.RatingMode, &s.CreateTags); err != nil {
+		if err := rows.Scan(&s.RatingMode, &s.CreateTags, &s.LevelPrefix); err != nil {
 			return s, err
 		}
+	}
+	if s.LevelPrefix == "" {
+		s.LevelPrefix = "Lv"
 	}
 	return s, rows.Err()
 }

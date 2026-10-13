@@ -2,7 +2,7 @@
 -- What a site has done to one of its members. Accounts are shared by every
 -- site of an instance, so a sanction that belongs to one site cannot live on
 -- the account row.
-CREATE TABLE pwikit_member_sanction (
+CREATE TABLE magnetar_member_sanction (
     id        bigserial   PRIMARY KEY,
     site_id   bigint      NOT NULL REFERENCES web_site (id) ON DELETE CASCADE,
     user_id   bigint      NOT NULL REFERENCES web_user (id) ON DELETE CASCADE,
@@ -15,7 +15,7 @@ CREATE TABLE pwikit_member_sanction (
     UNIQUE (site_id, user_id, kind)
 );
 
-CREATE INDEX pwikit_member_sanction_site_idx ON pwikit_member_sanction (site_id, until);
+CREATE INDEX magnetar_member_sanction_site_idx ON magnetar_member_sanction (site_id, until);
 
 INSERT INTO auth_permission (id, name, content_type_id, codename)
 SELECT (SELECT max(id) FROM auth_permission) + row_number() OVER (ORDER BY wanted.codename),

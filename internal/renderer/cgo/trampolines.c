@@ -3,17 +3,17 @@
 #include "ftml.h"
 #include "_cgo_export.h"
 
-void pwikit_fill_callbacks(FtmlCallbacks *out) {
-  out->module_has_body = pwikitModuleHasBody;
-  out->module_is_inline = pwikitModuleIsInline;
-  out->render_module = pwikitRenderModule;
-  out->render_user = pwikitRenderUser;
-  out->get_i18n_message = pwikitGetI18nMessage;
-  out->get_html_injected_code = pwikitGetHTMLInjectedCode;
-  out->get_page_info = pwikitGetPageInfo;
-  out->evaluate_expression = pwikitEvaluateExpression;
-  out->normalize_page_name = pwikitNormalizePageName;
-  out->include_pages = pwikitIncludePages;
-  out->no_such_include = pwikitNoSuchInclude;
-  out->next_include_level = pwikitNextIncludeLevel;
+void magnetar_fill_callbacks(FtmlCallbacks *out) {
+  out->module_has_body = magnetarModuleHasBody;
+  out->module_is_inline = magnetarModuleIsInline;
+  out->render_module = magnetarRenderModule;
+  out->render_user = magnetarRenderUser;
+  out->get_i18n_message = magnetarGetI18nMessage;
+  out->get_html_injected_code = magnetarGetHTMLInjectedCode;
+  out->get_page_info = magnetarGetPageInfo;
+  out->evaluate_expression = magnetarEvaluateExpression;
+  out->normalize_page_name = magnetarNormalizePageName;
+  out->include_pages = magnetarIncludePages;
+  out->no_such_include = magnetarNoSuchInclude;
+  out->next_include_level = magnetarNextIncludeLevel;
 }

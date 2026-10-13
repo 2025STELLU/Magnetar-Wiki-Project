@@ -98,6 +98,6 @@ FtmlStr ftml_version(void);
 
 /* The vtable is filled on the C side because cgo cannot take the address of an
    exported Go function from Go code. */
-void pwikit_fill_callbacks(FtmlCallbacks *out);
+void magnetar_fill_callbacks(FtmlCallbacks *out);
 
 #endif

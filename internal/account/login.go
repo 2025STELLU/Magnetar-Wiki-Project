@@ -170,6 +170,11 @@ func (d Deps) signIn(ctx context.Context, w http.ResponseWriter, r *http.Request
 	if err := d.DB.SetLastLogin(ctx, user.ID, now); err != nil {
 		return err
 	}
+	// Daily login XP. No site context here, so no level role is granted;
+	// the role is reconciled on the next site-scoped XP award.
+	// The date in the ref makes it once per day.
+	_, _, _ = d.DB.AwardXP(ctx, 0, user.ID, db.XPDailyLogin, db.XPSourceDailyLogin,
+		"day:"+now.Format("2006-01-02"))
 	if err := d.DB.SeenAddress(ctx, user.ID, d.clientIP(r), now); err != nil {
 		return err
 	}

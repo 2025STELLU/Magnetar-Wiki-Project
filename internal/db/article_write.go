@@ -80,6 +80,10 @@ func (d *DB) CreateArticleVersion(ctx context.Context, w VersionWrite) (Revision
 	if err := tx.Commit(ctx); err != nil {
 		return Revision{}, fmt.Errorf("commit version of %d: %w", w.ArticleID, err)
 	}
+	if w.Kind != LogNew && w.UserID != nil {
+		d.awardXPQuiet(ctx, d.siteOfArticle(ctx, w.ArticleID), *w.UserID,
+			XPArticleEdit, XPSourceArticleEdit, fmt.Sprintf("version:%d", rev.VersionID))
+	}
 	return rev, nil
 }
 
@@ -181,6 +185,10 @@ func (d *DB) CreateArticle(ctx context.Context, siteID int64, category, name, ti
 	}
 	if err := tx.Commit(ctx); err != nil {
 		return 0, fmt.Errorf("commit article %q: %w", name, err)
+	}
+	if authorID != nil {
+		d.awardXPQuiet(ctx, siteID, *authorID,
+			XPArticleCreate, XPSourceArticleCreate, fmt.Sprintf("article:%d", id))
 	}
 	return id, nil
 }

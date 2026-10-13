@@ -16,7 +16,7 @@ ALTER TABLE web_theme ADD COLUMN site_id bigint REFERENCES web_site (id);
 ALTER TABLE web_invitelink ADD COLUMN site_id bigint REFERENCES web_site (id);
 ALTER TABLE web_userreport ADD COLUMN site_id bigint REFERENCES web_site (id);
 ALTER TABLE web_userticket ADD COLUMN site_id bigint REFERENCES web_site (id);
-ALTER TABLE pwikit_admin_log ADD COLUMN site_id bigint REFERENCES web_site (id);
+ALTER TABLE magnetar_admin_log ADD COLUMN site_id bigint REFERENCES web_site (id);
 
 -- A comment thread hangs off an article and a forum thread off a category, so
 -- without a column of its own the site takes a two-way branch to answer.
@@ -34,7 +34,7 @@ BEGIN
     FOREACH one IN ARRAY ARRAY[
         'web_article', 'web_category', 'web_tag', 'web_tagscategory', 'web_role',
         'web_rolecategory', 'web_forumsection', 'web_forumthread', 'web_theme',
-        'web_invitelink', 'web_userreport', 'web_userticket', 'pwikit_admin_log'
+        'web_invitelink', 'web_userreport', 'web_userticket', 'magnetar_admin_log'
     ] LOOP
         EXECUTE format('UPDATE %I SET site_id = %s', one, only_site);
     END LOOP;

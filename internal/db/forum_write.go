@@ -120,6 +120,10 @@ func (d *DB) CreateForumPost(ctx context.Context, w ForumPostWrite) (int64, erro
 	if err := tx.Commit(ctx); err != nil {
 		return 0, fmt.Errorf("commit post in thread %d: %w", w.ThreadID, err)
 	}
+	if w.AuthorID != nil {
+		d.awardXPQuiet(ctx, d.siteOfThread(ctx, w.ThreadID), *w.AuthorID,
+			XPForumPost, XPSourceForumPost, fmt.Sprintf("post:%d", id))
+	}
 	return id, nil
 }
 
@@ -216,6 +220,10 @@ func (d *DB) CreateForumThread(ctx context.Context, siteID int64, w ForumThreadW
 	}
 	if err := tx.Commit(ctx); err != nil {
 		return 0, 0, fmt.Errorf("commit thread in category %d: %w", w.CategoryID, err)
+	}
+	if w.AuthorID != nil {
+		d.awardXPQuiet(ctx, siteID, *w.AuthorID,
+			XPForumThread, XPSourceForumThread, fmt.Sprintf("thread:%d", threadID))
 	}
 	return threadID, postID, nil
 }

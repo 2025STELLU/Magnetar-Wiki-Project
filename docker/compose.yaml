@@ -34,7 +34,7 @@ services:
       retries: 20
 
   magnetar:
-    image: ${MAGNETAR_IMAGE:-ghcr.io/wikitteam/magnetar:latest}
+    image: ${MAGNETAR_IMAGE:-ghcr.io/2025stellu/magnetar:latest}
     restart: unless-stopped
     depends_on:
       postgres:

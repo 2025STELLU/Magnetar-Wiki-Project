@@ -109,6 +109,9 @@ func (d *DB) CreateSite(ctx context.Context, s NewSite) (int64, error) {
 			return 0, fmt.Errorf("grant %q on site %q: %w", role.slug, s.Slug, err)
 		}
 	}
+	if err := d.seedLevelConfig(ctx, tx, id); err != nil {
+		return 0, fmt.Errorf("seed level config for site %q: %w", s.Slug, err)
+	}
 	if err := tx.Commit(ctx); err != nil {
 		return 0, fmt.Errorf("commit site %q: %w", s.Slug, err)
 	}

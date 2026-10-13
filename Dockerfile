@@ -1,4 +1,4 @@
-# ProjectWikit container image. It carries no PostgreSQL of its own; the compose
+# MagnetarWiki container image. It carries no PostgreSQL of its own; the compose
 # file in docker/ runs the official one next to it.
 #
 #   docker build -t magnetar --build-arg VERSION=v1.0.0 .
@@ -26,7 +26,7 @@ COPY --from=frontend /src/static/ static/
 COPY --from=frontend /src/frontend/node_modules/ frontend/node_modules/
 ARG VERSION=v0.0.0-dev
 RUN CGO_ENABLED=1 go build -tags assets -trimpath \
-      -ldflags "-s -w -X github.com/WikitTeam/ProjectWikit/internal/version.Release=${VERSION}" \
+      -ldflags "-s -w -X github.com/2025STELLU/MagnetarWiki/internal/version.Release=${VERSION}" \
       -o /out/magnetar ./cmd/magnetar \
  && go run ./tools/notices -tags assets -version "${VERSION}" -out /out/NOTICE \
  && cp LICENSE /out/LICENSE \

@@ -103,6 +103,16 @@ func (d *DB) ReplaceVote(ctx context.Context, articleID, userID int64, rate *flo
 	if err := tx.Commit(ctx); err != nil {
 		return nil, fmt.Errorf("commit vote: %w", err)
 	}
+	if rate != nil && *rate > 0 {
+		siteID := d.siteOfArticle(ctx, articleID)
+		for _, authorID := range d.articleAuthors(ctx, articleID) {
+			if authorID == userID {
+				continue // no XP for rating your own article
+			}
+			d.awardXPQuiet(ctx, siteID, authorID,
+				XPRatingReceived, XPSourceRatingGiven, fmt.Sprintf("rating:%d:%d", articleID, userID))
+		}
+	}
 	return old, nil
 }
 

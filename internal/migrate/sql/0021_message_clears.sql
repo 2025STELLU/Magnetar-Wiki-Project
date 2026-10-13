@@ -1,5 +1,5 @@
 -- compat: breaking
-CREATE TABLE pwikit_message_clear (
+CREATE TABLE magnetar_message_clear (
     user_id    bigint NOT NULL REFERENCES web_user (id) ON DELETE CASCADE,
     partner_id bigint NOT NULL REFERENCES web_user (id) ON DELETE CASCADE,
     through_id bigint NOT NULL,
