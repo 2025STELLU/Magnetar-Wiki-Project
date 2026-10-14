@@ -1,5 +1,13 @@
 import { wFetch } from '../util/fetch-util'
 
+export interface NameStyle {
+  font_family: string
+  color: string
+  gradient_from: string
+  gradient_to: string
+  gradient_direction: string
+}
+
 export interface UserData {
   type: 'system' | 'anonymous' | 'bot' | 'normal' | 'wikidot'
   id?: number
@@ -12,6 +20,7 @@ export interface UserData {
   staff?: boolean
   admin?: boolean
   roles?: string
+  name_style?: NameStyle | null
 }
 
 export function fetchAllUsers(): Promise<UserData[]> {

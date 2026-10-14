@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 	"github.com/2025STELLU/MagnetarWiki/internal/escape"
 	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 	"github.com/2025STELLU/MagnetarWiki/internal/roles"
@@ -32,6 +33,8 @@ type User struct {
 	DisplayName     string
 	Avatar          string
 	IsActive        bool
+	// Admin-assigned name styling; nil means none.
+	NameStyle *db.NameStyle
 }
 
 type Options struct {
@@ -114,7 +117,7 @@ func (r *Renderer) User(u User, rs []roles.Role, opts Options) (string, error) {
 		b.WriteString("\n                " + `<a href="/-/users/` + name + `"><img class="small" src="` +
 			escape.HTML(avatar) + `" alt="` + display + `"></a>` + "\n            ")
 	}
-	b.WriteString("\n            " + `<a href="/-/users/` + name + `">` + display + `</a>` + "\n            ")
+	b.WriteString("\n            " + `<a href="/-/users/` + name + `"` + nameStyleAttr(u.NameStyle) + `>` + display + `</a>` + "\n            ")
 	if opts.Avatar {
 		b.WriteString("\n                ")
 		for _, icon := range tails.Icons {
@@ -164,6 +167,36 @@ func (u User) URLName() string {
 		return firstNonEmpty(u.WikidotUsername, u.Username)
 	}
 	return u.Username
+}
+
+// nameStyleAttr renders an admin-assigned name style as an inline style
+// attribute. Values are validated on write but escaped again here anyway.
+func nameStyleAttr(s *db.NameStyle) string {
+	if s == nil {
+		return ""
+	}
+	var b strings.Builder
+	if s.GradientFrom != "" && s.GradientTo != "" {
+		dir := s.GradientDirection
+		if dir == "" {
+			dir = "to right"
+		}
+		b.WriteString("background: linear-gradient(" + escape.HTML(dir) + ", " +
+			escape.HTML(s.GradientFrom) + ", " + escape.HTML(s.GradientTo) + "); " +
+			"-webkit-background-clip: text; background-clip: text; color: transparent;")
+	} else if s.Color != "" {
+		b.WriteString("color: " + escape.HTML(s.Color) + ";")
+	}
+	if s.FontFamily != "" {
+		if b.Len() > 0 {
+			b.WriteString(" ")
+		}
+		b.WriteString("font-family: " + escape.HTML(s.FontFamily) + ";")
+	}
+	if b.Len() == 0 {
+		return ""
+	}
+	return ` style="` + b.String() + `"`
 }
 
 func classAdd(opts Options) string {

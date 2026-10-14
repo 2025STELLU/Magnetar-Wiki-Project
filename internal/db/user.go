@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -39,6 +40,10 @@ type User struct {
 	// MagnetarWiki: contribution-driven level system.
 	XP    int64
 	Level int
+
+	// MagnetarWiki: admin-assigned username styling. Nil means no styling.
+	// Filled by scanUser; list queries can use FillNameStyles instead.
+	NameStyle *NameStyle
 }
 
 // A deadline in the future overrides the stored flag in both directions, so
@@ -138,6 +143,7 @@ func (d *DB) UserByID(ctx context.Context, id int64) (*User, error) {
 		return nil, fmt.Errorf("lookup user %d: %w", id, err)
 	}
 	finish()
+	d.fillNameStyle(ctx, &u)
 	return &u, nil
 }
 
@@ -160,6 +166,57 @@ func (d *DB) UserByWikidotName(ctx context.Context, name string) (*User, error) 
 	return d.scanUser(ctx, qUserByWikidotName, name)
 }
 
+// UserSearchResult is one row of an admin user search.
+type UserSearchResult struct {
+	ID          int64
+	Username    string
+	DisplayName string
+	Level       int
+}
+
+var qSearchUsers = register("SearchUsers", `
+SELECT id, username, COALESCE(display_name, ''), level
+FROM web_user
+WHERE username ILIKE '%' || $1 || '%' ESCAPE '\'
+   OR COALESCE(display_name, '') ILIKE '%' || $1 || '%' ESCAPE '\'
+ORDER BY username
+LIMIT $2`)
+
+// likeEscape escapes the LIKE metacharacters in a user-supplied search term.
+func likeEscape(s string) string {
+	var b strings.Builder
+	for _, r := range s {
+		if r == '%' || r == '_' || r == '\\' {
+			b.WriteRune('\\')
+		}
+		b.WriteRune(r)
+	}
+	return b.String()
+}
+
+// SearchUsers finds users by a substring of their username or display name,
+// for the console user manager. Callers should require a minimum query
+// length; limit caps the rows.
+func (d *DB) SearchUsers(ctx context.Context, q string, limit int) ([]UserSearchResult, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 20
+	}
+	rows, err := d.pool.Query(ctx, qSearchUsers, likeEscape(q), limit)
+	if err != nil {
+		return nil, fmt.Errorf("search users: %w", err)
+	}
+	defer rows.Close()
+	out := make([]UserSearchResult, 0, limit)
+	for rows.Next() {
+		var r UserSearchResult
+		if err := rows.Scan(&r.ID, &r.Username, &r.DisplayName, &r.Level); err != nil {
+			return nil, fmt.Errorf("search users: scan: %w", err)
+		}
+		out = append(out, r)
+	}
+	return out, rows.Err()
+}
+
 func (d *DB) scanUser(ctx context.Context, sql, canonical string) (*User, error) {
 	var u User
 	dest, finish := userDest(&u)
@@ -171,7 +228,16 @@ func (d *DB) scanUser(ctx context.Context, sql, canonical string) (*User, error)
 		return nil, fmt.Errorf("lookup user %q: %w", canonical, err)
 	}
 	finish()
+	d.fillNameStyle(ctx, &u)
 	return &u, nil
+}
+
+// fillNameStyle attaches the admin-assigned username styling, if any.
+// A missing row is not an error; styling is optional.
+func (d *DB) fillNameStyle(ctx context.Context, u *User) {
+	if style, serr := d.GetNameStyle(ctx, u.ID); serr == nil {
+		u.NameStyle = style
+	}
 }
 
 // userDest lists the scan targets for userColumns, in order. Three of the
@@ -220,6 +286,7 @@ func (d *DB) UserForSession(ctx context.Context, id int64) (*User, string, error
 		return nil, "", fmt.Errorf("lookup user %d: %w", id, err)
 	}
 	finish()
+	d.fillNameStyle(ctx, &u)
 	return &u, password, nil
 }
 
@@ -291,6 +358,7 @@ func (d *DB) UserByAnyName(ctx context.Context, canonical, raw string) (*User, e
 		return nil, fmt.Errorf("look up user %q: %w", raw, err)
 	}
 	finish()
+	d.fillNameStyle(ctx, &u)
 	return &u, nil
 }
 

@@ -391,6 +391,7 @@ func serve(ctx context.Context, args []string) (err error) {
 	userAPI := served(stack.userAPI)
 	adminAPI := served(stack.adminAPI)
 	consoleAPI := served(stack.consoleAPI)
+	checkinAPI := served(stack.checkinAPI)
 	login := served(stack.login)
 	logout := served(stack.logout)
 	signup := served(stack.signup)
@@ -444,6 +445,7 @@ func serve(ctx context.Context, args []string) (err error) {
 		webapi.UsersPrefix:              userAPI,
 		webapi.AdminPrefix:              adminAPI,
 		webapi.ConsolePrefix:            consoleAPI,
+		webapi.CheckinPrefix:            checkinAPI,
 		webapi.FavouritesPath:           favesAPI,
 		webapi.RatingsPath:              ownRowsAPI,
 		webapi.LikedPostsPath:           ownRowsAPI,
@@ -457,6 +459,8 @@ func serve(ctx context.Context, args []string) (err error) {
 		userpage.LikedPostsPrefix:       reactivePages,
 		userpage.MyTicketsPrefix:        reactivePages,
 		userpage.MyTicketSubPrefix:      reactivePages,
+		userpage.ConsolePrefix:          reactivePages,
+		userpage.ConsolePrefix + "/":    reactivePages,
 		webapi.AllArticlesPath:          allArticles,
 		webapi.ArticlesPrefix:           articleAPI,
 		webapi.FilesPrefix:              fileAPI,

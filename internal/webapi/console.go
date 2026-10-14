@@ -2,6 +2,7 @@ package webapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -47,6 +48,12 @@ func (h *Console) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.levels(w, r, loc)
 	case head == "levels" && rest == "levels" && r.Method == http.MethodPost:
 		h.saveLevels(w, r, loc)
+	case head == "users" && rest == "users/search" && r.Method == http.MethodGet:
+		h.searchUsers(w, r, loc)
+	case head == "users" && rest == "users/style" && r.Method == http.MethodGet:
+		h.getUserStyle(w, r, loc)
+	case head == "users" && rest == "users/style" && r.Method == http.MethodPost:
+		h.setUserStyle(w, r, loc)
 	default:
 		h.next.ServeHTTP(w, r)
 	}
@@ -178,4 +185,146 @@ func (h *Console) saveLevels(w http.ResponseWriter, r *http.Request, loc *i18n.L
 		return
 	}
 	writeJSON(w, http.StatusOK, field("ok", "true"))
+}
+
+// searchUsers finds users by a name substring for the console user manager.
+func (h *Console) searchUsers(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer) {
+	if !h.allowed(w, r, loc, perms.ManageUsers) {
+		return
+	}
+	q := r.URL.Query().Get("q")
+	if len([]rune(q)) < 2 {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	users, err := h.deps.DB.SearchUsers(r.Context(), q, 20)
+	if err != nil {
+		h.deps.log().Error("console search users", "err", err)
+		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
+		return
+	}
+	out := make(wikijson.Array, 0, len(users))
+	for _, u := range users {
+		out = append(out, wikijson.Object{
+			{Key: "id", Value: u.ID},
+			{Key: "username", Value: u.Username},
+			{Key: "display_name", Value: u.DisplayName},
+			{Key: "level", Value: u.Level},
+		})
+	}
+	body, err := wikijson.Marshal(wikijson.Object{{Key: "users", Value: out}})
+	if err != nil {
+		h.deps.log().Error("marshal console user search", "err", err)
+		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
+		return
+	}
+	writeJSON(w, http.StatusOK, body)
+}
+
+// getUserStyle reads one user's admin-assigned name style.
+func (h *Console) getUserStyle(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer) {
+	if !h.allowed(w, r, loc, perms.ManageUsers) {
+		return
+	}
+	var userID int64
+	if _, err := fmt.Sscanf(r.URL.Query().Get("user_id"), "%d", &userID); err != nil || userID <= 0 {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	style, err := h.deps.DB.GetNameStyle(r.Context(), userID)
+	if err != nil {
+		h.deps.log().Error("console get user style", "err", err)
+		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
+		return
+	}
+	var value any
+	if style != nil {
+		value = wikijson.Object{
+			{Key: "font_family", Value: style.FontFamily},
+			{Key: "color", Value: style.Color},
+			{Key: "gradient_from", Value: style.GradientFrom},
+			{Key: "gradient_to", Value: style.GradientTo},
+			{Key: "gradient_direction", Value: style.GradientDirection},
+		}
+	}
+	body, err := wikijson.Marshal(wikijson.Object{{Key: "style", Value: value}})
+	if err != nil {
+		h.deps.log().Error("marshal console user style", "err", err)
+		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
+		return
+	}
+	writeJSON(w, http.StatusOK, body)
+}
+
+type userStyleBody struct {
+	UserID            int64  `json:"user_id"`
+	FontFamily        string `json:"font_family"`
+	Color             string `json:"color"`
+	GradientFrom      string `json:"gradient_from"`
+	GradientTo        string `json:"gradient_to"`
+	GradientDirection string `json:"gradient_direction"`
+}
+
+// setUserStyle stores an admin-assigned name style. An all-empty style
+// clears it.
+func (h *Console) setUserStyle(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer) {
+	ctx := r.Context()
+	current := site.FromContext(ctx)
+	if current == nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-page-not-found")))
+		return
+	}
+	if err := csrf.Verify(r, []string{current.Domain, current.MediaDomain}); err != nil {
+		refuseCSRF(w, r, loc)
+		return
+	}
+	if !h.allowed(w, r, loc, perms.ManageUsers) {
+		return
+	}
+	raw, err := io.ReadAll(io.LimitReader(r.Body, maxParsed))
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	var body userStyleBody
+	if err := json.Unmarshal(raw, &body); err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	if body.UserID <= 0 {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	style := db.NameStyle{
+		FontFamily:        body.FontFamily,
+		Color:             body.Color,
+		GradientFrom:      body.GradientFrom,
+		GradientTo:        body.GradientTo,
+		GradientDirection: body.GradientDirection,
+	}
+	if err := db.ValidateNameStyle(db.NameStyle{
+		FontFamily: db.SanitizeFontFamily(style.FontFamily),
+		Color:      style.Color, GradientFrom: style.GradientFrom,
+		GradientTo: style.GradientTo, GradientDirection: style.GradientDirection,
+	}); err != nil {
+		h.deps.log().Error("console set user style: invalid", "err", err)
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	var updatedBy int64
+	if user := auth.FromContext(ctx); user != nil {
+		updatedBy = user.ID
+	}
+	if err := h.deps.DB.SetNameStyle(ctx, body.UserID, style, updatedBy); err != nil {
+		h.deps.log().Error("console set user style", "err", err)
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	bodyOut, err := wikijson.Marshal(wikijson.Object{{Key: "ok", Value: true}})
+	if err != nil {
+		h.deps.log().Error("marshal console set user style", "err", err)
+		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
+		return
+	}
+	writeJSON(w, http.StatusOK, bodyOut)
 }

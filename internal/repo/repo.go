@@ -237,6 +237,7 @@ func (r *Repository) renderUser(user *db.User, opts printuser.Options) (string, 
 		DisplayName:     user.DisplayName,
 		Avatar:          user.Avatar,
 		IsActive:        user.ActiveAt(time.Now()),
+		NameStyle:       user.NameStyle,
 	}, roleList, opts)
 }
 

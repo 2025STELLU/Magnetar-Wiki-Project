@@ -25,6 +25,7 @@ type UserJSON struct {
 	Staff      bool
 	Editor     any
 	Roles      any
+	NameStyle  *db.NameStyle
 }
 
 func (u UserJSON) Object() wikijson.Object {
@@ -41,6 +42,22 @@ func (u UserJSON) Object() wikijson.Object {
 		{Key: "staff", Value: u.Staff},
 		{Key: "editor", Value: u.Editor},
 		{Key: "roles", Value: u.Roles},
+		{Key: "name_style", Value: nameStyleJSON(u.NameStyle)},
+	}
+}
+
+// nameStyleJSON renders the admin-configured username style for the React
+// frontend, which expects snake_case keys. Nil stays nil.
+func nameStyleJSON(s *db.NameStyle) any {
+	if s == nil {
+		return nil
+	}
+	return wikijson.Object{
+		{Key: "font_family", Value: s.FontFamily},
+		{Key: "color", Value: s.Color},
+		{Key: "gradient_from", Value: s.GradientFrom},
+		{Key: "gradient_to", Value: s.GradientTo},
+		{Key: "gradient_direction", Value: s.GradientDirection},
 	}
 }
 
@@ -73,6 +90,7 @@ func SignedInUserJSON(u *db.User, userRoles []roles.Role, showAvatar, editor boo
 		Staff:      IsStaff(u, userRoles),
 		Editor:     editor,
 		Roles:      visualSlugs(userRoles),
+		NameStyle:  u.NameStyle,
 	}
 	if u.Avatar != "" {
 		out.Avatar = "/local--files/" + u.Avatar

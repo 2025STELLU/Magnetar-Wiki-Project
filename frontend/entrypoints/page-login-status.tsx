@@ -1,10 +1,11 @@
 import { t } from '~util/i18n'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import CheckinButton from '~reactive/components/CheckinButton'
 import { Paths } from '~reactive/paths'
 import { UserData } from '../api/user'
 import useConstCallback from '../util/const-callback'
-import { DEFAULT_AVATAR } from '../util/user-view'
+import { DEFAULT_AVATAR, nameStyleProps } from '../util/user-view'
 
 interface Props {
   user: UserData
@@ -60,7 +61,8 @@ const PageLoginStatus: React.FC<Props> = ({ user, notificationCount }: Props) =>
           <a href={`/-/users/${user.urlName || user.username}`}>
             <img className="small" src={user.avatar || DEFAULT_AVATAR} alt={user.name || user.username} />
           </a>
-          {user.name || user.username}
+          <span style={nameStyleProps(user.name_style)}>{user.name || user.username}</span>
+          <CheckinButton />
         </span>
         {(user.admin || user.staff) && (
           <>
