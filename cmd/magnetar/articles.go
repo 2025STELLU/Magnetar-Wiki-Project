@@ -50,6 +50,7 @@ type pageStack struct {
 	messageAPI    http.Handler
 	userAPI       http.Handler
 	adminAPI      http.Handler
+	consoleAPI    http.Handler
 	login         http.Handler
 	logout        http.Handler
 	signup        http.Handler
@@ -124,6 +125,7 @@ func newPageStack(conn *db.DB, p *paths.Paths, assets fs.FS, next http.Handler, 
 		messageAPI:    webapi.NewMessages(api, next),
 		userAPI:       webapi.NewUsers(api, next),
 		adminAPI:      webapi.NewAdmin(api, next),
+		consoleAPI:    webapi.NewConsole(api, next),
 		login:         next,
 		logout:        next,
 		signup:        next,
@@ -197,6 +199,7 @@ func newPageStack(conn *db.DB, p *paths.Paths, assets fs.FS, next http.Handler, 
 	stack.messageAPI = resolved(stack.messageAPI)
 	stack.userAPI = resolved(stack.userAPI)
 	stack.adminAPI = resolved(stack.adminAPI)
+	stack.consoleAPI = resolved(stack.consoleAPI)
 	stack.favesAPI = resolved(stack.favesAPI)
 	stack.ownRowsAPI = resolved(stack.ownRowsAPI)
 	stack.articles = resolved(stack.articles)

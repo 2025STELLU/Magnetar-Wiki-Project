@@ -390,6 +390,7 @@ func serve(ctx context.Context, args []string) (err error) {
 	messageAPI := served(stack.messageAPI)
 	userAPI := served(stack.userAPI)
 	adminAPI := served(stack.adminAPI)
+	consoleAPI := served(stack.consoleAPI)
 	login := served(stack.login)
 	logout := served(stack.logout)
 	signup := served(stack.signup)
@@ -442,6 +443,7 @@ func serve(ctx context.Context, args []string) (err error) {
 		webapi.UsersPath:                userAPI,
 		webapi.UsersPrefix:              userAPI,
 		webapi.AdminPrefix:              adminAPI,
+		webapi.ConsolePrefix:            consoleAPI,
 		webapi.FavouritesPath:           favesAPI,
 		webapi.RatingsPath:              ownRowsAPI,
 		webapi.LikedPostsPath:           ownRowsAPI,

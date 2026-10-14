@@ -149,6 +149,9 @@ func TestAnswers(t *testing.T) {
 		{"/-/messages/bob", false},
 		{"/-/messages/12/34", false},
 		{"/-/login", false},
+		{"/-/console", true},
+		{"/-/console/levels", true},
+		{"/-/consolex", false},
 	}
 	for _, c := range cases {
 		if got := answers(c.path); got != c.want {

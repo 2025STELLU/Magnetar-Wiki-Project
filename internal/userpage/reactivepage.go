@@ -1,6 +1,7 @@
 package userpage
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"slices"
@@ -27,6 +28,10 @@ const (
 	NotificationsPrefix = "/-/notifications"
 	MessagesPrefix      = "/-/messages"
 
+	// ConsolePrefix serves the React admin shell. The old /-/admin pages
+	// stay untouched as a fallback; console subpaths are routed client-side.
+	ConsolePrefix = "/-/console"
+
 	NotificationsSubPrefix = NotificationsPrefix + "/"
 	MessagesSubPrefix      = MessagesPrefix + "/"
 	MyTicketSubPrefix      = MyTicketsPrefix + "/"
@@ -49,6 +54,9 @@ func answers(path string) bool {
 	if slices.Contains(reactivePaths, path) {
 		return true
 	}
+	if path == ConsolePrefix || strings.HasPrefix(path, ConsolePrefix+"/") {
+		return true
+	}
 	if rest, ok := strings.CutPrefix(path, MyTicketSubPrefix); ok {
 		kind, raw, ok := strings.Cut(rest, "/")
 		if !ok || !slices.Contains(ticketKinds, kind) {
@@ -63,6 +71,34 @@ func answers(path string) bool {
 	}
 	_, err := strconv.ParseInt(rest, 10, 64)
 	return err == nil
+}
+
+// consolePerms gates the /-/console shell itself. The JSON endpoints behind
+// it still enforce their own fine-grained checks.
+var consolePerms = []string{
+	perms.ManageSite,
+	perms.ManageRoles,
+	perms.ManageUsers,
+	perms.BanMembers,
+	perms.ViewActionsLog,
+}
+
+func isConsolePath(path string) bool {
+	return path == ConsolePrefix || strings.HasPrefix(path, ConsolePrefix+"/")
+}
+
+func canConsole(ctx context.Context, d *db.DB, viewer *db.User) bool {
+	subject, err := repo.NewPerms(ctx, d).Subject(viewer, time.Now())
+	if err != nil {
+		return false
+	}
+	held := perms.Resolve(subject, nil)
+	for _, name := range consolePerms {
+		if held.Has(name) {
+			return true
+		}
+	}
+	return false
 }
 
 type ReactiveHandler struct {
@@ -89,6 +125,10 @@ func (h *ReactiveHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	viewer := auth.FromContext(ctx)
 	if current == nil || viewer == nil {
 		redirect(w, loginPath+"?to="+url.QueryEscape(r.URL.Path), http.StatusFound)
+		return
+	}
+	if isConsolePath(r.URL.Path) && !canConsole(ctx, h.deps.DB, viewer) {
+		http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
 		return
 	}
 

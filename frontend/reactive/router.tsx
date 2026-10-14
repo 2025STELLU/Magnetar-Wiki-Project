@@ -9,6 +9,7 @@ import LikedPosts from '~reactive/pages/liked-posts'
 import MyTickets, { MyTicket } from '~reactive/pages/my-tickets'
 import Messages from '~reactive/pages/messages'
 import Ratings from '~reactive/pages/ratings'
+import Console from '~reactive/pages/console'
 import Notifications from '~reactive/pages/notifications'
 import { Paths } from '~reactive/paths'
 import { SYSTEM_THEME } from '~reactive/theme/Theme.consts'
@@ -36,6 +37,7 @@ export default function ReactivePage() {
               <Route path={Paths.likedPosts} element={<LikedPosts />} />
               <Route path={Paths.myTickets} element={<MyTickets />} />
               <Route path={Paths.myTicket} element={<MyTicket />} />
+              <Route path={`${Paths.console}/*`} element={<Console />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

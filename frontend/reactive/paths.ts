@@ -8,4 +8,5 @@ export const Paths = {
   likedPosts: '/liked-posts',
   myTickets: '/my-tickets',
   myTicket: '/my-tickets/:kind/:id',
+  console: '/console',
 }
