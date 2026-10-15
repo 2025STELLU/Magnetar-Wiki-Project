@@ -51,6 +51,18 @@ type pageStack struct {
 	userAPI       http.Handler
 	adminAPI      http.Handler
 	consoleAPI    http.Handler
+	consoleRolesAPI http.Handler
+	consoleSiteAPI  http.Handler
+	consoleReportsAPI http.Handler
+	consolePagesAPI http.Handler
+	consoleTagsAPI http.Handler
+	consolePageCatsAPI http.Handler
+	consoleForumAPI http.Handler
+	consoleForumPostsAPI http.Handler
+	consoleTicketsAPI http.Handler
+	consoleInvitesAPI http.Handler
+	consoleAdminLogAPI http.Handler
+	consoleThemesAPI http.Handler
 	checkinAPI    http.Handler
 	login         http.Handler
 	logout        http.Handler
@@ -127,6 +139,18 @@ func newPageStack(conn *db.DB, p *paths.Paths, assets fs.FS, next http.Handler, 
 		userAPI:       webapi.NewUsers(api, next),
 		adminAPI:      webapi.NewAdmin(api, next),
 		consoleAPI:    webapi.NewConsole(api, next),
+		consoleRolesAPI: webapi.NewConsoleRoles(api, next),
+		consoleSiteAPI:  webapi.NewConsoleSite(api, next),
+		consoleReportsAPI: webapi.NewConsoleReports(api, next),
+		consolePagesAPI: webapi.NewConsolePages(api, next),
+		consoleTagsAPI: webapi.NewConsoleTags(api, next),
+		consolePageCatsAPI: webapi.NewConsolePageCats(api, next),
+		consoleForumAPI: webapi.NewConsoleForum(api, next),
+		consoleForumPostsAPI: webapi.NewConsoleForumPosts(api, next),
+		consoleTicketsAPI: webapi.NewConsoleTickets(api, next),
+		consoleInvitesAPI: webapi.NewConsoleInvites(api, next),
+		consoleAdminLogAPI: webapi.NewConsoleAdminLog(api, next),
+		consoleThemesAPI: webapi.NewConsoleThemes(api, next),
 		checkinAPI:    webapi.NewCheckin(api, next),
 		login:         next,
 		logout:        next,
@@ -202,6 +226,18 @@ func newPageStack(conn *db.DB, p *paths.Paths, assets fs.FS, next http.Handler, 
 	stack.userAPI = resolved(stack.userAPI)
 	stack.adminAPI = resolved(stack.adminAPI)
 	stack.consoleAPI = resolved(stack.consoleAPI)
+	stack.consoleRolesAPI = resolved(stack.consoleRolesAPI)
+	stack.consoleSiteAPI = resolved(stack.consoleSiteAPI)
+	stack.consoleReportsAPI = resolved(stack.consoleReportsAPI)
+	stack.consolePagesAPI = resolved(stack.consolePagesAPI)
+	stack.consoleTagsAPI = resolved(stack.consoleTagsAPI)
+	stack.consolePageCatsAPI = resolved(stack.consolePageCatsAPI)
+	stack.consoleForumAPI = resolved(stack.consoleForumAPI)
+	stack.consoleForumPostsAPI = resolved(stack.consoleForumPostsAPI)
+	stack.consoleTicketsAPI = resolved(stack.consoleTicketsAPI)
+	stack.consoleInvitesAPI = resolved(stack.consoleInvitesAPI)
+	stack.consoleAdminLogAPI = resolved(stack.consoleAdminLogAPI)
+	stack.consoleThemesAPI = resolved(stack.consoleThemesAPI)
 	stack.checkinAPI = resolved(stack.checkinAPI)
 	stack.favesAPI = resolved(stack.favesAPI)
 	stack.ownRowsAPI = resolved(stack.ownRowsAPI)

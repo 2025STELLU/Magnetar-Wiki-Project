@@ -391,6 +391,18 @@ func serve(ctx context.Context, args []string) (err error) {
 	userAPI := served(stack.userAPI)
 	adminAPI := served(stack.adminAPI)
 	consoleAPI := served(stack.consoleAPI)
+	consoleRolesAPI := served(stack.consoleRolesAPI)
+	consoleSiteAPI := served(stack.consoleSiteAPI)
+	consoleReportsAPI := served(stack.consoleReportsAPI)
+	consolePagesAPI := served(stack.consolePagesAPI)
+	consoleTagsAPI := served(stack.consoleTagsAPI)
+	consolePageCatsAPI := served(stack.consolePageCatsAPI)
+	consoleForumAPI := served(stack.consoleForumAPI)
+	consoleForumPostsAPI := served(stack.consoleForumPostsAPI)
+	consoleTicketsAPI := served(stack.consoleTicketsAPI)
+	consoleInvitesAPI := served(stack.consoleInvitesAPI)
+	consoleAdminLogAPI := served(stack.consoleAdminLogAPI)
+	consoleThemesAPI := served(stack.consoleThemesAPI)
 	checkinAPI := served(stack.checkinAPI)
 	login := served(stack.login)
 	logout := served(stack.logout)
@@ -445,6 +457,18 @@ func serve(ctx context.Context, args []string) (err error) {
 		webapi.UsersPrefix:              userAPI,
 		webapi.AdminPrefix:              adminAPI,
 		webapi.ConsolePrefix:            consoleAPI,
+		webapi.RolesPrefix:              consoleRolesAPI,
+		webapi.ConsoleSitePrefix:        consoleSiteAPI,
+		webapi.ReportsPrefix:            consoleReportsAPI,
+		webapi.PagesPrefix:              consolePagesAPI,
+		webapi.TagsPrefix:               consoleTagsAPI,
+		webapi.PageCatsPrefix:           consolePageCatsAPI,
+		webapi.ForumPrefix:              consoleForumAPI,
+		webapi.ForumPostsPrefix:         consoleForumPostsAPI,
+		webapi.TicketsPrefix:            consoleTicketsAPI,
+		webapi.InvitesPrefix:            consoleInvitesAPI,
+		webapi.AdminLogPrefix:           consoleAdminLogAPI,
+		webapi.ConsoleThemesPrefix:      consoleThemesAPI,
 		webapi.CheckinPrefix:            checkinAPI,
 		webapi.FavouritesPath:           favesAPI,
 		webapi.RatingsPath:              ownRowsAPI,
