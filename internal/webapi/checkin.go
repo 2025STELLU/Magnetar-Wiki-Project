@@ -57,7 +57,7 @@ func (h *Checkin) status(w http.ResponseWriter, r *http.Request, loc *i18n.Local
 		writeJSON(w, http.StatusUnauthorized, field("error", loc.T("api-login-required")))
 		return
 	}
-	st, err := h.deps.DB.CheckinStatus(r.Context(), userID)
+	st, err := h.deps.DB.CheckinStatus(r.Context(), userID, site.Zone(r.Context()))
 	if err != nil {
 		h.deps.log().Error("checkin status", "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
@@ -92,7 +92,7 @@ func (h *Checkin) do(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer
 		writeJSON(w, http.StatusUnauthorized, field("error", loc.T("api-login-required")))
 		return
 	}
-	st, xp, err := h.deps.DB.DoCheckin(ctx, userID)
+	st, xp, err := h.deps.DB.DoCheckin(ctx, userID, site.Zone(ctx))
 	if err != nil {
 		h.deps.log().Error("do checkin", "user", userID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))

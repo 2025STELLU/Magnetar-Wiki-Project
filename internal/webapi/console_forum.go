@@ -171,7 +171,8 @@ func (h *ConsoleForum) saveSection(w http.ResponseWriter, r *http.Request, loc *
 	ctx := r.Context()
 	site := siteID(ctx)
 	var row db.ForumSectionRow
-	if body.ID != nil && *body.ID != 0 {
+	isNew := body.ID == nil || *body.ID == 0
+	if !isNew {
 		var err error
 		row, err = h.deps.DB.AdminForumSection(ctx, site, *body.ID)
 		if errors.Is(err, db.ErrNotFound) {
@@ -193,6 +194,11 @@ func (h *ConsoleForum) saveSection(w http.ResponseWriter, r *http.Request, loc *
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
+	did := db.AdminChanged
+	if isNew {
+		did = db.AdminCreated
+	}
+	logAdminAction(ctx, h.deps, did, "forum-sections", row.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -212,11 +218,18 @@ func (h *ConsoleForum) deleteSection(w http.ResponseWriter, r *http.Request, loc
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
-	if err := h.deps.DB.DeleteForumSection(r.Context(), siteID(r.Context()), body.ID); err != nil {
+	ctx := r.Context()
+	row, err := h.deps.DB.AdminForumSection(ctx, siteID(ctx), body.ID)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	if err := h.deps.DB.DeleteForumSection(ctx, siteID(ctx), body.ID); err != nil {
 		h.deps.log().Error("delete forum section", "id", body.ID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "forum-sections", body.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -253,7 +266,8 @@ func (h *ConsoleForum) saveCategory(w http.ResponseWriter, r *http.Request, loc 
 		return
 	}
 	var row db.ForumCategoryRow
-	if body.ID != nil && *body.ID != 0 {
+	isNew := body.ID == nil || *body.ID == 0
+	if !isNew {
 		var err error
 		row, err = h.deps.DB.AdminForumCategory(ctx, site, *body.ID)
 		if errors.Is(err, db.ErrNotFound) {
@@ -274,6 +288,11 @@ func (h *ConsoleForum) saveCategory(w http.ResponseWriter, r *http.Request, loc 
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
+	did := db.AdminChanged
+	if isNew {
+		did = db.AdminCreated
+	}
+	logAdminAction(ctx, h.deps, did, "forum-categories", row.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -289,11 +308,18 @@ func (h *ConsoleForum) deleteCategory(w http.ResponseWriter, r *http.Request, lo
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
-	if err := h.deps.DB.DeleteForumCategory(r.Context(), siteID(r.Context()), body.ID); err != nil {
+	ctx := r.Context()
+	row, err := h.deps.DB.AdminForumCategory(ctx, siteID(ctx), body.ID)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	if err := h.deps.DB.DeleteForumCategory(ctx, siteID(ctx), body.ID); err != nil {
 		h.deps.log().Error("delete forum category", "id", body.ID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "forum-categories", body.ID, row.Name)
 	h.writeOK(w, loc)
 }
 

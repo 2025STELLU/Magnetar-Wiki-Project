@@ -234,6 +234,7 @@ func (h *ConsoleSite) saveSettings(w http.ResponseWriter, r *http.Request, loc *
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminChanged, "site", siteID(ctx), next.Title)
 
 	resp := wikijson.Object{{Key: "ok", Value: true}}
 	if next.Domain != current.Domain || next.MediaDomain != current.MediaDomain {

@@ -9,6 +9,7 @@ import (
 
 	"github.com/2025STELLU/MagnetarWiki/internal/auth"
 	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 	"github.com/2025STELLU/MagnetarWiki/internal/repo"
@@ -172,7 +173,8 @@ func (h *ConsoleThemes) postActivate(w http.ResponseWriter, r *http.Request, loc
 		return
 	}
 	// The theme must belong to this site; Theme returns ErrNotFound otherwise.
-	if _, err := h.deps.DB.Theme(ctx, current.ID, body.ID); err != nil {
+	theme, err := h.deps.DB.Theme(ctx, current.ID, body.ID)
+	if err != nil {
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-invalid-request")))
 		return
 	}
@@ -190,6 +192,7 @@ func (h *ConsoleThemes) postActivate(w http.ResponseWriter, r *http.Request, loc
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminChanged, "themes", body.ID, theme.Name)
 	out, err := wikijson.Marshal(wikijson.Object{{Key: "ok", Value: true}})
 	if err != nil {
 		h.deps.log().Error("marshal activate result", "err", err)

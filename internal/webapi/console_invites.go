@@ -206,12 +206,14 @@ func (h *ConsoleInvites) create(w http.ResponseWriter, r *http.Request, loc *i18
 	if by != nil {
 		owner = &by.ID
 	}
-	if _, err := h.deps.DB.CreateInviteLink(ctx, siteID(ctx), "register", "link",
-		email, "", minted, uid, owner, id, now); err != nil {
+	linkID, err := h.deps.DB.CreateInviteLink(ctx, siteID(ctx), "register", "link",
+		email, "", minted, uid, owner, id, now)
+	if err != nil {
 		h.deps.log().Error("write invite link", "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminCreated, "invite-links", linkID, email)
 	url := h.deps.Trust.Scheme(r) + "://" + current.Domain + acceptPrefix + uid + "/" + minted
 	out, err := wikijson.Marshal(wikijson.Object{
 		{Key: "ok", Value: true},
@@ -251,6 +253,7 @@ func (h *ConsoleInvites) revoke(w http.ResponseWriter, r *http.Request, loc *i18
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(r.Context(), h.deps, db.AdminDeleted, "invite-links", body.ID, "")
 	okBody, err := wikijson.Marshal(wikijson.Object{{Key: "ok", Value: true}})
 	if err != nil {
 		h.deps.log().Error("marshal revoke invite", "err", err)
@@ -322,6 +325,7 @@ func (h *ConsoleInvites) clearSuspicious(w http.ResponseWriter, r *http.Request,
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(r.Context(), h.deps, db.AdminDeleted, "suspicious", 0, strconv.FormatInt(cleared, 10))
 	out, err := wikijson.Marshal(wikijson.Object{
 		{Key: "ok", Value: true},
 		{Key: "cleared", Value: cleared},

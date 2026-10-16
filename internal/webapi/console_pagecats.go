@@ -9,6 +9,7 @@ import (
 
 	"github.com/2025STELLU/MagnetarWiki/internal/auth"
 	"github.com/2025STELLU/MagnetarWiki/internal/csrf"
+	"github.com/2025STELLU/MagnetarWiki/internal/db"
 	"github.com/2025STELLU/MagnetarWiki/internal/i18n"
 	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 	"github.com/2025STELLU/MagnetarWiki/internal/repo"
@@ -144,11 +145,17 @@ func (h *ConsolePageCats) save(w http.ResponseWriter, r *http.Request, loc *i18n
 	if body.ID != nil {
 		id = *body.ID
 	}
-	if err := h.deps.DB.ConsoleSavePageCategory(r.Context(), siteID(r.Context()), id, body.Name, body.Description); err != nil {
+	did := db.AdminChanged
+	if id == 0 {
+		did = db.AdminCreated
+	}
+	ctx := r.Context()
+	if err := h.deps.DB.ConsoleSavePageCategory(ctx, siteID(ctx), id, body.Name, body.Description); err != nil {
 		h.deps.log().Error("save page category", "id", id, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, did, "page-categories", id, body.Name)
 	h.writeOK(w, loc)
 }
 
@@ -173,12 +180,24 @@ func (h *ConsolePageCats) remove(w http.ResponseWriter, r *http.Request, loc *i1
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
+	ctx := r.Context()
+	site := siteID(ctx)
+	var label string
+	if rows, err := h.deps.DB.ConsolePageCategories(ctx, site); err == nil {
+		for _, row := range rows {
+			if row.ID == body.ID {
+				label = row.Name
+				break
+			}
+		}
+	}
 	// DeleteCategory drops the overrides and settings rows too.
-	if err := h.deps.DB.DeleteCategory(r.Context(), siteID(r.Context()), body.ID); err != nil {
+	if err := h.deps.DB.DeleteCategory(ctx, site, body.ID); err != nil {
 		h.deps.log().Error("delete page category", "id", body.ID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "page-categories", body.ID, label)
 	h.writeOK(w, loc)
 }
 

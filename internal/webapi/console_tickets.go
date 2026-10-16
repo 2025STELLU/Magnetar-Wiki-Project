@@ -69,6 +69,14 @@ func ticketPerm(kind string) string {
 	return perms.ViewUserTickets
 }
 
+// ticketScreenName mirrors the old admin's screen slugs for the action log.
+func ticketScreenName(kind string) string {
+	if kind == db.MembershipApplyKind {
+		return "membership-applications"
+	}
+	return "tickets"
+}
+
 // ticketsAllowed mirrors Console.allowed: login + the kind's permission.
 func (h *ConsoleTickets) ticketsAllowed(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer, kind string) bool {
 	ctx := r.Context()
@@ -344,6 +352,7 @@ func (h *ConsoleTickets) reply(w http.ResponseWriter, r *http.Request, loc *i18n
 		return
 	}
 	h.tellSubmitter(ctx, row, mine.ID, row.Status, message)
+	logAdminAction(ctx, h.deps, db.AdminChanged, ticketScreenName(row.Kind), row.ID, row.Subject)
 	writeOK(w, loc)
 }
 
@@ -416,5 +425,6 @@ func (h *ConsoleTickets) handle(w http.ResponseWriter, r *http.Request, loc *i18
 		return
 	}
 	h.tellSubmitter(ctx, row, mine.ID, status, row.Reply)
+	logAdminAction(ctx, h.deps, db.AdminChanged, ticketScreenName(row.Kind), row.ID, status)
 	writeOK(w, loc)
 }

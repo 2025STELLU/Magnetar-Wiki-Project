@@ -1,5 +1,5 @@
 -- compat: compatible
-CREATE TABLE magnetar_update (
+CREATE TABLE pwikit_update (
     id                  smallint    PRIMARY KEY DEFAULT 1 CHECK (id = 1),
     checked_at          timestamptz,
     check_error         text        NOT NULL DEFAULT '',
@@ -24,4 +24,4 @@ CREATE TABLE magnetar_update (
     rollback_expires_at timestamptz
 );
 
-INSERT INTO magnetar_update (id) VALUES (1);
+INSERT INTO pwikit_update (id) VALUES (1);

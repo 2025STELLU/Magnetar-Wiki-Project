@@ -260,6 +260,7 @@ func (h *ConsoleReports) handle(w http.ResponseWriter, r *http.Request, loc *i18
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminChanged, "reports", body.ID, "")
 	resp, err := wikijson.Marshal(wikijson.Object{{Key: "ok", Value: true}})
 	if err != nil {
 		h.deps.log().Error("marshal handle result", "err", err)

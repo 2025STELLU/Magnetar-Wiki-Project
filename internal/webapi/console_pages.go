@@ -1,6 +1,7 @@
 package webapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -16,6 +17,7 @@ import (
 	"github.com/2025STELLU/MagnetarWiki/internal/perms"
 	"github.com/2025STELLU/MagnetarWiki/internal/repo"
 	"github.com/2025STELLU/MagnetarWiki/internal/site"
+	"github.com/2025STELLU/MagnetarWiki/internal/wikidot"
 	"github.com/2025STELLU/MagnetarWiki/internal/wikijson"
 )
 
@@ -60,6 +62,13 @@ func (h *ConsolePages) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // List and detail follow the old admin pages screen (EditArticles);
 // delete follows the article delete API (DeleteArticles).
 func (h *ConsolePages) pagesAllowed(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer, need string) bool {
+	return h.pagesAllowedFor(w, r, loc, need, nil)
+}
+
+// pagesAllowedFor is pagesAllowed with an optional category object: when a
+// specific page is targeted, its category overrides are honored instead of
+// being ignored by a site-wide check.
+func (h *ConsolePages) pagesAllowedFor(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer, need string, object *perms.Object) bool {
 	ctx := r.Context()
 	user := auth.FromContext(ctx)
 	if user == nil {
@@ -72,11 +81,21 @@ func (h *ConsolePages) pagesAllowed(w http.ResponseWriter, r *http.Request, loc 
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return false
 	}
-	if !perms.Resolve(subject, nil).Has(need) {
+	if !perms.Resolve(subject, object).Has(need) {
 		writeJSON(w, http.StatusForbidden, field("error", loc.T("api-forbidden")))
 		return false
 	}
 	return true
+}
+
+// pageObject resolves the permission object for a page name's category.
+func (h *ConsolePages) pageObject(ctx context.Context, name string) *perms.Object {
+	category, _ := wikidot.Split(name)
+	object, err := repo.NewPerms(ctx, h.deps.DB).Category(category)
+	if err != nil {
+		return nil
+	}
+	return object
 }
 
 func pageListJSON(rows []db.AdminPageRow, total int) wikijson.Object {
@@ -136,15 +155,16 @@ func pageSummary(source string) string {
 }
 
 func (h *ConsolePages) detail(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer) {
-	if !h.pagesAllowed(w, r, loc, perms.EditArticles) {
-		return
-	}
 	name := strings.TrimSpace(r.URL.Query().Get("name"))
 	if name == "" {
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
 	ctx := r.Context()
+	if !h.pagesAllowedFor(w, r, loc, perms.EditArticles, h.pageObject(ctx, name)) {
+		return
+	}
+	ctx = r.Context()
 	article, err := h.deps.DB.ArticleByName(ctx, siteID(ctx), name)
 	if errors.Is(err, db.ErrNotFound) {
 		writeJSON(w, http.StatusNotFound, field("error", loc.T("api-page-not-found")))
@@ -200,9 +220,6 @@ func (h *ConsolePages) delete(w http.ResponseWriter, r *http.Request, loc *i18n.
 		refuseCSRF(w, r, loc)
 		return
 	}
-	if !h.pagesAllowed(w, r, loc, perms.DeleteArticles) {
-		return
-	}
 	raw, err := io.ReadAll(io.LimitReader(r.Body, maxParsed))
 	if err != nil {
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
@@ -213,7 +230,11 @@ func (h *ConsolePages) delete(w http.ResponseWriter, r *http.Request, loc *i18n.
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
-	article, err := h.deps.DB.ArticleByName(ctx, siteID(ctx), strings.TrimSpace(body.Name))
+	name := strings.TrimSpace(body.Name)
+	if !h.pagesAllowedFor(w, r, loc, perms.DeleteArticles, h.pageObject(ctx, name)) {
+		return
+	}
+	article, err := h.deps.DB.ArticleByName(ctx, siteID(ctx), name)
 	if errors.Is(err, db.ErrNotFound) {
 		writeJSON(w, http.StatusNotFound, field("error", loc.T("api-page-not-found")))
 		return

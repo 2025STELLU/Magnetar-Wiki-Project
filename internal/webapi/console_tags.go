@@ -185,7 +185,9 @@ func (h *ConsoleTags) saveTag(w http.ResponseWriter, r *http.Request, loc *i18n.
 	ctx := r.Context()
 	site := siteID(ctx)
 	var row db.TagRow
+	isNew := true
 	if body.ID != nil && *body.ID != 0 {
+		isNew = false
 		row, err = h.deps.DB.AdminTag(ctx, site, *body.ID)
 		if err != nil {
 			writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
@@ -213,6 +215,11 @@ func (h *ConsoleTags) saveTag(w http.ResponseWriter, r *http.Request, loc *i18n.
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
+	did := db.AdminChanged
+	if isNew {
+		did = db.AdminCreated
+	}
+	logAdminAction(ctx, h.deps, did, "tags", row.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -237,11 +244,18 @@ func (h *ConsoleTags) deleteTag(w http.ResponseWriter, r *http.Request, loc *i18
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
-	if err := h.deps.DB.DeleteTag(r.Context(), siteID(r.Context()), body.ID); err != nil {
+	ctx := r.Context()
+	row, err := h.deps.DB.AdminTag(ctx, siteID(ctx), body.ID)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	if err := h.deps.DB.DeleteTag(ctx, siteID(ctx), body.ID); err != nil {
 		h.deps.log().Error("delete tag", "id", body.ID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "tags", body.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -283,7 +297,9 @@ func (h *ConsoleTags) saveCategory(w http.ResponseWriter, r *http.Request, loc *
 	ctx := r.Context()
 	site := siteID(ctx)
 	var row db.TagCategoryRow
+	isNew := true
 	if body.ID != nil && *body.ID != 0 {
+		isNew = false
 		row, err = h.deps.DB.AdminTagCategory(ctx, site, *body.ID)
 		if err != nil {
 			writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
@@ -299,6 +315,11 @@ func (h *ConsoleTags) saveCategory(w http.ResponseWriter, r *http.Request, loc *
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
+	did := db.AdminChanged
+	if isNew {
+		did = db.AdminCreated
+	}
+	logAdminAction(ctx, h.deps, did, "tag-categories", row.ID, row.Name)
 	h.writeOK(w, loc)
 }
 
@@ -319,11 +340,18 @@ func (h *ConsoleTags) deleteCategory(w http.ResponseWriter, r *http.Request, loc
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
 		return
 	}
-	if err := h.deps.DB.DeleteTagCategory(r.Context(), siteID(r.Context()), body.ID); err != nil {
+	ctx := r.Context()
+	row, err := h.deps.DB.AdminTagCategory(ctx, siteID(ctx), body.ID)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
+		return
+	}
+	if err := h.deps.DB.DeleteTagCategory(ctx, siteID(ctx), body.ID); err != nil {
 		h.deps.log().Error("delete tag category", "id", body.ID, "err", err)
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "tag-categories", body.ID, row.Name)
 	h.writeOK(w, loc)
 }
 

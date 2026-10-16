@@ -231,6 +231,7 @@ func (h *ConsoleForumPosts) delete(w http.ResponseWriter, r *http.Request, loc *
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	logAdminAction(ctx, h.deps, db.AdminDeleted, "forum-posts", body.ID, "")
 	writeOK(w, loc)
 }
 
@@ -277,6 +278,11 @@ func (h *ConsoleForumPosts) lock(w http.ResponseWriter, r *http.Request, loc *i1
 		writeJSON(w, http.StatusInternalServerError, field("error", loc.T("api-internal-error")))
 		return
 	}
+	label := "unlocked"
+	if body.Locked {
+		label = "locked"
+	}
+	logAdminAction(ctx, h.deps, db.AdminChanged, "forum-posts", threadID, label)
 	writeOK(w, loc)
 }
 

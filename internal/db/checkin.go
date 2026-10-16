@@ -9,8 +9,9 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// Daily check-in. One check-in per calendar day (server local time, same as
-// the daily login XP) pays XPCheckin; every 7th consecutive day pays a
+// Daily check-in. One check-in per calendar day (site timezone when the
+// caller passes it, server local time otherwise — the daily login XP still
+// uses server local) pays XPCheckin; every 7th consecutive day pays a
 // streak bonus on top. magnetar_checkins tracks the streak; the XP ledger
 // stays the anti-farming dedup, so a retried check-in can never double-pay.
 
@@ -52,8 +53,8 @@ ON CONFLICT (user_id) DO UPDATE SET
     total_days = EXCLUDED.total_days,
     updated_at = now()`)
 
-func (d *DB) getCheckinRow(ctx context.Context, userID int64) (checkinRow, error) {
-	today := time.Now().Format("2006-01-02")
+func (d *DB) getCheckinRow(ctx context.Context, userID int64, loc ...*time.Location) (checkinRow, error) {
+	today := time.Now().In(checkinLoc(loc)).Format("2006-01-02")
 	var row checkinRow
 	err := d.pool.QueryRow(ctx, qCheckinGet, userID).Scan(&row.last, &row.streak, &row.total)
 	if err != nil {
@@ -67,9 +68,19 @@ func (d *DB) getCheckinRow(ctx context.Context, userID int64) (checkinRow, error
 	return row, nil
 }
 
+// checkinLoc resolves which "today" a check-in uses: the site timezone the
+// webapi passes in, falling back to server local time when absent (keeps
+// the db tests and any direct callers working unchanged).
+func checkinLoc(loc []*time.Location) *time.Location {
+	if len(loc) > 0 && loc[0] != nil {
+		return loc[0]
+	}
+	return time.Local
+}
+
 // CheckinStatus reads today's check-in state for a user.
-func (d *DB) CheckinStatus(ctx context.Context, userID int64) (CheckinStatus, error) {
-	row, err := d.getCheckinRow(ctx, userID)
+func (d *DB) CheckinStatus(ctx context.Context, userID int64, loc ...*time.Location) (CheckinStatus, error) {
+	row, err := d.getCheckinRow(ctx, userID, loc...)
 	if err != nil {
 		return CheckinStatus{}, err
 	}
@@ -79,7 +90,7 @@ func (d *DB) CheckinStatus(ctx context.Context, userID int64) (CheckinStatus, er
 // DoCheckin records today's check-in and pays the XP. Checking in twice on
 // the same day returns the current status with xpAwarded 0 and no error.
 // Bots and system accounts are refused, mirroring AwardXP.
-func (d *DB) DoCheckin(ctx context.Context, userID int64) (st CheckinStatus, xpAwarded int, err error) {
+func (d *DB) DoCheckin(ctx context.Context, userID int64, loc ...*time.Location) (st CheckinStatus, xpAwarded int, err error) {
 	var userType string
 	if err := d.pool.QueryRow(ctx, `SELECT type FROM web_user WHERE id = $1`, userID).Scan(&userType); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -91,7 +102,7 @@ func (d *DB) DoCheckin(ctx context.Context, userID int64) (st CheckinStatus, xpA
 		return CheckinStatus{}, 0, fmt.Errorf("do checkin: user type %q cannot check in", userType)
 	}
 
-	row, err := d.getCheckinRow(ctx, userID)
+	row, err := d.getCheckinRow(ctx, userID, loc...)
 	if err != nil {
 		return CheckinStatus{}, 0, err
 	}
@@ -99,8 +110,9 @@ func (d *DB) DoCheckin(ctx context.Context, userID int64) (st CheckinStatus, xpA
 		return CheckinStatus{CheckedIn: true, Streak: row.streak, TotalDays: row.total}, 0, nil
 	}
 
-	today := time.Now().Format("2006-01-02")
-	yesterday := time.Now().AddDate(0, 0, -1).Format("2006-01-02")
+	now := time.Now().In(checkinLoc(loc))
+	today := now.Format("2006-01-02")
+	yesterday := now.AddDate(0, 0, -1).Format("2006-01-02")
 	newStreak, newTotal := 1, 1
 	if row.found {
 		newTotal = row.total + 1
