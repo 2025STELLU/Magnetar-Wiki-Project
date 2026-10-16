@@ -8,6 +8,7 @@ export interface ConsoleRole {
   is_level_role: boolean
   level: number
   permissions: string[]
+  deny: string[]
 }
 
 export interface PermissionInfo {
@@ -22,6 +23,7 @@ export interface RoleSaveBody {
   name: string
   description: string
   permissions: string[]
+  deny: string[]
 }
 
 export async function listRoles() {

@@ -34,6 +34,7 @@ const ConsoleRoles: React.FC = () => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [checked, setChecked] = useState<Set<string>>(new Set())
+  const [denied, setDenied] = useState<Set<string>>(new Set())
   const [saving, setSaving] = useState(false)
   const [notice, setNotice] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null)
 
@@ -63,6 +64,7 @@ const ConsoleRoles: React.FC = () => {
     setName(r.name)
     setDescription(r.description)
     setChecked(new Set(r.permissions))
+    setDenied(new Set(r.deny || []))
     setNotice(null)
   })
 
@@ -72,16 +74,28 @@ const ConsoleRoles: React.FC = () => {
     setName('')
     setDescription('')
     setChecked(new Set())
+    setDenied(new Set())
     setNotice(null)
   })
 
+  // 三态循环：未设置 → 允许 → 拒绝 → 未设置。拒绝优先于允许。
   const togglePerm = useConstCallback((key: string) => {
-    setChecked(prev => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
+    if (denied.has(key)) {
+      setDenied(prev => {
+        const next = new Set(prev)
+        next.delete(key)
+        return next
+      })
+    } else if (checked.has(key)) {
+      setChecked(prev => {
+        const next = new Set(prev)
+        next.delete(key)
+        return next
+      })
+      setDenied(prev => new Set(prev).add(key))
+    } else {
+      setChecked(prev => new Set(prev).add(key))
+    }
     setNotice(null)
   })
 
@@ -103,6 +117,7 @@ const ConsoleRoles: React.FC = () => {
         name: name.trim(),
         description: description.trim(),
         permissions: [...checked],
+        deny: [...denied],
       })
       setNotice({ kind: 'ok', text: t('console.roles.saved') })
       await reload()
@@ -228,24 +243,38 @@ const ConsoleRoles: React.FC = () => {
                   <Styled.Input value={description} onChange={e => setDescription(e.target.value)} />
                 </Styled.Field>
 
+                <Styled.Desc style={{ marginBottom: 8 }}>{t('console.roles.tristate_hint')}</Styled.Desc>
+
                 {grouped.map(g => (
                   <div key={g.group} style={{ marginBottom: 16 }}>
                     <Styled.Label>{groupLabel(g.group)}</Styled.Label>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px' }}>
-                      {g.items.map(p => (
-                        <label
-                          key={p.key}
-                          style={{ fontSize: 14, display: 'flex', gap: 6, alignItems: 'center', cursor: 'pointer' }}
-                          title={p.key}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checked.has(p.key)}
-                            onChange={() => togglePerm(p.key)}
-                          />
-                          {p.description}
-                        </label>
-                      ))}
+                      {g.items.map(p => {
+                        const st = denied.has(p.key) ? 'deny' : checked.has(p.key) ? 'allow' : 'unset'
+                        return (
+                          <label
+                            key={p.key}
+                            style={{ fontSize: 14, display: 'flex', gap: 6, alignItems: 'center', cursor: 'pointer' }}
+                            title={`${p.key} — ${t(`console.roles.state_${st}`)}`}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => togglePerm(p.key)}
+                              title={t(`console.roles.state_${st}`)}
+                              style={{
+                                width: 18, height: 18, padding: 0, cursor: 'pointer',
+                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: 13, fontWeight: 'bold', lineHeight: 1,
+                                border: '1px solid #999', borderRadius: 3, background: '#fff',
+                                color: st === 'allow' ? '#1a7f37' : st === 'deny' ? '#cf222e' : '#ccc',
+                              }}
+                            >
+                              {st === 'allow' ? '✓' : st === 'deny' ? '✕' : ''}
+                            </button>
+                            {p.description}
+                          </label>
+                        )
+                      })}
                     </div>
                   </div>
                 ))}

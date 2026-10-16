@@ -132,8 +132,14 @@ func (h *ConsoleRoles) list(w http.ResponseWriter, r *http.Request, loc *i18n.Lo
 	items := make(wikijson.Array, 0, len(rows))
 	for _, row := range rows {
 		allow := []string{}
-		if g, ok := byID[row.ID]; ok && g.Permissions != nil {
-			allow = g.Permissions
+		deny := []string{}
+		if g, ok := byID[row.ID]; ok {
+			if g.Permissions != nil {
+				allow = g.Permissions
+			}
+			if g.Restrictions != nil {
+				deny = g.Restrictions
+			}
 		}
 		level, isLevel := levelOf(row.Slug)
 		items = append(items, wikijson.Object{
@@ -144,6 +150,7 @@ func (h *ConsoleRoles) list(w http.ResponseWriter, r *http.Request, loc *i18n.Lo
 			{Key: "is_level_role", Value: isLevel},
 			{Key: "level", Value: level},
 			{Key: "permissions", Value: allow},
+			{Key: "deny", Value: deny},
 		})
 	}
 	body, err := wikijson.Marshal(wikijson.Object{{Key: "roles", Value: items}})
@@ -190,6 +197,7 @@ type roleSaveBody struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Permissions []string `json:"permissions"`
+	Deny        []string `json:"deny"`
 }
 
 func (h *ConsoleRoles) save(w http.ResponseWriter, r *http.Request, loc *i18n.Localizer) {
@@ -233,6 +241,22 @@ func (h *ConsoleRoles) save(w http.ResponseWriter, r *http.Request, loc *i18n.Lo
 			allow = append(allow, name)
 		}
 	}
+	denySet := make(map[string]bool, len(body.Deny))
+	deny := make([]string, 0, len(body.Deny))
+	for _, name := range body.Deny {
+		if known[name] && !denySet[name] {
+			denySet[name] = true
+			deny = append(deny, name)
+		}
+	}
+	// 拒绝项优先：同时出现在两边的权限只保留拒绝。
+	filtered := allow[:0]
+	for _, name := range allow {
+		if !denySet[name] {
+			filtered = append(filtered, name)
+		}
+	}
+	allow = filtered
 
 	ctx := r.Context()
 	site := siteID(ctx)
@@ -255,7 +279,8 @@ func (h *ConsoleRoles) save(w http.ResponseWriter, r *http.Request, loc *i18n.Lo
 	row.Name = body.Name
 	row.ShortName = body.Description
 	row.Allow = allow
-	// Deny list is managed by the old admin; the console matrix edits allows.
+	row.Deny = deny
+	// 拒绝项由本矩阵一并管理：拒绝优先于允许。
 	if _, err := h.deps.DB.SaveRole(ctx, site, row, true); err != nil {
 		h.deps.log().Error("save role", "slug", body.Slug, "err", err)
 		writeJSON(w, http.StatusBadRequest, field("error", loc.T("api-bad-request")))
